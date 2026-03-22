@@ -1,4 +1,17 @@
 
+# Composed template output (build artifacts)
+/output/
 
-# Exclude the reference materials
+# Reference materials (not shipped)
 /_reference/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*~
+*.swp
+
+# Node (compose tooling)
+node_modules/

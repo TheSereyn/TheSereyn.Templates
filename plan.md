@@ -88,11 +88,17 @@ Both share: DevContainer, MCP config, Squad (auto-installed), BA agent, all gene
 
 ### Phase 0: Workspace Setup — TheSereyn.Templates
 
-**0a. Initialize the workspace repo** *(no dependencies)*
-- `git init` in `TheSereyn.Templates/`
-- Create `main` and `dev` branches
-- Set up `.gitignore` (ignore `output/`)
-- Create GitHub repo `TheSereyn/TheSereyn.Templates` (NOT a template — this is the management repo)
+**0a. Initialize the workspace repo** *(no dependencies)* — **PARTIALLY DONE**
+- ✅ `git init`, initial commit on `main`, pushed to `origin`
+- ✅ GitHub repo created: `TheSereyn/TheSereyn.Templates` (remote configured)
+- ✅ `.gitignore` exists (currently only ignores `/_reference/`)
+- 🔲 Expand `.gitignore` — add: `output/`, `.DS_Store`, `Thumbs.db`, `*~`, `*.swp`, `node_modules/`
+- 🔲 `README.md` — workspace purpose, what it composes, how to use `compose.sh`, branching model (`dev` → PR → `main` → tag → publish), link to downstream template repos
+- 🔲 `.gitattributes` — `* text=auto eol=lf`, mark `compose.sh` as executable (`*.sh text eol=lf`), markdown/json/yaml as text
+- 🔲 `.editorconfig` — workspace-level formatting for markdown, yaml, json, shell scripts (NOT the .NET template `.editorconfig` which lives in `base/`)
+- 🔲 `LICENSE` — MIT license, copyright `TheSereyn`
+- 🔲 Create `dev` branch from `main` and push
+- 🔲 Set GitHub repo description: *"Composition workspace for .NET project templates. Composes shared base + per-template overlays into Copilot-ready GitHub template repos (Blazor full-stack, MinimalApi back-end). Includes DevContainer, MCP servers, skills, BA agent, and Squad integration."*
 
 **0b. Workspace copilot-instructions.md** *(no dependencies)*
 - Create `.github/copilot-instructions.md` for this workspace (NOT the template instructions — those go in `base/`)
