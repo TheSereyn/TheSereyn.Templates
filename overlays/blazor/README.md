@@ -107,7 +107,6 @@ See the `project-conventions`, `tunit-testing`, and `blazor-architecture` skills
 - [Playwright CLI](https://github.com/microsoft/playwright-cli)
 - [Squad — AI Development Team](https://github.com/bradygaster/squad)
 - [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
-- [OpenTelemetry .NET](https://opentelemetry.io/docs/languages/dotnet/)
 
 ## License
 

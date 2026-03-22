@@ -86,7 +86,6 @@ See the `project-conventions` and `tunit-testing` skills for detailed guidance.
 - [RFC 9457 — Problem Details](https://www.rfc-editor.org/rfc/rfc9457.html)
 - [Squad — AI Development Team](https://github.com/bradygaster/squad)
 - [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
-- [OpenTelemetry .NET](https://opentelemetry.io/docs/languages/dotnet/)
 
 ## License
 
