@@ -29,7 +29,7 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
 | **MCP Servers** | Microsoft Learn, GitHub, **Playwright** |
-| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, Playwright CLI, **Blazor architecture**, security review, RFC compliance, code analyzers |
+| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, **Blazor architecture**, security review, RFC compliance, code analyzers, **Playwright CLI** (auto-installed) |
 | **Prompts** | First-time setup, requirements interview |
 | **Squad** | AI development team (auto-installed via DevContainer) |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
@@ -104,6 +104,10 @@ See the `project-conventions`, `tunit-testing`, and `blazor-architecture` skills
 - [Blazor Performance](https://learn.microsoft.com/aspnet/core/blazor/performance)
 - [Clean Architecture](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture)
 - [RFC 9457 — Problem Details](https://www.rfc-editor.org/rfc/rfc9457.html)
+- [Playwright CLI](https://github.com/microsoft/playwright-cli)
+- [Squad — AI Development Team](https://github.com/bradygaster/squad)
+- [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
+- [OpenTelemetry .NET](https://opentelemetry.io/docs/languages/dotnet/)
 
 ## License
 

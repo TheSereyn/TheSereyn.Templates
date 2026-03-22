@@ -29,7 +29,7 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
 | **MCP Servers** | Microsoft Learn, Azure, GitHub |
-| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, Playwright CLI, security review, RFC compliance, code analyzers |
+| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, security review, RFC compliance, code analyzers |
 | **Prompts** | First-time setup, requirements interview |
 | **Squad** | AI development team (auto-installed via DevContainer) |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
@@ -84,6 +84,9 @@ See the `project-conventions` and `tunit-testing` skills for detailed guidance.
 - [ASP.NET Core Minimal APIs](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis)
 - [Clean Architecture](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture)
 - [RFC 9457 — Problem Details](https://www.rfc-editor.org/rfc/rfc9457.html)
+- [Squad — AI Development Team](https://github.com/bradygaster/squad)
+- [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
+- [OpenTelemetry .NET](https://opentelemetry.io/docs/languages/dotnet/)
 
 ## License
 
