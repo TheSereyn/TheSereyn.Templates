@@ -98,6 +98,7 @@ See the `project-conventions`, `tunit-testing`, and `blazor-architecture` skills
 
 ## Dependencies
 
+- [TUnit](https://tunit.dev/) — testing framework on Microsoft Testing Platform
 - [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) — static analysis via `Directory.Build.props`
 - [Squad](https://github.com/bradygaster/squad) — AI development team, installed via DevContainer
 - [Playwright CLI](https://github.com/microsoft/playwright-cli) — browser automation, installed via DevContainer

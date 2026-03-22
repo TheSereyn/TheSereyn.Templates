@@ -80,6 +80,7 @@ See the `project-conventions` and `tunit-testing` skills for detailed guidance.
 
 ## Dependencies
 
+- [TUnit](https://tunit.dev/) — testing framework on Microsoft Testing Platform
 - [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) — static analysis via `Directory.Build.props`
 - [Squad](https://github.com/bradygaster/squad) — AI development team, installed via DevContainer
 
