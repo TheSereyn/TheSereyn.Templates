@@ -29,15 +29,15 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
 | **MCP Servers** | Microsoft Learn, Azure, GitHub |
-| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, Playwright CLI |
-| **Business Analyst Agent** | Structured 10-phase requirements-gathering interview |
+| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, Playwright CLI, security review, RFC compliance, code analyzers |
+| **Prompts** | First-time setup, requirements interview |
 | **Squad** | AI development team (auto-installed via DevContainer) |
-| **Code Quality** | StyleCop, .editorconfig, nullable reference types |
+| **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Recommended Workflow
 
-1. **Run first-time-setup** to configure project identity and verify environment
-2. **Start with the Business Analyst** — `@Business Analyst` in Copilot Chat to generate requirements
+1. **Run first-time-setup** to configure project identity, select a license, and verify environment
+2. **Gather requirements** — run `/requirements-interview` in Copilot Chat with your project idea
 3. **Use Squad** to design architecture and scaffold the solution
 4. **Build iteratively** using the included skills and conventions
 
@@ -87,4 +87,4 @@ See the `project-conventions` and `tunit-testing` skills for detailed guidance.
 
 ## License
 
-[MIT](LICENSE)
+License is configured during first-time setup.

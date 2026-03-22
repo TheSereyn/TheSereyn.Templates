@@ -138,5 +138,9 @@ Copilot must clarify before coding if any of these are unclear:
 
 - `tunit-testing` — TUnit framework patterns, MTP CLI flags, assertion syntax
 - `project-conventions` — Error handling, API patterns, code style, naming, async
-- `requirements-gathering` — Structured requirements elicitation with open questions
+- `requirements-gathering` — Structured 10-phase requirements interview and documentation
 - `playwright-cli` — Browser automation for web testing
+- `security-review` — OWASP-based security code review and vulnerability assessment
+- `security-register` — Project vulnerability and security finding tracker
+- `rfc-compliance` — HTTP/REST RFC standards checking (9205, 9110, 3986, 9457)
+- `code-analyzers` — Roslyn and StyleCop analyzer setup and configuration
