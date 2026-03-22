@@ -1,0 +1,32 @@
+{
+  "name": "TheSereyn.Templates - Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/base:noble",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GitHub.copilot",
+        "GitHub.copilot-chat"
+      ]
+    }
+  },
+
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
+  "containerEnv": {
+    "HOME": "/home/vscode"
+  },
+  "runArgs": [
+    "--userns=keep-id",
+    "--security-opt=label=disable"
+  ],
+
+  "postCreateCommand": "node --version && gh --version"
+}

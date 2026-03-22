@@ -88,17 +88,16 @@ Both share: DevContainer, MCP config, Squad (auto-installed), BA agent, all gene
 
 ### Phase 0: Workspace Setup — TheSereyn.Templates
 
-**0a. Initialize the workspace repo** *(no dependencies)* — **PARTIALLY DONE**
+**0a. Initialize the workspace repo** *(no dependencies)* — **✅ DONE**
 - ✅ `git init`, initial commit on `main`, pushed to `origin`
 - ✅ GitHub repo created: `TheSereyn/TheSereyn.Templates` (remote configured)
-- ✅ `.gitignore` exists (currently only ignores `/_reference/`)
-- 🔲 Expand `.gitignore` — add: `output/`, `.DS_Store`, `Thumbs.db`, `*~`, `*.swp`, `node_modules/`
-- 🔲 `README.md` — workspace purpose, what it composes, how to use `compose.sh`, branching model (`dev` → PR → `main` → tag → publish), link to downstream template repos
-- 🔲 `.gitattributes` — `* text=auto eol=lf`, mark `compose.sh` as executable (`*.sh text eol=lf`), markdown/json/yaml as text
-- 🔲 `.editorconfig` — workspace-level formatting for markdown, yaml, json, shell scripts (NOT the .NET template `.editorconfig` which lives in `base/`)
-- 🔲 `LICENSE` — MIT license, copyright `TheSereyn`
-- 🔲 Create `dev` branch from `main` and push
-- 🔲 Set GitHub repo description: *"Composition workspace for .NET project templates. Composes shared base + per-template overlays into Copilot-ready GitHub template repos (Blazor full-stack, MinimalApi back-end). Includes DevContainer, MCP servers, skills, BA agent, and Squad integration."*
+- ✅ `.gitignore` — ignores `/_reference/`, `/output/`, OS cruft, `node_modules/`
+- ✅ `README.md` — workspace purpose, downstream template table, structure, overlay semantics, branching model, local dev instructions
+- ✅ `.gitattributes` — `* text=auto eol=lf`, `*.sh text eol=lf`, binary rules
+- ✅ `.editorconfig` — workspace-level formatting (UTF-8, LF, 2-space indent for md/yaml/json/sh)
+- ✅ `LICENSE` — MIT, copyright TheSereyn 2026
+- ✅ `dev` branch created from `main` and pushed to origin
+- ✅ GitHub repo description set
 
 **0b. Workspace copilot-instructions.md** *(no dependencies)*
 - Create `.github/copilot-instructions.md` for this workspace (NOT the template instructions — those go in `base/`)
