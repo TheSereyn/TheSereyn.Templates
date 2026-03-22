@@ -1,0 +1,16 @@
+# Auto-detect text files and normalise line endings to LF
+* text=auto eol=lf
+
+# Shell scripts must stay LF and be executable
+*.sh text eol=lf
+
+# Text formats
+*.md text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Binary — treat as binary, no diff
+*.png binary
+*.jpg binary
+*.ico binary
