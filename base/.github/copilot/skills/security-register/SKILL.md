@@ -83,3 +83,8 @@ For accepted risks, document the business justification and set a review date to
 - Review the register during sprint planning for outstanding items
 - Cross-reference with the `security-review` skill for systematic code review
 - Update after dependency scans (`dotnet list package --vulnerable`)
+
+## References
+
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [OWASP API Security Top 10](https://owasp.org/www-project-api-security/)

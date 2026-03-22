@@ -78,14 +78,10 @@ dotnet run --project src/YourProject.Api/
 
 See the `project-conventions` and `tunit-testing` skills for detailed guidance.
 
-## Links
+## Dependencies
 
-- [TUnit Documentation](https://tunit.dev/docs/intro)
-- [ASP.NET Core Minimal APIs](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis)
-- [Clean Architecture](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture)
-- [RFC 9457 — Problem Details](https://www.rfc-editor.org/rfc/rfc9457.html)
-- [Squad — AI Development Team](https://github.com/bradygaster/squad)
-- [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers)
+- [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) — static analysis via `Directory.Build.props`
+- [Squad](https://github.com/bradygaster/squad) — AI development team, installed via DevContainer
 
 ## License
 
