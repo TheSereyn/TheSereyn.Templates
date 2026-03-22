@@ -26,9 +26,10 @@ This project uses a **Dev Container** for a consistent development environment. 
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
 | **MCP Servers** | Microsoft Learn, Azure, GitHub |
-| **Skills** | TUnit testing, project conventions, requirements gathering, Playwright CLI |
-| **Business Analyst Agent** | Structured 10-phase requirements-gathering interview |
+| **Skills** | TUnit testing, project conventions, requirements gathering, Playwright CLI, security review, RFC compliance, code analyzers |
+| **Prompts** | First-time setup, requirements interview |
 | **Squad** | AI development team (auto-installed via DevContainer) |
+| **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Development Workflow
 
@@ -57,4 +58,4 @@ src/
 
 ## License
 
-[MIT](LICENSE)
+License is configured during first-time setup.

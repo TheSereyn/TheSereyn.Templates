@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/github-mcp-server"],
+      "env": {
+        "GITHUB_TOKEN": "${input:githubToken}"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/playwright-mcp-server"]
+    }
+  },
+  "inputs": [
+    {
+      "id": "githubToken",
+      "type": "command",
+      "command": "github.copilot.getToken"
+    }
+  ]
+}

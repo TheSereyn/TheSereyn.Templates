@@ -29,15 +29,15 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
 | **MCP Servers** | Microsoft Learn, Azure, GitHub |
-| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, Playwright CLI |
-| **Business Analyst Agent** | Structured 10-phase requirements-gathering interview |
+| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, security review, RFC compliance, code analyzers |
+| **Prompts** | First-time setup, requirements interview |
 | **Squad** | AI development team (auto-installed via DevContainer) |
-| **Code Quality** | StyleCop, .editorconfig, nullable reference types |
+| **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Recommended Workflow
 
-1. **Run first-time-setup** to configure project identity and verify environment
-2. **Start with the Business Analyst** — `@Business Analyst` in Copilot Chat to generate requirements
+1. **Run first-time-setup** to configure project identity, select a license, and verify environment
+2. **Gather requirements** — run `/requirements-interview` in Copilot Chat with your project idea
 3. **Use Squad** to design architecture and scaffold the solution
 4. **Build iteratively** using the included skills and conventions
 
@@ -78,13 +78,13 @@ dotnet run --project src/YourProject.Api/
 
 See the `project-conventions` and `tunit-testing` skills for detailed guidance.
 
-## Links
+## Dependencies
 
-- [TUnit Documentation](https://tunit.dev/docs/intro)
-- [ASP.NET Core Minimal APIs](https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis)
-- [Clean Architecture](https://learn.microsoft.com/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture)
-- [RFC 9457 — Problem Details](https://www.rfc-editor.org/rfc/rfc9457.html)
+- [Roslyn Analyzers](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/overview) — code quality and style analysis via `Directory.Build.props`
+- [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) — formatting and structure rules via `Directory.Build.props`
+- [TUnit](https://tunit.dev/) — testing framework on Microsoft Testing Platform
+- [Squad](https://github.com/bradygaster/squad) — AI development team, installed via DevContainer
 
 ## License
 
-[MIT](LICENSE)
+License is configured during first-time setup.
