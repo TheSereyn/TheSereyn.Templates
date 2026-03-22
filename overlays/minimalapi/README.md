@@ -80,8 +80,9 @@ See the `project-conventions` and `tunit-testing` skills for detailed guidance.
 
 ## Dependencies
 
+- [Roslyn Analyzers](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/overview) — code quality and style analysis via `Directory.Build.props`
+- [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) — formatting and structure rules via `Directory.Build.props`
 - [TUnit](https://tunit.dev/) — testing framework on Microsoft Testing Platform
-- [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) — static analysis via `Directory.Build.props`
 - [Squad](https://github.com/bradygaster/squad) — AI development team, installed via DevContainer
 
 ## License
