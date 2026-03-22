@@ -1,0 +1,63 @@
+name: Compose and Publish Templates
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  compose-and-publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - overlay: minimalapi
+            repo: TheSereyn/TheSereyn.Templates.MinimalApi
+          - overlay: blazor
+            repo: TheSereyn/TheSereyn.Templates.Blazor
+    steps:
+      - name: Checkout composition workspace
+        uses: actions/checkout@v4
+
+      - name: Compose template
+        env:
+          TAG: ${{ github.ref_name }}
+        run: bash compose.sh
+
+      - name: Clone target template repo
+        env:
+          GH_TOKEN: ${{ secrets.TEMPLATE_PUSH_TOKEN }}
+        run: |
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/${{ matrix.repo }}.git" target-repo
+
+      - name: Sync composed output to target repo
+        run: |
+          REPO_NAME=$(basename "${{ matrix.repo }}")
+          # Remove all tracked files except .git
+          find target-repo -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          # Copy composed output
+          cp -a "output/${REPO_NAME}/." target-repo/
+
+      - name: Commit and push
+        working-directory: target-repo
+        env:
+          GH_TOKEN: ${{ secrets.TEMPLATE_PUSH_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Composed from TheSereyn.Templates@${{ github.ref_name }}"
+            git push
+          fi
+
+      - name: Tag template repo
+        working-directory: target-repo
+        run: |
+          git tag "${{ github.ref_name }}"
+          git push origin "${{ github.ref_name }}"
