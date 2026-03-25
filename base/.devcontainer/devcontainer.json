@@ -40,5 +40,5 @@
     "--security-opt=label=disable"
   ],
 
-  "postCreateCommand": "dotnet --info && node --version && gh --version && az --version"
+  "postCreateCommand": "dotnet --info && node --version && gh --version && az --version && copilot plugin marketplace add microsoft/azure-skills && copilot plugin install azure@azure-skills"
 }
