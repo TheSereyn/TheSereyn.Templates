@@ -29,7 +29,7 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
 | **MCP Servers** | Microsoft Learn, GitHub, **Playwright** |
-| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, **Blazor architecture**, security review, RFC compliance, code analyzers, **Playwright CLI** (auto-installed) |
+| **Copilot Skills** | TUnit testing, project conventions, requirements gathering, **Blazor architecture**, security review, RFC compliance, code analyzers, **[Playwright CLI](https://github.com/microsoft/playwright-cli)** (auto-installed) |
 | **Prompts** | First-time setup, requirements interview |
 | **Squad** | AI development team (auto-installed via DevContainer) |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
