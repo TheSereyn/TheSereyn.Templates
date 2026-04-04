@@ -42,15 +42,19 @@ GitHub Secret Scanning automatically detects many patterns — ensure it is enab
 
 ### ASP.NET Core configuration hygiene
 
-**appsettings hierarchy (secure pattern):**
+**ASP.NET Core ConfigurationBuilder loading order** (later sources override earlier):
 
 ```
-appsettings.json              ← non-sensitive defaults only
+appsettings.json              ← non-sensitive defaults only          (lowest precedence)
 appsettings.Development.json  ← development overrides, never real secrets
-Environment variables         ← real secrets in CI/CD/cloud
 User Secrets (local dev)      ← developer secrets via dotnet user-secrets
-Azure Key Vault / AWS Secrets Manager / HashiCorp Vault ← production secrets
+Environment variables         ← CI/CD pipeline secrets and cloud config
+CLI arguments                 ← highest precedence
 ```
+
+Production secret stores (Azure Key Vault, AWS Secrets Manager, HashiCorp Vault) are typically added as a configuration provider at startup and load into the configuration pipeline — effectively overriding app settings but below environment variables. Treat them as the authoritative source for production secrets rather than a precedence tier.
+
+> **Note:** Environment variables override user-secrets in the default ASP.NET Core configuration order. This means env vars in the dev environment will shadow user-secrets values — useful for testing but a common source of confusion.
 
 **`dotnet user-secrets`** is the correct tool for local development secrets:
 
@@ -59,7 +63,9 @@ dotnet user-secrets init
 dotnet user-secrets set "ConnectionStrings:Default" "Server=..."
 ```
 
-User secrets are stored outside the project directory (in `%APPDATA%\Microsoft\UserSecrets\`) — never committed.
+User secrets are stored outside the project directory — never committed:
+- **Windows:** `%APPDATA%\Microsoft\UserSecrets\<user-secrets-id>\secrets.json`
+- **Linux/macOS:** `~/.microsoft/usersecrets/<user-secrets-id>/secrets.json`
 
 ### Configuration-driven security posture risks
 
@@ -85,7 +91,7 @@ Some configuration choices directly affect security posture:
 ### Log and review output redaction
 
 - Secrets and tokens must never appear in log output.
-- `ILogger` structured logging: use `{@object}` only for non-sensitive types; avoid logging request bodies or headers wholesale.
+- Structured logging: use named placeholders with non-sensitive values only; avoid logging request bodies or headers wholesale. With **Serilog**, the `{@object}` destructuring prefix expands objects — never use it on types containing credentials or tokens.
 - Serilog destructuring: `[Destructure.ByTransforming<>]` to strip sensitive fields before logging.
 - Review findings: never quote actual secret values — use `[REDACTED]` in all review output.
 - Application Insights / OpenTelemetry: verify sensitive data is not inadvertently included in traces or metrics.
