@@ -28,3 +28,15 @@
 ## Learnings
 
 - Session 1 (2026-04-04): Team initialized. I am the platform and pipeline specialist.
+
+- Session 2 (2026-04-04): Conducted platform and devcontainer review across all templates.
+  - Found 5 critical blockers requiring immediate fix
+  - Critical 1: Devcontainer is Podman-only — `--userns=keep-id` fails on Docker Desktop
+  - Critical 2: MCP config references non-existent npm packages (shared with Naomi)
+  - Critical 3: PostCreateCommand chain fails at `copilot plugin` step (CLI not on PATH during container build)
+  - Critical 4: No version pinning on package installs (supply chain risk)
+  - Critical 5: GitHub Actions pinned to mutable tags (shared with Holden, Drummer)
+  - XDG_RUNTIME_DIR mount also fails on macOS/Windows (unset environment variable)
+  - Tested on both Docker Desktop and Podman — confirmed Docker failures
+  - Blazor overlay duplicates near-identical files, creating maintenance drift
+  - New template checklist is sound and well-documented

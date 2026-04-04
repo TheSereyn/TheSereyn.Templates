@@ -25,3 +25,14 @@
 ## Learnings
 
 - Session 1 (2026-04-04): Team initialized. I am the security and quality gate.
+
+- Session 2 (2026-04-04): Conducted comprehensive security and compliance review.
+  - Found 20 security findings, 1 Critical
+  - Critical 1: ISO 27001 skill uses superseded 2013 control numbering (shared with Naomi)
+  - ISO 27001:2022 restructured Annex A (4 themes, 93 controls vs. old 14 domains, 114 controls)
+  - 11 new controls added in 2022 (e.g., A.5.7 Threat Intelligence, A.8.9 Configuration Management)
+  - GitHub Actions supply chain risk: `actions/checkout@v4` and `actions/github-script@v7` pinned to mutable tags
+  - TEMPLATE_PUSH_TOKEN is PAT, user-scoped, undocumented — bus factor risk
+  - PostCreateCommand has no version pinning: `@latest`, `npx -y` allow arbitrary package injection
+  - Recommend: Pin all actions to commit SHAs, replace PAT with GitHub App token, update ISO skill to 2022 controls
+  - All compliance skills require audit against current standard frameworks

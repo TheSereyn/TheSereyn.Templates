@@ -27,3 +27,13 @@
 ## Learnings
 
 - Session 1 (2026-04-04): Team initialized. Holden is Lead. Universe: The Expanse.
+
+- Session 2 (2026-04-04): Led comprehensive template review with all team members.
+  - Identified 62 consolidated recommendations across architecture, content, platform, security
+  - 6 Critical blockers must be fixed before templates are production-ready
+  - Key finding: MCP packages, devcontainer (Podman-only), postCreateCommand chain all broken
+  - Most critical: All MCP tooling fails day one due to non-existent `@anthropic/*` package names
+  - Devcontainer hard-fails on Docker Desktop (majority of target users)
+  - GitHub Actions pinned to mutable tags (supply chain risk)
+  - Assembled individual findings into consolidated 341-line review with full remediation guidance
+  - Cross-cutting findings indicate high confidence in critical issues

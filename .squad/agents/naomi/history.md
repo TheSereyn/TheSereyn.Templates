@@ -26,3 +26,14 @@
 ## Learnings
 
 - Session 1 (2026-04-04): Team initialized. I am the template content specialist.
+
+- Session 2 (2026-04-04): Conducted content review with Microsoft Learn MCP validation.
+  - Found 18 content findings, 3 Critical
+  - Critical issue 1: MCP config references non-existent `@anthropic/*` packages (shared with Amos)
+  - Critical issue 2: README lists "Azure" MCP server not actually configured in base
+  - Critical issue 3: ISO 27001 skill cites superseded 2013 control numbers (shared with Drummer)
+  - Blazor overlay README contains inaccurate claims about features
+  - MinimalApi README inherits incorrect Azure reference
+  - MCP package issue is highest priority — all MCP tooling broken on day one
+  - Used Microsoft Learn documentation to validate .NET standards and compliance references
+  - Overlay full-file replacements create drift risk between base and template versions
