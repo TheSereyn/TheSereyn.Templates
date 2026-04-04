@@ -47,7 +47,7 @@ public class AdminHub : Hub
 
 ### 2. Use Server-Side Identity, Not Client-Supplied IDs
 
-Always use `Context.UserIdentifier` for user-scoped operations. Never trust a user ID supplied by the client in the hub method parameters.
+Always use `Context.UserIdentifier` for user-scoped operations. Never trust a user ID supplied by the client in the hub method parameters. `Context.UserIdentifier` is populated by `IUserIdProvider`, which defaults to the `NameIdentifier` claim — customize the provider if your identity model uses a different claim.
 
 **Vulnerable:**
 ```csharp
@@ -72,7 +72,7 @@ public async Task SendPrivateMessage(string targetUserId, string message)
 
 SignalR passes the access token as `?access_token=` in the query string for WebSocket transport. This value appears in server logs, proxy logs, and load balancer logs.
 
-**Safe — extract token and redact from logs:**
+**Safe — extract token; rely on default log redaction:**
 ```csharp
 options.Events = new JwtBearerEvents
 {
@@ -86,8 +86,9 @@ options.Events = new JwtBearerEvents
     }
 };
 
-builder.Services.AddHttpLogging(o =>
-    o.QueryStringParameterNames.Add("access_token")); // Redact from logs
+// NOTE: Do NOT call AddHttpLogging with QueryStringParameterNames.Add("access_token").
+// QueryStringParameterNames is an *allowlist* — adding a name causes its value to be
+// INCLUDED in logs. The default behavior redacts all query string values; leave it as-is.
 ```
 
 ### 4. Group Authorization
@@ -119,7 +120,7 @@ public async Task JoinGroup(string groupName)
 
 ### 5. Circuit and Reconnection Identity
 
-In Blazor Server, each circuit holds server-side state. On reconnect, a new connection is established and identity must be re-validated. Never assume a reconnected circuit retains the same authorization context.
+In Blazor Server, each circuit holds server-side state. Scoped services are bound to the circuit lifetime — they are created when the circuit starts and disposed when it ends. On reconnect, a new connection is established and identity must be re-validated. Never assume a reconnected circuit retains the same authorization context.
 
 **Vulnerable:**
 ```csharp
