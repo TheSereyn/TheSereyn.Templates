@@ -20,6 +20,9 @@ if command -v gh &>/dev/null 2>&1; then
 fi
 BASHRC
 
+echo "--> Installing NuGet MCP server (requires .NET 10.0.5+)"
+dotnet tool install -g nuget-mcp || true
+
 echo "--> Installing Squad CLI"
 npm install -g @bradygaster/squad-cli
 
