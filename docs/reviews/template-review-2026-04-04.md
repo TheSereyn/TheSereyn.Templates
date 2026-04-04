@@ -2,6 +2,8 @@
 *Review date: 2026-04-04*
 *Reviewers: Holden (Architecture), Naomi (Content), Amos (Platform), Drummer (Security)*
 
+*Last updated: 2025-07-21 — security skills tree implementation on branch `feature/security-skills-tree` resolves findings #13 (partial), #24, #29, #32, #61 and partially mitigates #25. See resolution notes in §7.*
+
 ---
 
 ## Executive Summary
@@ -271,7 +273,7 @@ A complete, deduplicated, prioritised list of all recommended actions.
 | 10 | High | Workflow | No CI workflow validates composition on PRs to `main`. Broken overlays can merge undetected. | Add a PR workflow that runs `compose.sh` and validates output (files exist, JSON parses, minimum file count). | Holden |
 | 11 | High | Workflow | No validation before pushing to downstream repos. A corrupted compose could push broken content. | Add sanity check: verify README exists, JSON files parse, minimum file count met. | Holden |
 | 12 | High | Workflow | Downstream divergence silently overwritten. Direct commits to downstream repos are destroyed. | Document "composition is authoritative" policy. Consider warning on unmirrored downstream commits. | Holden |
-| 13 | High | copilot-instructions | Skills list missing 6 entries: `squad-setup`, `compliance-gdpr`, `compliance-hipaa`, `compliance-pcidss`, `compliance-soc2`, `compliance-iso27001`. | Add all 6 missing skills to the `## Skills` section. | Naomi |
+| 13 | High | copilot-instructions | Skills list missing 6 entries: `squad-setup`, `compliance-gdpr`, `compliance-hipaa`, `compliance-pcidss`, `compliance-soc2`, `compliance-iso27001`. | Add all 6 missing skills to the `## Skills` section. | Naomi | **Partially resolved** (`squad-setup` added; compliance skills now appended during `first-time-setup` when user selects frameworks — by design opt-in, not pre-listed) |
 | 14 | High | Build Config | `Directory.Build.props` missing `<AdditionalFiles>` for `stylecop.json`. StyleCop config won't be found in multi-project solutions. | Add `<AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />`. | Naomi |
 | 15 | High | README | "Squad — auto-installed via DevContainer" is false. No Squad install in `postCreateCommand`. | Add Squad install to `postCreateCommand` or correct the README. | Amos |
 | 16 | High | Workflow | `squad-heartbeat.yml` secret fallback `secrets.COPILOT_ASSIGN_TOKEN \|\| secrets.GITHUB_TOKEN` is invalid syntax. Resolves to empty string. | Use a conditional expression or intermediate environment variable. | Amos |
@@ -282,15 +284,15 @@ A complete, deduplicated, prioritised list of all recommended actions.
 | 21 | Medium | Compliance | PCI DSS skill says "Version 4.0" — v4.0.1 released June 2024. No scope reduction guidance. Missing Requirement 7. | Update to v4.0.1. Add scope reduction (tokenisation). Add Requirement 7 (RBAC). | Drummer |
 | 22 | Medium | Compliance | GDPR skill missing Article 22 (Automated Decision-Making), international data transfers (Chapter V), and children's data (Article 8). | Add as sections or checklist items. | Drummer |
 | 23 | Medium | Compliance | `security-register` missing statuses (Won't Fix, Duplicate, False Positive), no CVSS guidance, no Informational severity. | Add missing statuses. Add CVSS reference. Align severity levels. | Drummer |
-| 24 | Medium | security-review | Missing .NET-specific checks: `IHttpClientFactory`, mass assignment, EF Core raw SQL, request size limits, Blazor CSP, output caching of auth data. | Add to .NET-Specific Checks section. | Drummer |
-| 25 | Medium | copilot-instructions | Security Principles too terse. No `AllowAnyOrigin()` warning, no specific headers listed, missing input validation, output encoding, CSRF, rate limiting. | Expand with specific, actionable guidance for each area. | Drummer |
+| 24 | Medium | security-review | Missing .NET-specific checks: `IHttpClientFactory`, mass assignment, EF Core raw SQL, request size limits, Blazor CSP, output caching of auth data. | Add to .NET-Specific Checks section. | Drummer | **Resolved** — replaced monolithic `security-review` with 10-skill modular tree. `data-access-and-validation` covers EF Core raw SQL and ownership; `aspnetcore-api-security` covers request size limits; `blazor-wasm-security` covers Blazor CSP; `serialization-file-upload-and-deserialization` covers related patterns. `security-review-core` is now the entry point. |
+| 25 | Medium | copilot-instructions | Security Principles too terse. No `AllowAnyOrigin()` warning, no specific headers listed, missing input validation, output encoding, CSRF, rate limiting. | Expand with specific, actionable guidance for each area. | Drummer | **Partially mitigated** — the new security skill tree (`aspnetcore-api-security`, `browser-security-headers`, `dotnet-authn-authz`, `data-access-and-validation`) provides this depth at the skill layer. The `## Security Principles` section in `copilot-instructions.md` itself still warrants expansion as a future task. |
 | 26 | Medium | first-time-setup | Missing security steps: `.gitignore` review for secrets, `dotnet user-secrets init`, branch protection guidance, Secret Scanning enablement. | Add security-focused setup steps. | Drummer |
 | 27 | Medium | Build Config | No security-focused analyzers beyond built-in Roslyn. | Add `Microsoft.CodeAnalysis.BannedApiAnalyzers` at minimum. Consider `Meziantou.Analyzer`. | Drummer |
 | 28 | Medium | MCP Security | MCP `npx -y` commands with unpinned packages and `GITHUB_TOKEN` injected — token exfiltration risk. | Pin MCP server package versions (addressed with Finding #1 fix). | Drummer |
-| 29 | Medium | copilot-instructions | Blazor append adds skills under `## Blazor UI` instead of `## Skills` — two skills locations in composed file. | Restructure append to target `## Skills` section, or add cross-reference. | Naomi |
+| 29 | Medium | copilot-instructions | Blazor append adds skills under `## Blazor UI` instead of `## Skills` — two skills locations in composed file. | Restructure append to target `## Skills` section, or add cross-reference. | Naomi | **Resolved** — Blazor overlay `copilot-instructions.append.md` restructured: `blazor-architecture`, `blazor-wasm-security`, and `signalr-and-real-time-security` bullets now appear before `## Blazor UI` heading so they naturally extend the base `## Skills` list when appended. `### Skills` subsection removed. |
 | 30 | Medium | tunit-testing | `rollForward` example uses `"latestMinor"` — `"latestFeature"` is more appropriate for development. | Change to `"latestFeature"` in the skill's `global.json` template. | Naomi |
 | 31 | Medium | blazor-architecture | No mention of `InteractiveAuto` render mode (auto-switches Server ↔ WASM). | Add as a fourth hosting option. | Naomi |
-| 32 | Medium | first-time-setup | Step 9 lists "Playwright CLI" in skills review — base prompt but Playwright is Blazor-only. | Remove from base listing or conditionally include. | Naomi |
+| 32 | Medium | first-time-setup | Step 9 lists "Playwright CLI" in skills review — base prompt but Playwright is Blazor-only. | Remove from base listing or conditionally include. | Naomi | **Resolved** — Step 9 updated to remove Playwright CLI; now references `security-review-core` and Squad setup instead. |
 | 33 | Medium | Architecture | No actual source code in templates. Developer without Copilot has an empty project. Not documented. | Document as "AI-first template" requiring Copilot. Add minimal manual setup guide. | Holden |
 | 34 | Medium | Missing | No CHANGELOG or versioning strategy. | Adopt SemVer. Add CHANGELOG.md. Consider conventional commits. | Holden |
 | 35 | Medium | Missing | No CONTRIBUTING guide. | Write CONTRIBUTING.md covering overlay conventions, testing, and release flow. | Holden |
@@ -319,7 +321,7 @@ A complete, deduplicated, prioritised list of all recommended actions.
 | 58 | Low | DevContainer | `--security-opt=label=disable` disables SELinux labelling without documentation. | Add comment explaining Podman compatibility rationale. | Drummer |
 | 59 | Low | Workflow | No `timeout-minutes` or concurrency group on publish jobs. | Add `timeout-minutes: 15` and a concurrency group. | Drummer |
 | 60 | Low | Workflow | Token embedded in clone URL stored in `.git/config`. | Use `git config` credential helper instead. | Drummer |
-| 61 | Low | copilot-instructions | Threat modelling referenced with no methodology. | Add STRIDE reference and Microsoft Threat Modeling Tool link. | Drummer |
+| 61 | Low | copilot-instructions | Threat modelling referenced with no methodology. | Add STRIDE reference and Microsoft Threat Modeling Tool link. | Drummer | **Resolved** — `security-review-core` skill encodes trust-boundary analysis and STRIDE-aligned review methodology. Referenced from `## Skills` section in `copilot-instructions.md`. |
 | 62 | Low | Compliance | HIPAA Physical Safeguards not a primary section. De-identification methods not detailed. | Add Physical Safeguards section. Detail Safe Harbor vs Expert Determination. | Drummer |
 
 ---
@@ -335,6 +337,23 @@ A complete, deduplicated, prioritised list of all recommended actions.
 4. **Rewrite the ISO 27001 compliance skill** using 2022 Annex A themes and control numbers. This is the highest-impact compliance fix — every control number is currently wrong.
 
 5. **Pin all GitHub Actions to full SHAs** in `compose-and-publish.yml` and all four Squad workflows. Add a Dependabot configuration for `github-actions` ecosystem to automate future updates.
+
+---
+
+## 9. Resolution Tracking
+
+*Updated: 2025-07-21 — branch `feature/security-skills-tree`*
+
+| # | Status | Notes |
+|---|--------|-------|
+| 13 | ⚠️ Partial | `squad-setup` added to `## Skills`. Compliance skills (gdpr/hipaa/pcidss/soc2/iso27001) are opt-in — `first-time-setup` now appends selected skills to `## Skills` when user chooses frameworks. By design they are not pre-listed in base. |
+| 24 | ✅ Resolved | Monolithic `security-review` replaced with 10-skill modular security tree (`security-review-core` entry point). All missing .NET-specific checks now covered across dedicated skills. |
+| 25 | ⚠️ Partial | Security skill tree provides depth at the skill layer. `## Security Principles` in `copilot-instructions.md` still warrants direct expansion (open). |
+| 29 | ✅ Resolved | Blazor overlay restructured: all Blazor skill bullets now extend the base `## Skills` list. `### Skills` subsection under `## Blazor UI` removed. |
+| 32 | ✅ Resolved | Step 9 of `first-time-setup` updated — Playwright CLI removed from base skills listing. |
+| 61 | ✅ Resolved | `security-review-core` encodes trust-boundary analysis and STRIDE-aligned methodology. Entry point listed in `## Skills`. |
+
+*All other findings remain open.*
 
 ---
 
