@@ -40,3 +40,8 @@
   - Tested on both Docker Desktop and Podman — confirmed Docker failures
   - Blazor overlay duplicates near-identical files, creating maintenance drift
   - New template checklist is sound and well-documented
+
+- Session 3 (2026-04-04): Created feature/prompt-split branch, committed Naomi's prompt split work, pushed, and opened PR #21 to dev.
+  - PR: https://github.com/TheSereyn/TheSereyn.Templates/pull/21
+  - Staged 10 files: new pre-container-setup.prompt.md, revised first-time-setup.prompt.md, updated README.md, agent charter model updates, inbox review files
+  - Clean commit with Co-authored-by trailer per project convention
