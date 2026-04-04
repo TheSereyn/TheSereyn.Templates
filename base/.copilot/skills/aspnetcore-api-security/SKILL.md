@@ -63,7 +63,7 @@ Any auth or validation middleware placed *after* endpoint mapping may not execut
 - Without `[ApiController]`: manual `ModelState.IsValid` check required on every action.
 - Minimal APIs: use `TypedResults` and validate before processing.
 - Bind sources: `[FromBody]`, `[FromQuery]`, `[FromRoute]`, `[FromHeader]` — explicit binding prevents mass assignment.
-- Request size limits: `app.UseRequestSizeLimiting()` or `[RequestSizeLimit]` — missing limits enable resource exhaustion.
+- Request size limits: `[RequestSizeLimit]` attribute per-endpoint, or configure globally via Kestrel `MaxRequestBodySize` — missing limits enable resource exhaustion.
 - Rate limiting: `app.UseRateLimiter()` (.NET 7+) — missing enables brute force and DoS.
 
 ### Exception handling and information disclosure
@@ -140,5 +140,5 @@ For browser-facing apps (Blazor, Razor Pages), see `browser-security-headers` sk
 | Stack traces in production error responses | High | Use `AddProblemDetails()` with sanitised detail |
 | Missing `[ApiController]` attribute | Medium | Add attribute to enable automatic validation |
 | No rate limiting configured | Medium | Add `UseRateLimiter()` with appropriate policies |
-| No request size limits | Medium | Add `[RequestSizeLimit]` or `UseRequestSizeLimiting()` |
+| No request size limits | Medium | Add `[RequestSizeLimit]` attribute or configure Kestrel `MaxRequestBodySize` |
 | `AllowAnyHeader()` / `AllowAnyMethod()` | Low | Scope to required headers and methods for production |
