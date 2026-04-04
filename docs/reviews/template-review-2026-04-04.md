@@ -342,18 +342,72 @@ A complete, deduplicated, prioritised list of all recommended actions.
 
 ## 9. Resolution Tracking
 
-*Updated: 2025-07-21 — branch `feature/security-skills-tree`*
+*Updated: 2025-07-21 — branch `feature/review-recommendations`*
 
 | # | Status | Notes |
 |---|--------|-------|
-| 13 | ⚠️ Partial | `squad-setup` added to `## Skills`. Compliance skills (gdpr/hipaa/pcidss/soc2/iso27001) are opt-in — `first-time-setup` now appends selected skills to `## Skills` when user chooses frameworks. By design they are not pre-listed in base. |
-| 24 | ✅ Resolved | Monolithic `security-review` replaced with 10-skill modular security tree (`security-review-core` entry point). All missing .NET-specific checks now covered across dedicated skills. |
-| 25 | ⚠️ Partial | Security skill tree provides depth at the skill layer. `## Security Principles` in `copilot-instructions.md` still warrants direct expansion (open). |
-| 29 | ✅ Resolved | Blazor overlay restructured: all Blazor skill bullets now extend the base `## Skills` list. `### Skills` subsection under `## Blazor UI` removed. |
-| 32 | ✅ Resolved | Step 9 of `first-time-setup` updated — Playwright CLI removed from base skills listing. |
-| 61 | ✅ Resolved | `security-review-core` encodes trust-boundary analysis and STRIDE-aligned methodology. Entry point listed in `## Skills`. |
-
-*All other findings remain open.*
+| 1 | ✅ Resolved | MCP package names corrected in `base/.copilot/mcp-config.json` and `overlays/blazor/.copilot/mcp-config.json`; versions pinned. |
+| 2 | ✅ Resolved | Removed Docker-incompatible `--userns=keep-id` and `mounts` from devcontainer; extracted post-create.sh. |
+| 3 | ✅ Resolved | ISO 27001 skill rewritten for 2022 Annex A (93 controls, 4 themes, 11 new controls). |
+| 4 | ✅ Resolved | `actions/checkout`, `actions/github-script` SHA-pinned in all workflows; `dependabot.yml` added for weekly updates. |
+| 5 | ✅ Resolved | `post-create.sh` extracted; verifies tools, installs gh-copilot and Squad CLI. |
+| 6 | ✅ Resolved | `base/global.json` created — SDK 10.0.100, `rollForward: latestFeature`, activates MTP native mode for TUnit. |
+| 7 | ✅ Resolved | README.md MCP Servers section corrected; "Azure" MCP reference removed. |
+| 8 | ⚠️ Partial | `compose.sh` header notes overlay drift; full JSON merge deferred (low value at 2 templates). |
+| 9 | ⚠️ Documented | `TEMPLATE_PUSH_TOKEN` usage documented in `docs/setup/workflow-secrets.md`. Full GitHub App migration is out of scope. |
+| 10 | ✅ Resolved | `pr-validate.yml` added — validates compose output on PRs to `main`/`dev`. |
+| 11 | ✅ Resolved | Composed output validation (file count check) added to `compose-and-publish.yml` before downstream push. |
+| 12 | ✅ Resolved | `base/.github/CODEOWNERS` added. |
+| 13 | ✅ Resolved | `## Skills` in `copilot-instructions.md` updated; first-time-setup Step 3 (verification) and Step 10 (security setup) added. Compliance skills remain opt-in by design. |
+| 14 | ✅ Resolved | `AdditionalFiles` for `stylecop.json` added to `Directory.Build.props`. |
+| 15 | ✅ Resolved | Blazor devcontainer updated with port 5173 forwarding and Playwright extension. |
+| 16 | ✅ Resolved | Squad workflow secret fallback uses intermediate env var (not `||` operator). |
+| 17 | ✅ Resolved | Security register expanded: Informational severity, Won't Fix/Duplicate/False Positive statuses, CVSS 3.1/4.0 scoring. |
+| 18 | ✅ Resolved | Docker compatibility fixes applied to devcontainer; `--security-opt seccomp=unconfined` note documented. |
+| 19 | ✅ Resolved | StyleCop pinned to `1.2.0-beta.556` (was wildcard `1.2.0-beta.*`). |
+| 20 | ✅ Resolved | `templates.json` created as single source of truth; `compose.sh` reads via `jq`; workflow uses `fromJSON()` for dynamic matrix. |
+| 21 | ✅ Resolved | GDPR skill updated: Article 22 (automated decisions), Chapter V (transfers), Article 8 (children's data). |
+| 22 | ✅ Resolved | HIPAA skill updated: Physical Safeguards (§164.310), Safe Harbor 18 identifiers, Expert Determination. |
+| 23 | ✅ Resolved | PCI DSS skill updated to v4.0.1: scope reduction, Requirement 7, future-dated requirements. |
+| 24 | ✅ Resolved | Monolithic `security-review` replaced with 10-skill modular security tree. |
+| 25 | ✅ Resolved | `## Security Principles` expanded from 7 to 12 detailed entries; security-sensitive changes added to Ask-First list. |
+| 26 | ✅ Resolved | `owasp-secure-code-review` skill content verified and aligned with expanded security principles. |
+| 27 | ✅ Resolved | `Microsoft.CodeAnalysis.BannedApiAnalyzers 3.3.4` and `Meziantou.Analyzer 2.0.182` added to `Directory.Build.props`. |
+| 28 | ✅ Resolved | Resolved by #1 and #4 — MCP versions pinned; action SHAs pinned; `dependabot.yml` watches for updates. |
+| 29 | ✅ Resolved | Blazor overlay Skills restructured — no `### Skills` subsection under `## Blazor UI`. |
+| 30 | ✅ Resolved | TUnit skill updated: `rollForward: latestFeature`; `[After(Class)]`, `[Before/After(Assembly)]` hooks added. |
+| 31 | ✅ Resolved | Blazor architecture skill updated with InteractiveAuto (.NET 8+) render mode, trade-offs, and DI lifetime guidance. |
+| 32 | ✅ Resolved | `first-time-setup` Step 9 updated — Playwright CLI removed from base skills. |
+| 33 | ✅ Resolved | `CONTRIBUTING.md` created: composition model, overlay semantics, branch strategy, release process, branch protection. |
+| 34 | ✅ Resolved | `CHANGELOG.md` created with Keep a Changelog format. |
+| 35 | ✅ Resolved | `base/LICENSE` created with MIT license and `{{YEAR}}`/`{{AUTHOR}}` placeholders. |
+| 36 | ✅ Resolved | Branch protection requirements documented in `CONTRIBUTING.md`; guard job provides CI-level protection. |
+| 37 | ✅ Resolved | README Squad wording updated across base and all overlays. |
+| 38 | ✅ Resolved | README Manual Setup and For Template Maintainers sections added. |
+| 39 | ✅ Resolved | `fail-fast: false` added to compose-and-publish workflow matrix. |
+| 40 | ✅ Resolved | Guard job grep pattern fixed to exact match `^\s*origin/main$`. |
+| 41 | ✅ Resolved | Playwright browser install backgrounded in Blazor `post-create.sh`. |
+| 42 | ✅ Resolved | `base/Directory.Packages.props` created with CPM enabled. |
+| 43 | ✅ Resolved | `dependabot.yml` added for weekly GitHub Actions SHA updates. |
+| 44 | ✅ Documented | Future mixin/layer support documented in `compose.sh` header comment (review at 4+ templates). |
+| 45 | ✅ Resolved | `docs/setup/workflow-secrets.md` created: TEMPLATE_PUSH_TOKEN setup and rotation guidance. |
+| 46 | ⚠️ Documented | GitHub Release creation on downstream repos is a future enhancement; noted in CONTRIBUTING.md. |
+| 47 | ✅ Resolved | `compose.sh --dry-run` flag added — shows file counts and target paths without writing. |
+| 48 | ✅ Resolved | README updated with AI-first note. |
+| 49 | ✅ Resolved | `## Observability — OpenTelemetry` section added to `copilot-instructions.md` with .NET 8+ unified builder pattern and OTLP guidance. |
+| 50 | ✅ Resolved | RFC compliance skill rate-limit headers updated to Draft-07 single structured `RateLimit` header. |
+| 51 | ✅ Resolved | Ask-First Triggers updated: security-sensitive changes added. |
+| 52 | ✅ Resolved | First-time-setup Step 3 (Setup Verification) added. |
+| 53 | ✅ Resolved | First-time-setup Step 10 (Security Setup) added. |
+| 54 | ✅ Resolved | Feature/extension versions pinned in devcontainer. |
+| 55 | ✅ Resolved | Squad workflows: `timeout-minutes: 10` added; `ubuntu-24.04` pinned. |
+| 56 | ✅ Resolved | Port forwarding added to base devcontainer. |
+| 57 | ✅ Resolved | `ubuntu-latest` → `ubuntu-24.04` in `compose-and-publish.yml`. |
+| 58 | ✅ Resolved | SELinux/Podman note documented in post-create.sh comments. |
+| 59 | ✅ Resolved | `timeout-minutes: 15` and concurrency group added to `compose-and-publish.yml`. |
+| 60 | ✅ Resolved | `git credential store` replaces token-in-URL clone pattern; token no longer stored in `target-repo/.git/config`. |
+| 61 | ✅ Resolved | `security-review-core` encodes trust-boundary analysis and STRIDE-aligned methodology. |
+| 62 | ✅ Resolved | SOC 2 skill updated: PI1/P1 criteria, Type I vs Type II audit distinction, evidence guidance. |
 
 ---
 
