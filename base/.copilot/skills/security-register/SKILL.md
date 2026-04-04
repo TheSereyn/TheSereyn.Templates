@@ -44,9 +44,9 @@ When adding a new finding:
 ```markdown
 ### SEC-NNN: [Title]
 
-- **Severity:** Critical | High | Medium | Low
+- **Severity:** Critical | High | Medium | Low | Informational
 - **Category:** OWASP reference (e.g., A01 Broken Access Control)
-- **Status:** Open | In Progress | Mitigated | Accepted
+- **Status:** Open | In Progress | Mitigated | Accepted | Won't Fix | Duplicate | False Positive
 - **Found:** YYYY-MM-DD
 - **Source:** Code review | Dependency scan | Pen test | Bug report | etc.
 - **Location:** File path or component
@@ -66,6 +66,7 @@ When adding a new finding:
 | **High** | Significant vulnerability requiring prompt attention. Privilege escalation, data exposure. | Within current sprint |
 | **Medium** | Vulnerability with limited impact or requiring specific conditions. | Next sprint |
 | **Low** | Minor issue or defense-in-depth improvement. | Backlog |
+| **Informational** | Observation or improvement recommendation. No exploitable vulnerability. | Backlog |
 
 ## Workflow
 
@@ -84,7 +85,35 @@ For accepted risks, document the business justification and set a review date to
 - Cross-reference with the `security-review-core` skill for systematic code review
 - Update after dependency scans (`dotnet list package --vulnerable`)
 
+## CVSS Scoring
+
+Use the Common Vulnerability Scoring System (CVSS) to provide objective, repeatable severity scores for findings.
+
+### CVSS 3.1
+CVSS 3.1 is widely adopted and should be included in finding entries when available. Add the score, qualitative rating, and vector string:
+
+```
+**CVSS 3.1:** 7.5 (High) AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N
+```
+
+| Score Range | Qualitative Rating |
+|-------------|-------------------|
+| 0.0 | None |
+| 0.1–3.9 | Low |
+| 4.0–6.9 | Medium |
+| 7.0–8.9 | High |
+| 9.0–10.0 | Critical |
+
+Calculator: https://www.first.org/cvss/calculator/3.1
+
+### CVSS 4.0
+CVSS 4.0 (released November 2023) improves granularity, particularly for OT/IoT environments, and adds supplemental metrics (e.g., Automatable, Recovery, Value Density, Provider Urgency). Adopt CVSS 4.0 when your tooling and processes support it. Both versions may coexist during transition — include whichever version your scanning tools produce and note the version used.
+
+Calculator: https://www.first.org/cvss/calculator/4.0
+
 ## References
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [OWASP API Security Top 10](https://owasp.org/www-project-api-security/)
+- [FIRST CVSS v3.1 Specification](https://www.first.org/cvss/v3.1/specification-document)
+- [FIRST CVSS v4.0 Specification](https://www.first.org/cvss/v4.0/specification-document)
