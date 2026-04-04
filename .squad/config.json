@@ -1,3 +1,11 @@
 {
-  "version": 1
+  "version": 1,
+  "defaultModel": "claude-opus-4.6",
+  "agentModelOverrides": {
+    "scribe": "claude-haiku-4.5"
+  },
+  "modelPolicy": {
+    "fallbackFromOpus": "claude-opus-4.5",
+    "notes": "Use claude-opus-4.6 for all agents by default. Fall back to claude-opus-4.5 if a capability is unavailable. Recommend specialist models only when a required feature (e.g. vision, code-specialist) is not supported by opus. Scribe is exempt — stays on claude-haiku-4.5."
+  }
 }
