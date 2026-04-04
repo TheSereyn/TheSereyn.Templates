@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-04-04
+
 ### Added
 - Security skills tree: 14 modular skills under `.copilot/skills/` including `security-review-core`, `dotnet-authn-authz`, `blazor-wasm-security`, `aspnetcore-api-security`, and more
 - `hire-security-architect.prompt.md` — Squad prompt to create a Security Architect agent
