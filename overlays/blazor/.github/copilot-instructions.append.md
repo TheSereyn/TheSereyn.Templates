@@ -1,4 +1,8 @@
 
+- `blazor-architecture` — Hosting model guidance, multi-frontend patterns, RCL strategy, performance, state management
+- `blazor-wasm-security` — WASM trust model, client-side auth boundaries, token storage risks, JS interop boundary
+- `signalr-and-real-time-security` — Hub per-invocation auth, token query-string exposure, circuit identity staleness
+
 ## Blazor UI
 
 This project includes Blazor UI project(s) and Razor Class Libraries (RCLs) for reusable components.
@@ -13,10 +17,6 @@ The hosting model must be decided **per feature** — this is an ask-first trigg
 - Share DTOs/contracts only between API and WASM client — never domain types
 - Put reusable UI in Razor Class Libraries (RCLs)
 - Minimise JavaScript interop
-
-### Skills
-
-- `blazor-architecture` — Hosting model guidance, multi-frontend patterns, RCL strategy, performance, state management
 
 ## Playwright
 
