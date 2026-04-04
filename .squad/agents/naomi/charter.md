@@ -32,4 +32,4 @@ Content developer for TheSereyn.Templates. Owns everything inside the templates:
 
 ## Model
 
-Preferred: claude-sonnet-4.5 (content quality matters; these instructions ship to all template consumers)
+Preferred: claude-opus-4.6 (content quality matters; these instructions ship to all template consumers)

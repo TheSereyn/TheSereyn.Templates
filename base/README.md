@@ -15,9 +15,10 @@ This project uses a **Dev Container** for a consistent development environment. 
 
 ### First-Time Setup
 
-1. Open this repository in VS Code
-2. When prompted, click **"Reopen in Container"** (or run `Dev Containers: Reopen in Container` from the command palette)
-3. Once the container is built, run the **first-time-setup** prompt:
+1. Complete the **[pre-container setup](.github/prompts/pre-container-setup.prompt.md)** — install prerequisites on your local machine
+2. Click **"Use this template"** on GitHub, clone your new repository, and open it in VS Code
+3. When prompted, click **"Reopen in Container"** (or run `Dev Containers: Reopen in Container` from the command palette)
+4. Once the container is ready, run the **first-time-setup** prompt:
    - Open Copilot Chat
    - Type: `@workspace /first-time-setup`
    - Follow the prompts to configure your project identity
