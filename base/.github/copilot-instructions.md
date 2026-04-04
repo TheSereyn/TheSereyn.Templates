@@ -55,13 +55,25 @@ Before making any assumption about .NET/C# APIs, package versions, or Azure capa
 
 ## Security Principles
 
-- OAuth/OIDC for authentication; scopes/roles-based authorization
-- Enforce HTTPS, strict CORS, security headers, least privilege
-- Use PKCE for public clients; consider DPoP where threat model requires it
-- Never commit secrets; use environment variables or secret stores
-- Never log PII, tokens, or secrets; use opaque identifiers
-- Threat model early and often
-- Consult OWASP Top 10 (Web + API) for security guidance
+- **Authentication:** OAuth/OIDC with PKCE for public clients; consider DPoP where elevated token binding is required. Use `[Authorize]` attributes and policies — never rely on client-side checks alone.
+- **CORS:** Never use `AllowAnyOrigin()` in production. Enumerate allowed origins explicitly. `AllowAnyOrigin` with `AllowCredentials` is rejected by browsers and is a CORS misconfiguration.
+- **Security headers:** Apply all of the following in middleware or reverse proxy:
+  - `Strict-Transport-Security` (HSTS) — enforce HTTPS
+  - `Content-Security-Policy` — restrict resource sources
+  - `X-Content-Type-Options: nosniff` — prevent MIME sniffing
+  - `X-Frame-Options: DENY` or CSP `frame-ancestors` — prevent clickjacking
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Permissions-Policy` — restrict browser features
+  - For Blazor WASM: enable COEP/CORP/COOP for cross-origin isolation where SharedArrayBuffer is used
+- **Input validation:** Validate all inputs at the server boundary. Use model binding validation attributes (`[Required]`, `[MaxLength]`, `[RegularExpression]`). Do not trust client-supplied identifiers without ownership checks.
+- **Output encoding:** HTML-encode all user-supplied content rendered in HTML. Use `HttpUtility.HtmlEncode` or Razor's automatic encoding. Never inject raw user input into HTML, SQL, or shell commands.
+- **CSRF protection:** Enable ASP.NET Core antiforgery for state-changing form submissions. APIs using JWT bearer authentication are inherently CSRF-resistant (no cookies) — but cookie-authenticated APIs must enforce antiforgery.
+- **Rate limiting:** Apply `RateLimiter` middleware for all public endpoints. Use `AddRateLimiter` / `RequireRateLimiting` in ASP.NET Core 7+.
+- **Secrets:** Never commit secrets. Use `dotnet user-secrets` for development. Use Key Vault / environment variables in production. Ensure `appsettings.*.json` files with secrets are in `.gitignore`.
+- **Logging:** Never log PII, tokens, secrets, or full request bodies. Use opaque identifiers (IDs, not names/emails). Set `EnableSensitiveDataLogging(false)` in EF Core production config.
+- **Threat modelling:** Apply STRIDE (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege) early in design. Reference: [Microsoft Threat Modeling Tool](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool).
+- **Dependency security:** Run `dotnet list package --vulnerable` regularly. Prefer `Directory.Packages.props` for central version management.
+- **Security review:** Consult `security-review-core` for the systematic review workflow. Consult OWASP Top 10 (2021) and API Security Top 10 (2023).
 
 ## Code Quality
 
@@ -113,6 +125,7 @@ Copilot must clarify before coding if any of these are unclear:
 - API versioning policy
 - Deployment profile and environments
 - Non-functionals (latency, throughput, SLOs, cost constraints)
+- Security-sensitive changes (auth, secrets, middleware order, CORS)
 - Any suspected deviation from these standards
 
 ## Deviation/Escalation Policy
