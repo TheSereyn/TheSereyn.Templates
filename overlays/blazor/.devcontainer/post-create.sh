@@ -53,8 +53,27 @@ if [ ! -f "$COPILOT_DIR/mcp.json" ]; then
 MCP_EOF
 fi
 
-echo "--> Installing Playwright CLI"
+echo "--> Adding Playwright MCP to user-level Copilot config"
+python3 - << 'PYEOF'
+import json, sys
+path = "/home/vscode/.copilot/mcp.json"
+try:
+    with open(path) as f:
+        config = json.load(f)
+    config.setdefault("mcpServers", {})["playwright"] = {
+        "command": "npx",
+        "args": ["-y", "@playwright/mcp"]
+    }
+    with open(path, "w") as f:
+        json.dump(config, f, indent=2)
+    print("Playwright MCP added to user-level config")
+except Exception as e:
+    print(f"Warning: could not update mcp.json: {e}", file=sys.stderr)
+PYEOF
+
+echo "--> Installing Playwright CLI and skills"
 npm install -g @playwright/cli@latest || true
+playwright-cli install --skills || true
 
 echo "--> Installing Playwright browser binaries (this may take 5-10 minutes)"
 npx playwright install --with-deps
