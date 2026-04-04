@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-04-04
+
+### Added
+- `pre-container-setup.prompt.md` — host-side checklist prompt (run before creating the devcontainer)
+- NuGet MCP server (`nuget-mcp` global tool) — configured in project-level `mcp-config.json` for both templates
+- Microsoft Docs MCP (`microsoftdocs/mcp`) — HTTP server seeded in user-level Copilot CLI config (`~/.copilot/mcp.json`)
+- microsoftdocs/mcp skills auto-installed at container build time (`microsoft-docs`, `microsoft-code-reference`, `microsoft-skill-creator` + references)
+- Playwright MCP (`@playwright/mcp`) — configured in project-level and user-level MCP configs (Blazor template)
+- Playwright CLI (`@playwright/cli`) installed globally + `playwright-cli install --skills` runs at container build time (Blazor template)
+- Playwright browser binaries installed via `npx playwright install --with-deps` (Blazor template)
+
+### Changed
+- DevContainer base image updated to `mcr.microsoft.com/devcontainers/dotnet:dev-10.0-noble` (both templates) — supports .NET 10.0.5 dev builds required for NuGet MCP
+- `first-time-setup.prompt.md` refactored — in-container steps only; references `pre-container-setup` for host-side steps
+- MCP server key renamed `microsoftdocs` (project-level) to match org name; user-level retains `microsoft-learn` (matching plugin convention)
+
+### Fixed
+- `post-create.sh` no longer attempts `copilot plugin install` at container lifecycle stage — replaced with direct skill/config file writes
+- Playwright MCP package corrected: `@anthropic/playwright-mcp-server` → `@playwright/mcp`
+
 ## [0.3.0] - 2026-04-04
 
 ### Added
