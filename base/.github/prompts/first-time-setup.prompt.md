@@ -25,7 +25,11 @@ Report the status of each tool. If any are missing, warn the user but continue.
 
 Confirm that MCP configuration exists at `.copilot/mcp-config.json`. List the configured servers (Microsoft Learn, GitHub, Azure).
 
-## Step 3 — Collect Project Info
+## Step 3 — Setup Verification
+
+Verify `.editorconfig` and `stylecop.json` are present — these enforce code style and can be customised to your team preferences.
+
+## Step 4 — Collect Project Info
 
 Ask the user for:
 
@@ -34,7 +38,7 @@ Ask the user for:
 3. **Brief description** (one sentence describing what the project does)
 4. **GitHub repo URL** (optional — e.g., `https://github.com/org/repo`)
 
-## Step 4 — Resolve Placeholders
+## Step 5 — Resolve Placeholders
 
 Update the following files, replacing placeholders:
 
@@ -49,7 +53,7 @@ Files to update:
 - `.devcontainer/devcontainer.json` (container name)
 - `README.md`
 
-## Step 5 — Select License
+## Step 6 — Select License
 
 Ask the user which license they want for the project. Offer common options:
 
@@ -64,7 +68,7 @@ Based on their choice:
 
 If the user is unsure, suggest MIT as a sensible default for open-source projects, or Proprietary if it's a commercial/internal project.
 
-## Step 6 — Compliance Frameworks
+## Step 7 — Compliance Frameworks
 
 Ask the user:
 
@@ -86,13 +90,13 @@ Based on their response:
 - Recommend the corresponding compliance skills for reference during development
 - If they select any framework, create a `docs/planning/compliance-notes.md` stub with sections for each selected framework
 
-## Step 7 — Git Initialisation
+## Step 8 — Git Initialisation
 
 If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 8 — Install or Verify Squad
+## Step 9 — Install or Verify Squad
 
 Check if Squad is already installed by looking for its agent file (typically `.github/agents/squad.agent.md` or `.squad/team.md`).
 
@@ -106,7 +110,14 @@ Check if Squad is already installed by looking for its agent file (typically `.g
 - Walk the user through installation and `squad init`
 - Run `squad doctor` to verify setup
 
-## Step 9 — Summary and Next Steps
+## Step 10 — Security Setup
+
+- Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, and `.env` files are excluded
+- Run `dotnet user-secrets init` in your main project to set up local secret management
+- Enable GitHub Secret Scanning on the repository (Settings → Security → Secret scanning)
+- Configure branch protection on `main`: require PR reviews, require status checks to pass before merging
+
+## Step 11 — Summary and Next Steps
 
 Provide a summary of what was configured, then suggest:
 

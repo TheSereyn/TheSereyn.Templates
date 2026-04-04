@@ -28,10 +28,10 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 | Component | Description |
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
-| **MCP Servers** | Microsoft Learn, Azure, GitHub |
+| **MCP Servers** | Microsoft Learn, GitHub |
 | **Copilot Skills** | TUnit testing, project conventions, requirements gathering, security review, RFC compliance, code analyzers |
 | **Prompts** | First-time setup, requirements interview |
-| **Squad** | AI development team (auto-installed via DevContainer) |
+| **Squad** | AI development team — installed via Dev Container |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Recommended Workflow

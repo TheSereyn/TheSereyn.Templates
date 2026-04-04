@@ -104,7 +104,7 @@ Use `TypedResults.Problem()` and `TypedResults.ValidationProblem()` which produc
 
 Be aware of these drafts — not yet RFC but increasingly adopted:
 
-- **Rate Limit Headers** — `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset`
+- **Rate Limit Headers** — Earlier drafts used separate headers (`RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset`). As of Draft-07 of the IETF RateLimit Header Fields for HTTP specification, these have been consolidated into a single structured `RateLimit` header: `RateLimit: limit=100;w=60`. The spec is still evolving — header names and structure may change before finalization. Track progress at: https://datatracker.ietf.org/doc/draft-ietf-httpapi-ratelimit-headers/
 - **Idempotency-Key** — Client-provided key for safe retries of non-idempotent operations
 - **Link Hints** — API discoverability via link relations
 

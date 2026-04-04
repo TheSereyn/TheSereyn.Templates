@@ -60,6 +60,68 @@ SOC 2 (System and Organization Controls 2) is an auditing framework developed by
 - [ ] Third-party dependencies reviewed and tracked
 - [ ] Change management process documented
 
+### Processing Integrity Criteria (PI1)
+
+Processing Integrity addresses whether system processing is complete, valid, accurate, timely, and authorised.
+
+- **PI1.1 — System processing is complete, valid, accurate, timely, and authorised**
+  - Validate that processing produces expected outputs from given inputs
+  - Implement checksums, reconciliation, and data integrity checks
+  - Monitor for processing errors and anomalies
+  - Document expected processing behaviour and test against it
+- **PI1.2 — System inputs are complete and accurate**
+  - Validate all inputs at system boundaries (API endpoints, file uploads, message queues)
+  - Reject malformed or incomplete input with clear error messages
+  - Log rejected inputs for audit and debugging
+- **PI1.3 — System outputs are complete and accurate**
+  - Verify output completeness — ensure all expected records/results are produced
+  - Implement output reconciliation against input counts or expected totals
+  - Protect output integrity during transmission and storage
+
+### Privacy Criteria (P1)
+
+Privacy criteria apply when the system processes personal information.
+
+- **P1.0 — Privacy notice**
+  - Provide clear, accessible privacy notices describing data practices
+  - Update notices when processing activities change
+- **P1.1 — Notice of collection, data use, retention, and disclosure**
+  - Inform individuals at or before the point of data collection
+  - Specify what personal information is collected, the purposes of processing, how long it is retained, and to whom it may be disclosed
+  - Implement consent mechanisms where required
+  - Enforce documented data retention schedules with automated cleanup
+
+## Type I vs Type II Reports
+
+| Aspect | Type I | Type II |
+|--------|--------|---------|
+| **Scope** | Design of controls at a specific point in time | Design AND operating effectiveness of controls over a period |
+| **Duration** | Single date (snapshot) | Observation period, typically 6–12 months |
+| **Auditor work** | Inspects control descriptions and assesses design suitability | Tests that controls actually operated effectively throughout the period |
+| **Use case** | Initial assessment; demonstrates controls exist | Ongoing assurance; demonstrates controls work consistently |
+| **Customer expectation** | Acceptable for early-stage companies or first SOC 2 | Preferred by enterprise customers and most procurement processes |
+
+Most organisations start with a Type I report and progress to Type II within 6–12 months.
+
+## Evidence Collection for Audits
+
+SOC 2 auditors require evidence that controls are not just designed but operating. Collect and retain the following:
+
+| Evidence Type | Examples | Retention |
+|---------------|----------|-----------|
+| **Access review logs** | Periodic access reviews showing who has access, approvals, and revocations | Duration of audit period + 1 year |
+| **Deployment records** | CI/CD pipeline logs, deployment timestamps, approval records | Duration of audit period + 1 year |
+| **Change approval records** | PR reviews, merge approvals, change tickets with approval chains | Duration of audit period + 1 year |
+| **Monitoring alert logs** | Alert triggers, acknowledgements, and resolution records | Duration of audit period + 1 year |
+| **Training completion records** | Security awareness training dates, attendee lists, completion certificates | Duration of audit period + 1 year |
+| **Incident response records** | Incident tickets, response timelines, root cause analyses, post-mortems | Duration of audit period + 1 year |
+
+**Tips for developers:**
+- Automate evidence collection where possible (CI/CD logs, git audit trails, access logs)
+- Ensure logs are tamper-resistant (append-only, centralised logging)
+- Tag audit-relevant events in your logging system for easy retrieval
+- Keep a calendar of periodic controls (quarterly access reviews, annual training) and set reminders
+
 ## Authoritative Source
 
 - [AICPA SOC 2 Overview](https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2)
