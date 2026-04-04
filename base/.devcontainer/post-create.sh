@@ -12,6 +12,14 @@ az --version
 echo "--> Installing GitHub CLI Copilot extension"
 gh extension install github/gh-copilot || true
 
+echo "--> Configuring GitHub Copilot CLI shell integration"
+cat >> /home/vscode/.bashrc << 'BASHRC'
+# GitHub Copilot CLI aliases — activated after gh auth login
+if command -v gh &>/dev/null 2>&1; then
+  eval "$(gh copilot alias -- bash 2>/dev/null)" 2>/dev/null || true
+fi
+BASHRC
+
 echo "--> Installing Squad CLI"
 npm install -g @bradygaster/squad-cli
 

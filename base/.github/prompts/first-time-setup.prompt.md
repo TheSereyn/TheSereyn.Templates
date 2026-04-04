@@ -8,15 +8,33 @@ tools: ['read', 'edit', 'search', 'terminal']
 
 You are running the first-time setup for a new project created from a TheSereyn template.
 
-## Step 1 — Check MCP Servers
+## Step 1 — GitHub Authentication
+
+Prompt the user to authenticate the GitHub CLI if they haven't already. Ask them to run this in the VS Code integrated terminal:
+
+```bash
+gh auth status
+```
+
+If it reports "You are not logged in", ask them to run:
+
+```bash
+gh auth login
+```
+
+They should follow the browser-based flow (or device code flow) to complete authentication. This is required for GitHub features, the Copilot CLI extension, and Squad's GitHub integration.
+
+Once authenticated, verify with `gh auth status` and proceed.
+
+## Step 2 — Check MCP Servers
 
 Confirm that MCP configuration exists at `.copilot/mcp-config.json`. List the configured servers (Microsoft Learn, GitHub, Azure).
 
-## Step 2 — Setup Verification
+## Step 3 — Setup Verification
 
 Verify `.editorconfig` and `stylecop.json` are present — these enforce code style and can be customised to your team preferences.
 
-## Step 3 — Collect Project Info
+## Step 4 — Collect Project Info
 
 Ask the user for:
 
@@ -25,22 +43,22 @@ Ask the user for:
 3. **Brief description** (one sentence describing what the project does)
 4. **GitHub repo URL** (optional — e.g., `https://github.com/org/repo`)
 
-## Step 4 — Resolve Placeholders
+## Step 5 — Resolve Placeholders
 
 Update the following files, replacing placeholders:
 
 | Placeholder | Value |
 |-------------|-------|
-| `{{PROJECT_NAME}}` | Project name from Step 3 |
-| `{{NAMESPACE}}` | Namespace root from Step 3 |
-| `{{DESCRIPTION}}` | Description from Step 3 |
+| `{{PROJECT_NAME}}` | Project name from Step 4 |
+| `{{NAMESPACE}}` | Namespace root from Step 4 |
+| `{{DESCRIPTION}}` | Description from Step 4 |
 
 Files to update:
 - `.github/copilot-instructions.md`
 - `.devcontainer/devcontainer.json` (container name)
 - `README.md`
 
-## Step 5 — Select License
+## Step 6 — Select License
 
 Ask the user which license they want for the project. Offer common options:
 
@@ -55,7 +73,7 @@ Based on their choice:
 
 If the user is unsure, suggest MIT as a sensible default for open-source projects, or Proprietary if it's a commercial/internal project.
 
-## Step 6 — Compliance Frameworks
+## Step 7 — Compliance Frameworks
 
 Ask the user:
 
@@ -77,13 +95,13 @@ Based on their response:
 - Recommend the corresponding compliance skills for reference during development
 - If they select any framework, create a `docs/planning/compliance-notes.md` stub with sections for each selected framework
 
-## Step 7 — Git Initialisation
+## Step 8 — Git Initialisation
 
 If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 8 — Verify Squad
+## Step 9 — Verify Squad
 
 Squad is installed automatically during container creation. Verify the installation:
 - Report the installed version (`squad --version`)
@@ -94,14 +112,14 @@ Squad is installed automatically during container creation. Verify the installat
 > bash .devcontainer/post-create.sh
 > ```
 
-## Step 9 — Security Setup
+## Step 10 — Security Setup
 
 - Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, and `.env` files are excluded
 - Run `dotnet user-secrets init` in your main project to set up local secret management
 - Enable GitHub Secret Scanning on the repository (Settings → Security → Secret scanning)
 - Configure branch protection on `main`: require PR reviews, require status checks to pass before merging
 
-## Step 10 — Summary and Next Steps
+## Step 11 — Summary and Next Steps
 
 Provide a summary of what was configured, then suggest:
 
