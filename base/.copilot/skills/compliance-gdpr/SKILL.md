@@ -54,6 +54,59 @@ Required for high-risk processing. Document:
 - Notify affected individuals without undue delay if high risk
 - Log all breaches, even those not requiring notification
 
+### Article 22 — Automated Decision-Making
+
+Individuals have the right not to be subject to decisions based solely on automated processing — including profiling — that produce legal or similarly significant effects. This is critical for AI/ML systems.
+
+**Requirements:**
+- Automated decisions with legal or significant effects must provide human review capability
+- The data subject must be informed that automated decision-making is taking place
+- Provide meaningful information about the logic involved and the significance of the decision
+- Implement the ability for a data subject to request human intervention, express their point of view, and contest the decision
+- Exceptions exist for contractual necessity, legal authorisation, or explicit consent — but safeguards must still be in place
+
+**Checklist:**
+- [ ] Identify all automated decision-making processes with legal or significant effects
+- [ ] Implement human review / override capability for automated decisions
+- [ ] Provide explainability — users can understand why a decision was made
+- [ ] Document the logic, significance, and envisaged consequences of automated processing
+- [ ] Implement a mechanism for data subjects to contest automated decisions
+
+### Chapter V — International Data Transfers (Articles 44-49)
+
+Personal data can only be transferred to countries outside the EU/EEA that provide adequate protection. Key mechanisms:
+
+- **Adequacy decisions** — The European Commission has recognised certain countries as providing adequate protection (e.g., Japan, UK, South Korea)
+- **Standard Contractual Clauses (SCCs)** — The 2021 version of SCCs is the primary mechanism for EU→US and other international transfers. Implement the appropriate module (controller-to-controller, controller-to-processor, etc.)
+- **Binding Corporate Rules (BCRs)** — For intra-group transfers within multinational organisations
+- **Specific derogations** — Explicit consent, contractual necessity, or important public interest (narrow exceptions)
+
+**Note:** The Schrems II decision (2020) invalidated the EU-US Privacy Shield. While the EU-US Data Privacy Framework (2023) provides a new adequacy mechanism for certified US companies, organisations should verify their transfer mechanisms are current.
+
+**Checklist for developers:**
+- [ ] Identify where personal data is stored and processed (cloud regions, third-party services)
+- [ ] Implement data residency controls where required (region-locked storage, processing restrictions)
+- [ ] Ensure data transfer mechanisms (SCCs, adequacy decisions) are in place for cross-border flows
+- [ ] Document all international data transfers in the record of processing activities
+- [ ] Provide configuration options for data residency when deploying to multiple regions
+
+### Article 8 — Children's Data
+
+When offering information society services directly to children, consent is valid only if the child is at least 16 years old (member states may lower the threshold to 13). Below that age, parental or guardian consent is required.
+
+**Requirements:**
+- Implement age verification mechanisms for services directed at or likely to be accessed by children
+- Obtain verifiable parental consent for users below the applicable age threshold
+- Use clear, child-friendly language in privacy notices
+- Apply enhanced data minimisation for children's data
+
+**Checklist:**
+- [ ] Implement age gate / verification if the service targets or is likely to attract children
+- [ ] Obtain and record parental consent for users under the applicable age threshold
+- [ ] Privacy notices written in language understandable to the target age group
+- [ ] Enhanced data minimisation applied — collect only what is strictly necessary
+- [ ] No profiling or automated decision-making directed at children without parental consent
+
 ## Development Checklist
 
 - [ ] Personal data inventory — know what personal data the system processes

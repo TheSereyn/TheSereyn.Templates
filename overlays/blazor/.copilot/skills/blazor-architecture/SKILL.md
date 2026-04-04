@@ -29,6 +29,13 @@ Choose the hosting model **per feature** based on requirements. This is an ask-f
 - **Advantages:** Best of both worlds per feature
 - **Trade-offs:** More complex hosting configuration, must manage both models
 
+### InteractiveAuto (.NET 8+)
+
+- **Use when:** Fast initial load is needed AND offline/reduced-server capability is desired after first visit
+- **Advantages:** Starts with Blazor Server for fast initial load, then transparently switches to Blazor WebAssembly once the WASM runtime is downloaded. Subsequent visits use WASM from the browser cache. Provides the best of both modes.
+- **Trade-offs:** Requires that both Server and WASM are supported by the component. Not all components work identically in both modes — be aware of dependency injection differences between Server (per-circuit scoped) and WASM (per-session singleton-like). Both hosting infrastructures must be configured and maintained.
+- **DI lifetime:** Varies by active mode — Server DI rules apply during initial Server-rendered phase, WASM DI rules apply after handoff. Design components to be agnostic to the active mode where possible.
+
 ## Multi-Frontend Patterns
 
 A single API can serve multiple Blazor applications:

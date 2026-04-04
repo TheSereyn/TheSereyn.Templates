@@ -26,7 +26,7 @@ The project configures MTP in `global.json`:
 
 ```json
 {
-  "sdk": { "version": "10.0.100", "rollForward": "latestMinor" },
+  "sdk": { "version": "10.0.100", "rollForward": "latestFeature" },
   "test": { "runner": "Microsoft.Testing.Platform" }
 }
 ```
@@ -128,6 +128,15 @@ public async Task Teardown() { }
 
 [Before(Class)]                     // Runs once before all tests in class
 public static async Task ClassSetup() { }
+
+[After(Class)]                      // Runs once after all tests in class complete
+public static async Task ClassTeardown() { }
+
+[Before(Assembly)]                  // Runs once before any tests in the assembly
+public static async Task AssemblySetup() { }
+
+[After(Assembly)]                   // Runs once after all tests in the assembly complete
+public static async Task AssemblyTeardown() { }
 ```
 
 ### TUnit vs xUnit/NUnit Mapping
@@ -139,6 +148,9 @@ public static async Task ClassSetup() { }
 | Setup | Constructor | `[SetUp]` | `[Before(Test)]` |
 | Teardown | `IDisposable` | `[TearDown]` | `[After(Test)]` |
 | Class setup | `IClassFixture<T>` | `[OneTimeSetUp]` | `[Before(Class)]` (static) |
+| Class teardown | `IDisposable` | `[OneTimeTearDown]` | `[After(Class)]` (static) |
+| Assembly setup | N/A (collection fixture) | `[SetUpFixture]` + `[OneTimeSetUp]` | `[Before(Assembly)]` (static) |
+| Assembly teardown | N/A (collection fixture) | `[SetUpFixture]` + `[OneTimeTearDown]` | `[After(Assembly)]` (static) |
 | Assert equal | `Assert.Equal(e, a)` | `Assert.AreEqual(e, a)` | `await Assert.That(a).IsEqualTo(e)` |
 | Assert throws | `Assert.Throws<T>()` | `Assert.Throws<T>()` | `await Assert.That(act).ThrowsException()` |
 | Assert null | `Assert.Null(x)` | `Assert.IsNull(x)` | `await Assert.That(x).IsNull()` |
