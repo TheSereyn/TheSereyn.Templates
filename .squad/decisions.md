@@ -68,6 +68,30 @@
 
 ---
 
+## 2026-04-06: Pre-Container vs In-Container Template Variable Split
+
+**By:** Holden (Lead)  
+**Status:** Approved & Merged
+
+**Decision:** Template variables split into two resolution phases:
+
+**Pre-container (host, before first build):**
+- `devcontainer.json` → `{{PROJECT_NAME}}` — Must be set on host before opening container. Docker/VS Code read at build time; changing after has no effect until full rebuild.
+
+**In-container (first-time-setup, after ready):**
+- `.github/copilot-instructions.md` → `{{PROJECT_NAME}}`, `{{NAMESPACE}}`, `{{DESCRIPTION}}`
+- `README.md` → `{{PROJECT_NAME}}`, `{{DESCRIPTION}}`
+- `LICENSE` → `{{YEAR}}`, `{{AUTHOR}}`
+- `.github/CODEOWNERS` → `{{GITHUB_ORG}}`, `{{TEAM_NAME}}` (deferred)
+
+**Rationale:** Mixing build-time and runtime configuration creates silent failure mode (no error, no effect). Separation makes constraint explicit and actionable at correct time.
+
+**Implementation:**
+- `base/.github/prompts/pre-container-setup.prompt.md` — New Step 5 "Set Container Name"
+- `base/.github/prompts/first-time-setup.prompt.md` — Removed `devcontainer.json` from Step 5
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus
