@@ -53,3 +53,32 @@
    - Orchestration log created and archived
    - Inbox decisions merged to decisions.md
    - Session log recorded
+
+- Session 5 (2026-04-06): CSS Design System research brief for Blazor template.
+   - Researched 7 CSS methodologies: CUBE CSS, ITCSS, BEM, utility-first, Design Tokens, CSS Cascade Layers, CSS @scope
+   - Recommended architecture: Design Tokens + CUBE CSS + Blazor CSS Isolation
+   - CUBE CSS chosen as primary methodology — cascade-friendly, lightweight, natural fit for Blazor's component model
+   - Design tokens (CSS custom properties) are the non-negotiable foundation — every design value must be a token
+   - CSS `@layer` replaces ITCSS's layered specificity model natively
+   - BEM rejected — redundant with Blazor CSS isolation
+   - Full Tailwind/Bootstrap rejected — lightweight hand-rolled utilities only
+   - Evaluated 14 modern CSS features for browser support baseline
+   - Broadly supported and recommended: custom properties, `@layer`, `:has()`, container queries, Grid/Flexbox, nesting, logical properties, `oklch()`, `color-mix()`
+   - Not yet recommended: `@scope` (Firefox too recent), anchor positioning (no Firefox), scroll-driven animations (partial support)
+   - Proposed file structure: `wwwroot/css/` with `_tokens.css`, `_base.css`, `_compositions.css`, `_utilities.css`
+   - Recommended 2 skills: new `css-design-system` skill + update to existing `blazor-architecture` skill
+   - Research brief written to session artifact for Lee's review before skill authoring begins
+   - Key learning: Blazor CSS isolation + CSS custom properties together solve Lee's "inconsistent panel" problem — scoped styles reference global tokens, making inconsistency structurally impossible
+
+- Session 6 (2026-04-06): Built CSS Design System skill for Blazor template.
+   - Created `overlays/blazor/.copilot/skills/css-design-system/SKILL.md` — comprehensive AI guidance skill (~22KB, 14 sections)
+   - Architecture: Design Tokens + CUBE CSS + Blazor CSS Isolation — three pillars enforced via hard rules and anti-patterns
+   - Included full reference token set: colour (oklch), spacing scale, typography, borders/radii, shadows, transitions
+   - CUBE CSS compositions: `.stack`, `.cluster`, `.with-sidebar`, `.center`, `.auto-grid` — all using CSS custom property overrides for flexibility
+   - Dark theme pattern: `[data-theme="dark"]` token overrides + `prefers-color-scheme` media query as initial default
+   - Accessibility: WCAG 2.1 AA contrast ratios, `prefers-reduced-motion` global override, `:focus-visible` over `:focus`
+   - Modern CSS features reference: nesting, container queries, `:has()`, logical properties, `oklch()`/`color-mix()`, `@property`
+   - 10 hard rules, 9 anti-patterns, 12-point code review checklist
+   - Excluded `@scope` (Baseline 2025 too new) and anchor positioning (no Firefox) per research recommendations
+   - Updated `blazor-architecture` skill with CSS Architecture section and cross-reference
+   - Key learning: The skill is AI guidance, not a deployable framework — same pattern as tunit-testing and stylecop-compliance skills. Prescribes principles and patterns, not boilerplate imports.
