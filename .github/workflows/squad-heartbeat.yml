@@ -107,11 +107,12 @@ jobs:
         id: resolve-token
         env:
           CUSTOM_TOKEN: ${{ secrets.COPILOT_ASSIGN_TOKEN }}
+          DEFAULT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -n "$CUSTOM_TOKEN" ]; then
             echo "token=$CUSTOM_TOKEN" >> "$GITHUB_OUTPUT"
           else
-            echo "token=${{ secrets.GITHUB_TOKEN }}" >> "$GITHUB_OUTPUT"
+            echo "token=$DEFAULT_TOKEN" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Ralph — Assign @copilot issues
