@@ -50,6 +50,41 @@
 
 ---
 
+## 2026-04-06: CSS Design System for Blazor Template
+
+**By:** Naomi (Template Engineer)  
+**Status:** Completed
+
+**Recommendation:** Design Tokens + CUBE CSS + Blazor CSS Isolation
+
+**Architecture:**
+1. **Design Tokens** — All design values as CSS custom properties in `_tokens.css` (colours, spacing, typography, radii, shadows)
+2. **CUBE CSS** — Global CSS in `@layer`-ordered files (compositions, utilities)
+3. **Blazor CSS Isolation** — Every component has a `.razor.css` file referencing tokens
+
+**Rationale:** Prevents inconsistent-panel problem. Zero-dependency approach. Uses native CSS features (custom properties, `@layer`, `color-mix()`, `oklch()`). Works naturally with Blazor's `.razor.css` scoping.
+
+**Design Decisions (Autonomously Applied):**
+- **Dark theme:** `[data-theme="dark"]` with `prefers-color-scheme` fallback. Uses `oklch()` + `color-mix()`
+- **Colour palette:** Neutral defaults in token registry; projects customize
+- **Accessibility:** WCAG 2.1 AA baseline with contrast ratio guidance
+- **Animations:** `prefers-reduced-motion` included in accessibility section
+
+**Rejected:**
+- BEM (redundant with Blazor CSS isolation)
+- Tailwind/Bootstrap (too heavy; hand-rolled utilities only)
+- CSS `@scope` (Firefox support too recent)
+- Anchor positioning (no Firefox support)
+
+**Deliverables:**
+- New skill: `overlays/blazor/.copilot/skills/css-design-system/SKILL.md` (644 lines, 14 sections)
+- Updated skill: `overlays/blazor/.copilot/skills/blazor-architecture/SKILL.md` (added CSS Architecture section)
+- Commit: `bb62a6f` to dev branch
+
+**Research Brief:** `/home/vscode/.copilot/session-state/858e847b-5317-4be8-9fbf-0b9a9a7ae0d8/files/css-design-system-research.md` (comprehensive survey of 7 methodologies and 14 modern CSS features)
+
+---
+
 ## 2026-04-04: Security Design Decisions
 
 **By:** Holden & Drummer  
