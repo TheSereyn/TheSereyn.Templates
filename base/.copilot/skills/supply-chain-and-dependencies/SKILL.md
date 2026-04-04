@@ -87,6 +87,8 @@ A package is a risk signal when:
 dotnet restore --locked-mode
 ```
 
+Or with MSBuild directly: `/p:RestoreLockedMode=true`
+
 Without `--locked-mode`, CI silently resolves different transitive versions than the developer tested — breaking reproducibility and opening a supply chain gap.
 
 ### Transitive dependency risks
@@ -114,7 +116,7 @@ This forces NuGet to resolve at least the pinned version, overriding the lower t
 
 ```yaml
 - name: Dependency Review
-  uses: actions/dependency-review-action@4901385134134e04cec5fbe5ddfe3b2c5bd5d976 # v4.5.0
+  uses: actions/dependency-review-action@3b139cfc5fae8b618d3eae3675e383bb1769c019 # v4.5.0
   with:
     fail-on-severity: moderate
 ```
@@ -190,7 +192,7 @@ Copilot and other AI tools may generate code that:
 **GOOD — pinned SHA with version comment:**
 
 ```yaml
-- uses: actions/dependency-review-action@4901385134134e04cec5fbe5ddfe3b2c5bd5d976 # v4.5.0
+- uses: actions/dependency-review-action@3b139cfc5fae8b618d3eae3675e383bb1769c019 # v4.5.0
 ```
 
 **BAD — suppressed vulnerability warning with no justification:**

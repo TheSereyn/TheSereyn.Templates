@@ -27,6 +27,24 @@ GitHub Actions, Azure DevOps, release workflows, and compliance-sensitive repos.
 
 Without a `permissions:` block, the token defaults to `write-all`. Every workflow must declare minimum permissions at the workflow level, granting additional scopes only at the job level where needed.
 
+**Least-privilege baseline (workflow level):**
+```yaml
+permissions: {}  # deny all at workflow level; grant per job only
+```
+
+**Scope only what each job needs:**
+```yaml
+jobs:
+  build:
+    permissions:
+      contents: read
+  release:
+    permissions:
+      contents: write
+      attestations: write
+      id-token: write
+```
+
 ### Pinned action SHAs
 
 Tags like `@v4` are mutable — a compromised upstream can retag to malicious code. Pin to full commit SHAs with version comments. Use `npx pin-github-action .github/workflows/*.yml` to automate.
@@ -35,7 +53,7 @@ Tags like `@v4` are mutable — a compromised upstream can retag to malicious co
 
 - Always use `${{ secrets.NAME }}` — never pass secrets through environment variable indirection.
 - Never `echo` a secret. GitHub masks known secrets, but novel derivations may leak.
-- Use `::add-mask::` for dynamically generated sensitive values.
+- Use `::add-mask::` for dynamically generated sensitive values. Note: masking only applies to log output **after** the line where it is set — any value logged before the mask command remains visible.
 - Never pass secrets to untrusted third-party actions — audit source first.
 
 ### `pull_request_target` risk
@@ -64,7 +82,7 @@ Enable CodeQL or GitHub Advanced Security. Requires `security-events: write` to 
 
 - **Environment protection rules:** require manual approval for production.
 - **Required reviewers:** at least one reviewer before deployment.
-- **Artifact attestation:** `actions/attest-build-provenance` for signed SLSA provenance.
+- **Artifact attestation:** `actions/attest-build-provenance` for signed SLSA provenance (requires `attestations: write` and `id-token: write` permissions).
 - **Branch protection:** require CI pass and PR reviews before merge to `main`; disallow direct pushes.
 
 ### SSDF alignment
@@ -133,7 +151,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: azure/login@a457da9ea143d694ef1eb5fcbc93828180bb0a238 # v2.3.0
+      - uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
