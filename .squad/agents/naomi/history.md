@@ -37,3 +37,12 @@
   - MCP package issue is highest priority — all MCP tooling broken on day one
   - Used Microsoft Learn documentation to validate .NET standards and compliance references
   - Overlay full-file replacements create drift risk between base and template versions
+
+- Session 3 (2026-04-05): Implemented prompt split per Holden's design.
+  - Created `base/.github/prompts/pre-container-setup.prompt.md` (71 lines) — host-level prerequisites checklist
+  - Revised `base/.github/prompts/first-time-setup.prompt.md` (120 lines) — removed redundant Step 1 (environment verification), trimmed Step 8 (Squad install), renumbered 11 steps → 10 steps
+  - Updated `base/README.md` Getting Started section to reference pre-container prompt first
+  - Docker/Podman neutrality maintained — both presented as fully supported options (Step 1 of pre-container prompt)
+  - `mode: text` used for pre-container prompt (manual checklist), `mode: agent` for first-time-setup (Copilot automation)
+  - Self-cleanup now includes both prompts in deletion instructions
+  - Learned: Post-create redundancy analysis prevents duplicate work — `post-create.sh` already handles env verification and Squad installation, so prompts should focus only on in-container configuration tasks

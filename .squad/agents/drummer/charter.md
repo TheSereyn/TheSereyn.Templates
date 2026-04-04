@@ -29,4 +29,4 @@ Security and quality reviewer for TheSereyn.Templates. Owns the security gate on
 
 ## Model
 
-Preferred: claude-sonnet-4.5 (security review requires careful reasoning)
+Preferred: claude-opus-4.6 (security review requires careful, precise reasoning — use the strongest available model)

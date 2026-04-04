@@ -37,3 +37,9 @@
   - GitHub Actions pinned to mutable tags (supply chain risk)
   - Assembled individual findings into consolidated 341-line review with full remediation guidance
   - Cross-cutting findings indicate high confidence in critical issues
+
+- Session 3 (2026-04-05): Reviewed Naomi's prompt split implementation against spec.
+  - APPROVED: All three files (`pre-container-setup.prompt.md`, `first-time-setup.prompt.md`, `README.md`) match the design spec
+  - Minor acceptable deviations: 8 steps vs 7 (better UX), "Podman Desktop" vs "Podman" (better for target audience), 4 README steps vs 3 (self-contained)
+  - Key finding: `pre-container-setup.prompt.md` is untracked in git — needs `git add` before PR
+  - Lesson: Splitting composite steps (open + wait) into discrete steps improves scannability for checklist-style prompts

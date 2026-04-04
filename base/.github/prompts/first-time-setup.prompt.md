@@ -1,6 +1,6 @@
 ---
 mode: agent
-description: "One-shot setup prompt for new projects created from this template. Verifies environment, collects project info, resolves placeholders, and provides next steps."
+description: "In-container setup prompt. Run this from Copilot Chat after the dev container is ready. Configures project info, license, compliance, and security settings."
 tools: ['read', 'edit', 'search', 'terminal']
 ---
 
@@ -8,28 +8,15 @@ tools: ['read', 'edit', 'search', 'terminal']
 
 You are running the first-time setup for a new project created from a TheSereyn template.
 
-## Step 1 — Verify Environment
-
-Check that the DevContainer is running with all required tools:
-
-```bash
-dotnet --info
-node --version
-gh --version
-az --version
-```
-
-Report the status of each tool. If any are missing, warn the user but continue.
-
-## Step 2 — Check MCP Servers
+## Step 1 — Check MCP Servers
 
 Confirm that MCP configuration exists at `.copilot/mcp-config.json`. List the configured servers (Microsoft Learn, GitHub, Azure).
 
-## Step 3 — Setup Verification
+## Step 2 — Setup Verification
 
 Verify `.editorconfig` and `stylecop.json` are present — these enforce code style and can be customised to your team preferences.
 
-## Step 4 — Collect Project Info
+## Step 3 — Collect Project Info
 
 Ask the user for:
 
@@ -38,7 +25,7 @@ Ask the user for:
 3. **Brief description** (one sentence describing what the project does)
 4. **GitHub repo URL** (optional — e.g., `https://github.com/org/repo`)
 
-## Step 5 — Resolve Placeholders
+## Step 4 — Resolve Placeholders
 
 Update the following files, replacing placeholders:
 
@@ -53,7 +40,7 @@ Files to update:
 - `.devcontainer/devcontainer.json` (container name)
 - `README.md`
 
-## Step 6 — Select License
+## Step 5 — Select License
 
 Ask the user which license they want for the project. Offer common options:
 
@@ -68,7 +55,7 @@ Based on their choice:
 
 If the user is unsure, suggest MIT as a sensible default for open-source projects, or Proprietary if it's a commercial/internal project.
 
-## Step 7 — Compliance Frameworks
+## Step 6 — Compliance Frameworks
 
 Ask the user:
 
@@ -90,34 +77,31 @@ Based on their response:
 - Recommend the corresponding compliance skills for reference during development
 - If they select any framework, create a `docs/planning/compliance-notes.md` stub with sections for each selected framework
 
-## Step 8 — Git Initialisation
+## Step 7 — Git Initialisation
 
 If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 9 — Install or Verify Squad
+## Step 8 — Verify Squad
 
-Check if Squad is already installed by looking for its agent file (typically `.github/agents/squad.agent.md` or `.squad/team.md`).
-
-**If Squad is found:**
-- Report the installed version (`squad --version` if available)
+Squad is installed automatically during container creation. Verify the installation:
+- Report the installed version (`squad --version`)
 - Run `squad doctor` to confirm everything is healthy
 
-**If Squad is NOT found (expected for new repos):**
-- Read the `squad-setup` skill for installation and initialisation steps
-- Before proceeding, fetch the current Squad README from `https://github.com/bradygaster/squad` and verify the skill's steps are still accurate (Squad is alpha software and the process may change)
-- Walk the user through installation and `squad init`
-- Run `squad doctor` to verify setup
+> **Note:** If `squad doctor` reports issues, re-run the post-create script:
+> ```bash
+> bash .devcontainer/post-create.sh
+> ```
 
-## Step 10 — Security Setup
+## Step 9 — Security Setup
 
 - Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, and `.env` files are excluded
 - Run `dotnet user-secrets init` in your main project to set up local secret management
 - Enable GitHub Secret Scanning on the repository (Settings → Security → Secret scanning)
 - Configure branch protection on `main`: require PR reviews, require status checks to pass before merging
 
-## Step 11 — Summary and Next Steps
+## Step 10 — Summary and Next Steps
 
 Provide a summary of what was configured, then suggest:
 
@@ -129,7 +113,8 @@ Provide a summary of what was configured, then suggest:
 
 After completing setup, instruct the user:
 
-> You can delete this setup prompt now — it's a one-time operation:
-> ```
+> You can delete both setup prompts now — they are one-time operations:
+> ```bash
+> rm .github/prompts/pre-container-setup.prompt.md
 > rm .github/prompts/first-time-setup.prompt.md
 > ```

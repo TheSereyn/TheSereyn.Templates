@@ -36,3 +36,12 @@
   - PostCreateCommand has no version pinning: `@latest`, `npx -y` allow arbitrary package injection
   - Recommend: Pin all actions to commit SHAs, replace PAT with GitHub App token, update ISO skill to 2022 controls
   - All compliance skills require audit against current standard frameworks
+
+- Session 3 (2026-04-05): Security review of prompt split (pre-container-setup + revised first-time-setup).
+  - APPROVED — both files follow secure practices
+  - `gh auth login` uses interactive OAuth flow with Dev Containers credential forwarding — no manual token handling
+  - Git identity uses `--global` with placeholder examples — standard for developer workstations, acceptable PII
+  - Clone step uses HTTPS with placeholder URLs — safe
+  - Security Setup step (first-time-setup Step 9) is a net positive: .gitignore verification, user-secrets init, secret scanning, branch protection
+  - Pre-existing post-create.sh version pinning concern remains (tracked from Session 2, not introduced by these prompts)
+  - Developer-facing prompts should never instruct storing credentials in project files — verified clean

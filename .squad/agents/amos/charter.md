@@ -29,4 +29,4 @@ Infrastructure and pipeline engineer for TheSereyn.Templates. Owns the compositi
 
 ## Model
 
-Preferred: claude-haiku-4.5 (most platform work is mechanical; bump to sonnet for complex workflow logic)
+Preferred: claude-opus-4.6 (consistent with team default; only Scribe runs Haiku)
