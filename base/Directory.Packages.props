@@ -11,7 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Add shared package versions here as the project grows. Example:
+    <!-- Analyzer packages — versions managed centrally so all projects use the same build. -->
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.*" />
+
+    <!-- Add further shared package versions here as the project grows. Example:
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.0" />
     -->

@@ -42,7 +42,7 @@ The four themes organise all 93 controls:
 ### People Controls (A.6)
 
 - **A.6.3 Information security awareness, education and training** — Developers receive secure coding training
-- **A.6.8 Information security event reporting** *(new in 2022)* — All personnel must report security events through established channels
+- **A.6.8 Information security event reporting** — All personnel must report security events through established channels
 
 ### Physical Controls (A.7)
 
@@ -88,7 +88,6 @@ These 11 controls were introduced in ISO 27001:2022 and have no direct equivalen
 | **A.5.7** Threat intelligence | Organisational | Feed threat intel into risk assessments and design decisions |
 | **A.5.23** Cloud services security | Organisational | Document cloud shared-responsibility boundaries; enforce cloud security baselines |
 | **A.5.30** ICT readiness for business continuity | Organisational | Define RTOs/RPOs; test recovery procedures for application services |
-| **A.6.8** Event reporting | People | Ensure team knows how and where to report security events |
 | **A.7.4** Physical security monitoring | Physical | Relevant for on-premises infrastructure hosting development systems |
 | **A.8.9** Configuration management | Technological | Infrastructure-as-code, hardened baselines, drift detection |
 | **A.8.10** Information deletion | Technological | Implement data retention policies and automated cleanup |

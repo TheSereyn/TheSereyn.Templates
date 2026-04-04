@@ -52,7 +52,8 @@ jobs:
       - name: Compose template
         env:
           TAG: ${{ github.ref_name }}
-        run: bash compose.sh
+          OVERLAY: ${{ matrix.overlay }}
+        run: bash compose.sh --only "${OVERLAY}"
 
       - name: Clone target template repo
         env:
