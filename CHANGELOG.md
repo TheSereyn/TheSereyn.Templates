@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.3] - 2026-04-04
+
+### Added
+- `css-design-system` skill (Blazor overlay) — AI guidance for CSS architecture using Design Tokens + CUBE CSS + Blazor CSS Isolation; covers design token vocabulary, `@layer` ordering, CUBE CSS layout primitives, dark theme pattern, WCAG 2.1 AA accessibility, `prefers-reduced-motion`, and modern CSS features (container queries, `:has()`, logical properties, `oklch()`, `color-mix()`)
+- Updated `blazor-architecture` skill — new CSS Architecture section cross-referencing the `css-design-system` skill
+
 ## [0.3.2] - 2026-04-04
 
 ### Fixed
