@@ -45,3 +45,9 @@
   - Security Setup step (first-time-setup Step 9) is a net positive: .gitignore verification, user-secrets init, secret scanning, branch protection
   - Pre-existing post-create.sh version pinning concern remains (tracked from Session 2, not introduced by these prompts)
   - Developer-facing prompts should never instruct storing credentials in project files — verified clean
+
+- Session 4 (2026-04-04T17:49:01Z): Scribe closed prompt-split phase.
+   - Naomi's implementation approved — both prompts follow secure practices
+   - Holden approved spec compliance — no changes required
+   - Orchestration log created and archived
+   - Inbox decisions merged to decisions.md

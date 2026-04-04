@@ -46,3 +46,10 @@
   - `mode: text` used for pre-container prompt (manual checklist), `mode: agent` for first-time-setup (Copilot automation)
   - Self-cleanup now includes both prompts in deletion instructions
   - Learned: Post-create redundancy analysis prevents duplicate work — `post-create.sh` already handles env verification and Squad installation, so prompts should focus only on in-container configuration tasks
+
+- Session 4 (2026-04-04T17:49:01Z): Scribe closed prompt-split phase.
+   - Drummer approved security review — no changes required
+   - Holden approved spec compliance — minor improvements noted (8 vs 7 steps, "Podman Desktop" naming, 4-step README)
+   - Orchestration log created and archived
+   - Inbox decisions merged to decisions.md
+   - Session log recorded

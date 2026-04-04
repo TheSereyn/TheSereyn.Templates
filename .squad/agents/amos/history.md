@@ -45,3 +45,9 @@
   - PR: https://github.com/TheSereyn/TheSereyn.Templates/pull/21
   - Staged 10 files: new pre-container-setup.prompt.md, revised first-time-setup.prompt.md, updated README.md, agent charter model updates, inbox review files
   - Clean commit with Co-authored-by trailer per project convention
+
+- Session 4 (2026-04-04T17:49:01Z): Scribe closed prompt-split phase.
+   - PR #21 merged approval from Drummer (security) and Holden (spec)
+   - Naomi's implementation approved and staged
+   - Orchestration log created and archived
+   - Inbox decisions merged to decisions.md

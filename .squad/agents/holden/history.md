@@ -43,3 +43,10 @@
   - Minor acceptable deviations: 8 steps vs 7 (better UX), "Podman Desktop" vs "Podman" (better for target audience), 4 README steps vs 3 (self-contained)
   - Key finding: `pre-container-setup.prompt.md` is untracked in git — needs `git add` before PR
   - Lesson: Splitting composite steps (open + wait) into discrete steps improves scannability for checklist-style prompts
+
+- Session 4 (2026-04-04T17:49:01Z): Scribe closed prompt-split phase.
+   - Naomi's implementation matches spec — approved for PR #21
+   - Drummer approved security — no changes required
+   - Amos opened PR to dev
+   - Orchestration log created and archived
+   - Inbox decisions merged to decisions.md
