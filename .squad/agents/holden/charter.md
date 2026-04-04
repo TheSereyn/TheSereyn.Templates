@@ -31,4 +31,4 @@ Template architect and lead for TheSereyn.Templates. Owns scope decisions, compo
 
 ## Model
 
-Preferred: auto (use sonnet for code review and architecture work; haiku for triage and planning)
+Preferred: claude-opus-4.6 (lead architect and reviewer; complex reasoning and architecture decisions require the strongest model)
