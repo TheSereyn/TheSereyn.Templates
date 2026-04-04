@@ -77,7 +77,7 @@ foreach (var entry in archive.Entries)
 
 ### Path handling
 
-- `Path.Combine` does not prevent path traversal — if a segment starts with `/` or `\` on Windows, it replaces the path.
+- `Path.Combine` does not prevent path traversal — if a segment starts with `/` (any platform) or `\` (Windows), it replaces the preceding path.
 - Correct traversal check: `Path.GetFullPath(resolved).StartsWith(Path.GetFullPath(allowedRoot))`.
 - Encode paths before using in URLs; decode before filesystem operations.
 - Reject null bytes in file paths (some older systems terminate at null byte).
@@ -87,7 +87,7 @@ foreach (var entry in archive.Entries)
 ### BinaryFormatter — banned
 
 ```csharp
-// CRITICAL — removed from .NET 8+ by default (throws NotSupportedException)
+// CRITICAL — disabled in .NET 8 (throws NotSupportedException); fully removed in .NET 9
 var formatter = new BinaryFormatter();
 var obj = formatter.Deserialize(stream);
 ```
