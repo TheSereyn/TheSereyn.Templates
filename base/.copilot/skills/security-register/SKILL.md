@@ -81,7 +81,7 @@ For accepted risks, document the business justification and set a review date to
 
 - Reference finding IDs (SEC-NNN) in commit messages and PR descriptions
 - Review the register during sprint planning for outstanding items
-- Cross-reference with the `security-review` skill for systematic code review
+- Cross-reference with the `security-review-core` skill for systematic code review
 - Update after dependency scans (`dotnet list package --vulnerable`)
 
 ## References
