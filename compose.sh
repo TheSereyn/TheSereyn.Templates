@@ -3,6 +3,14 @@ set -euo pipefail
 
 # TheSereyn.Templates — Compose Script
 # Merges base/ + overlays/<template>/ → output/TheSereyn.Templates.<Name>/
+#
+# Composition is authoritative: the output/ directory is the single source of
+# truth for each downstream template repo. Never edit output/ directly — always
+# change base/ or overlays/ and re-run this script.
+#
+# Drift note: The Blazor overlay replaces devcontainer.json and mcp-config.json
+# entirely. If the base versions of these files change, check the Blazor overlay
+# copies for divergence and reconcile manually.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="$SCRIPT_DIR/base"
@@ -17,6 +25,15 @@ TEMPLATES=(
 
 # Optional version tag (set by CI or manually)
 TAG="${TAG:-}"
+
+# Parse arguments
+ONLY_TEMPLATE=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --only) ONLY_TEMPLATE="$2"; shift 2 ;;
+    *) shift ;;
+  esac
+done
 
 compose_template() {
   local overlay_name="$1"
@@ -79,6 +96,10 @@ echo ""
 
 for entry in "${TEMPLATES[@]}"; do
   IFS=':' read -r overlay_name repo_name <<< "$entry"
+  # Skip if --only is set and doesn't match this template
+  if [[ -n "$ONLY_TEMPLATE" && "$overlay_name" != "$ONLY_TEMPLATE" && "$repo_name" != "$ONLY_TEMPLATE" ]]; then
+    continue
+  fi
   compose_template "$overlay_name" "$repo_name"
 done
 

@@ -1,0 +1,44 @@
+name: PR Validate
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-compose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Compose all templates
+        run: bash compose.sh
+
+      - name: Validate MinimalApi output
+        run: |
+          DIR="output/TheSereyn.Templates.MinimalApi"
+          test -d "$DIR" || { echo "::error::$DIR directory not found"; exit 1; }
+          test -f "$DIR/README.md" || { echo "::error::$DIR/README.md not found"; exit 1; }
+          FILE_COUNT=$(find "$DIR" -type f | wc -l)
+          [ "$FILE_COUNT" -ge 5 ] || { echo "::error::Only $FILE_COUNT files found in $DIR (expected >= 5)"; exit 1; }
+          for json in $(find "$DIR" -name "*.json" 2>/dev/null); do
+            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$json" \
+              || { echo "::error::Invalid JSON: $json"; exit 1; }
+          done
+          echo "MinimalApi: OK ($FILE_COUNT files)"
+
+      - name: Validate Blazor output
+        run: |
+          DIR="output/TheSereyn.Templates.Blazor"
+          test -d "$DIR" || { echo "::error::$DIR directory not found"; exit 1; }
+          test -f "$DIR/README.md" || { echo "::error::$DIR/README.md not found"; exit 1; }
+          FILE_COUNT=$(find "$DIR" -type f | wc -l)
+          [ "$FILE_COUNT" -ge 5 ] || { echo "::error::Only $FILE_COUNT files found in $DIR (expected >= 5)"; exit 1; }
+          for json in $(find "$DIR" -name "*.json" 2>/dev/null); do
+            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$json" \
+              || { echo "::error::Invalid JSON: $json"; exit 1; }
+          done
+          echo "Blazor: OK ($FILE_COUNT files)"
