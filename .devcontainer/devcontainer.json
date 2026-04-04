@@ -1,6 +1,6 @@
 {
   "name": "TheSereyn.Templates - Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/base:noble",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0-noble",
 
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
