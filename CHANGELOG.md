@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-04-04
+
+### Fixed
+- `pre-container-setup.prompt.md` — added Step 5 "Set Container Name": instructs users to replace `{{PROJECT_NAME}}` in `.devcontainer/devcontainer.json` on the host machine before opening the container, with explanation of why this must be done pre-build
+- `first-time-setup.prompt.md` — removed `.devcontainer/devcontainer.json` from Step 5 placeholder resolution (container name is now a pre-container task, not an in-container one)
+
 ## [0.3.1] - 2026-04-04
 
 ### Added

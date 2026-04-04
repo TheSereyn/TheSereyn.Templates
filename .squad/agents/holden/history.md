@@ -50,3 +50,10 @@
    - Amos opened PR to dev
    - Orchestration log created and archived
    - Inbox decisions merged to decisions.md
+
+- Session 5 (2026-04-06): Fixed pre-container vs in-container template variable split.
+  - `devcontainer.json` `{{PROJECT_NAME}}` moved to pre-container phase (Step 5 in pre-container-setup.prompt.md)
+  - Rationale: Docker/VS Code reads container name at build time; setting it inside container after first build is a silent no-op
+  - Removed `devcontainer.json` from first-time-setup.prompt.md Step 5 file list
+  - Decision note written to .squad/decisions/inbox/holden-precontainer-var-split.md
+  - Overlay devcontainer.json files unchanged — {{PROJECT_NAME}} placeholder correct as-is
