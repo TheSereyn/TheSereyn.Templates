@@ -139,7 +139,19 @@ Copilot must clarify before coding if any of these are unclear:
 - `tunit-testing` — TUnit framework patterns, MTP CLI flags, assertion syntax
 - `project-conventions` — Error handling, API patterns, code style, naming, async
 - `requirements-gathering` — Structured 10-phase requirements interview and documentation
-- `security-review` — OWASP-based security code review and vulnerability assessment
+- `squad-setup` — Squad installation, `squad init`, team design, and agent management
+- `security-review-core` — Security review workflow, severity/confidence model, PR checklist, and required output schema. Entry point for the full security skill tree.
+- `security-sources` — Canonical reference catalog (OWASP, NIST, Microsoft Learn, CodeQL) mapped to each security domain
+- `owasp-secure-code-review` — Manual review methodology, entry-point and data-flow analysis
+- `dotnet-authn-authz` — ASP.NET Core auth/authz, claims, policies, token and cookie review
+- `aspnetcore-api-security` — Middleware ordering, CORS, antiforgery, input validation, exception handling
+- `browser-security-headers` — CSP, HSTS, COEP/CORP/COOP, cross-origin isolation
+- `csharp-codeql-cwe` — CodeQL patterns, CWE mappings, manual review triggers
+- `secrets-and-configuration` — Committed secrets, config hierarchy, key management, log redaction
+- `data-access-and-validation` — IDOR, ownership checks, EF Core safe query patterns, multi-tenant boundaries
+- `serialization-file-upload-and-deserialization` — BinaryFormatter, TypeNameHandling, XXE, zip slip, path traversal
+- `supply-chain-and-dependencies` — NuGet provenance, lockfiles, transitive vulns, typosquatting, action SHA pinning
+- `ci-cd-ssdf-security` — GitHub Actions permissions, pull_request_target risk, OIDC federation, SSDF alignment
 - `security-register` — Project vulnerability and security finding tracker
 - `rfc-compliance` — HTTP/REST RFC standards checking (9205, 9110, 3986, 9457)
 - `code-analyzers` — Roslyn and StyleCop analyzer setup and configuration

@@ -80,6 +80,9 @@ Offer common examples:
 
 Based on their response:
 - Note the selected frameworks in `.github/copilot-instructions.md` under a new `## Compliance` section
+- Append each selected compliance skill to the `## Skills` section in `.github/copilot-instructions.md`, using the format:
+  `- \`compliance-<framework>\` — <Framework name> compliance guidance`
+  For example: `- \`compliance-gdpr\` — GDPR compliance guidance and data protection requirements`
 - Recommend the corresponding compliance skills for reference during development
 - If they select any framework, create a `docs/planning/compliance-notes.md` stub with sections for each selected framework
 
@@ -109,7 +112,7 @@ Provide a summary of what was configured, then suggest:
 
 1. **Gather requirements** — Run `/requirements-interview` in Copilot Chat with your project idea
 2. **Use Squad** — Once requirements are ready, start Squad to design and implement the architecture
-3. **Review skills** — The project includes skills for TUnit testing, project conventions, requirements gathering, security review, RFC compliance, code analyzers, and Playwright CLI
+3. **Review skills** — The project includes skills for TUnit testing, project conventions, requirements gathering, Squad setup, security review (modular skill tree led by `security-review-core`), RFC compliance, and code analyzers
 
 ## Self-Cleanup
 

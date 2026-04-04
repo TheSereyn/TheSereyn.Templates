@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "assignments": [
+    {
+      "assignment_id": "init-2026-04-04",
+      "timestamp": "2026-04-04T12:36:58Z",
+      "universe": "the-expanse",
+      "agents": ["Holden", "Naomi", "Amos", "Drummer"],
+      "notes": "Initial team setup for TheSereyn.Templates"
+    }
+  ]
+}

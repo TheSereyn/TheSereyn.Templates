@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "universeAllowlist": ["the-expanse"],
+  "defaultUniverse": "the-expanse",
+  "maxTeamSize": 12
+}
