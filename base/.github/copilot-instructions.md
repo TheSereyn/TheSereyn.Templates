@@ -92,6 +92,41 @@ When executing commands in the terminal:
 - For complex multiline operations, prefer script files over terminal paste
 - Keep commands idempotent and safe to re-run
 
+## Observability — OpenTelemetry
+
+This stack uses **OpenTelemetry** for traces, metrics, and logs. Always use the .NET 8+ unified builder pattern — do **not** use the legacy `AddOpenTelemetryTracing` / `AddOpenTelemetryMetrics` (pre-.NET 8) overloads.
+
+### Standard Setup Pattern
+
+```csharp
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r.AddService(
+        serviceName: builder.Environment.ApplicationName,
+        serviceVersion: Assembly.GetExecutingAssembly()
+                                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                                ?.InformationalVersion ?? "unknown"))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddOtlpExporter())
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter())
+    .WithLogging(logging => logging
+        .AddOtlpExporter());
+```
+
+### Key conventions
+
+- **OTLP exporter** (`OpenTelemetry.Exporter.OpenTelemetryProtocol`) is the standard egress — configure via `OTEL_EXPORTER_OTLP_ENDPOINT` environment variable, not hardcoded in code.
+- **Service name** comes from `IHostEnvironment.ApplicationName` or `OTEL_SERVICE_NAME` env var — not magic strings.
+- **Custom activities:** use `ActivitySource` registered via `.AddSource("YourSource.Name")` in `WithTracing()`.
+- **Custom metrics:** use `Meter` registered via `.AddMeter("YourMeter.Name")` in `WithMetrics()`.
+- **Never call** `AddOpenTelemetryTracing()` or `AddOpenTelemetryMetrics()` — these are legacy and removed in .NET 8+.
+- Validate OTel setup is present before adding instrumentation packages (MCP search first).
+
 ## Testing — TUnit on Microsoft Testing Platform
 
 See the `tunit-testing` skill for full details. Key points:

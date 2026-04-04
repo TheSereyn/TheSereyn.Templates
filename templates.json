@@ -1,0 +1,10 @@
+[
+  {
+    "overlay": "minimalapi",
+    "repo": "TheSereyn/TheSereyn.Templates.MinimalApi"
+  },
+  {
+    "overlay": "blazor",
+    "repo": "TheSereyn/TheSereyn.Templates.Blazor"
+  }
+]

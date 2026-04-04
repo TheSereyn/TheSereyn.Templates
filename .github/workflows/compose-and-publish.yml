@@ -10,36 +10,42 @@ permissions:
 
 jobs:
   guard:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       on-main: ${{ steps.check.outputs.on-main }}
+      matrix: ${{ steps.load-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
       - id: check
         run: |
-          if git branch -r --contains "${{ github.sha }}" | grep -q 'origin/main'; then
+          if git branch -r --contains "${{ github.sha }}" | grep -q '^\s*origin/main$'; then
             echo "on-main=true" >> "$GITHUB_OUTPUT"
           else
             echo "::warning::Tag ${{ github.ref_name }} does not point to a commit on main — skipping publish."
             echo "on-main=false" >> "$GITHUB_OUTPUT"
           fi
+      - id: load-matrix
+        run: |
+          matrix=$(jq -c '[.[] | {overlay: .overlay, repo: .repo}]' templates.json)
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   compose-and-publish:
     needs: guard
     if: needs.guard.outputs.on-main == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    concurrency:
+      group: compose-publish-${{ matrix.overlay }}
+      cancel-in-progress: false
     strategy:
+      fail-fast: false
       matrix:
-        include:
-          - overlay: minimalapi
-            repo: TheSereyn/TheSereyn.Templates.MinimalApi
-          - overlay: blazor
-            repo: TheSereyn/TheSereyn.Templates.Blazor
+        include: ${{ fromJSON(needs.guard.outputs.matrix) }}
     steps:
       - name: Checkout composition workspace
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Compose template
         env:
@@ -50,7 +56,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.TEMPLATE_PUSH_TOKEN }}
         run: |
-          git clone "https://x-access-token:${GH_TOKEN}@github.com/${{ matrix.repo }}.git" target-repo
+          git config --global credential.helper store
+          printf 'https://x-access-token:%s@github.com\n' "${GH_TOKEN}" | git credential approve
+          git clone "https://github.com/${{ matrix.repo }}.git" target-repo
 
       - name: Sync composed output to target repo
         run: |
