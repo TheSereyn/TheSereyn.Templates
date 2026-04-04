@@ -28,7 +28,7 @@ Once authenticated, verify with `gh auth status` and proceed.
 
 ## Step 2 — Check MCP Servers
 
-Confirm that MCP configuration exists at `.copilot/mcp-config.json`. List the configured servers (Microsoft Learn, GitHub, Azure).
+Confirm that MCP configuration exists at `.copilot/mcp-config.json`. List the configured servers (Microsoft Learn, GitHub, NuGet). Note that the user-level Copilot CLI MCP config at `/home/vscode/.copilot/mcp.json` is seeded separately during container creation.
 
 ## Step 3 — Setup Verification
 
