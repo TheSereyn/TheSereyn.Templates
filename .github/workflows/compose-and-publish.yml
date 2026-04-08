@@ -46,6 +46,16 @@ jobs:
       matrix:
         include: ${{ fromJSON(needs.guard.outputs.matrix) }}
     steps:
+      - name: Pre-flight — verify TEMPLATE_PUSH_TOKEN
+        env:
+          GH_TOKEN: ${{ secrets.TEMPLATE_PUSH_TOKEN }}
+        run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::TEMPLATE_PUSH_TOKEN secret is not set. Publishing requires a PAT with push access to downstream template repos."
+            exit 1
+          fi
+          echo "TEMPLATE_PUSH_TOKEN: present"
+
       - name: Checkout composition workspace
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
