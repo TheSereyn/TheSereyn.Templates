@@ -216,3 +216,164 @@ Re-review of two artifacts revised by Amos per lockout-compliant reassignment:
 - Reviewer workflow: Lockout applied and resolved correctly; team dynamics preserved
 
 **Ready State:** Merge to main; tag v* for compose-and-publish workflow.
+
+---
+
+## Security Review — Main Branch (Comprehensive)
+
+**By:** Drummer (Security Reviewer)  
+**Date:** 2026-04-08  
+**Scope:** Full main branch — all input artifacts plus workflows, compose script, MCP configs  
+**Verdict:** CONDITIONAL — No critical blockers, but 4 HIGH findings require remediation before next release tag
+
+### HIGH Findings
+
+#### H1: Unpinned npm packages in post-create.sh — supply chain risk
+
+**Files:** `base/.devcontainer/post-create.sh:31`, `overlays/blazor/.devcontainer/post-create.sh:31,86`  
+**CWE:** CWE-829 (Inclusion of Functionality from Untrusted Control Sphere)
+
+- `npm install -g @bradygaster/squad-cli` — no version pinned. Installs whatever is currently latest on npm.
+- `npm install -g @playwright/cli@latest` (Blazor overlay) — explicitly requests mutable latest tag.
+
+**Risk:** A compromised or malicious npm publish replaces the package. Every new dev container silently installs the compromised version. This is the most common supply chain attack vector in the npm ecosystem.
+
+**Fix:** Pin to specific semver versions: `npm install -g @bradygaster/squad-cli@<version>`. When updating, change the version explicitly and review the changelog.
+
+**Assign to:** Amos (Platform Engineer)
+
+#### H2: MCP server configs use `npx -y` with unpinned packages
+
+**Files:** `base/.copilot/mcp-config.json:11-13`, `overlays/blazor/.copilot/mcp-config.json:11-13,18-20`
+
+- `@anthropic/github-mcp-server` — launched via `npx -y` without version pinning (both base and Blazor)
+- `@playwright/mcp` — launched via `npx -y` without version pinning (Blazor only)
+
+**Risk:** `npx -y` auto-installs the latest version from npm without user confirmation. A typosquat or compromised package version executes arbitrary code in the developer's environment with full file system and network access. MCP servers have elevated privilege — they're invoked by Copilot with tool access.
+
+**Fix:** Pin versions: `"args": ["-y", "@anthropic/github-mcp-server@<version>"]`. Alternatively, pre-install in post-create.sh and use `"command": "node"` with a direct path.
+
+**Assign to:** Amos (Platform Engineer)
+
+#### H3: MSDOCS skill files fetched from mutable `main` branch without integrity verification
+
+**Files:** `base/.devcontainer/post-create.sh:41-50`, `overlays/blazor/.devcontainer/post-create.sh:41-50`
+
+```bash
+MSDOCS_RAW="https://raw.githubusercontent.com/microsoftdocs/mcp/main"
+curl -sL "$MSDOCS_RAW/skills/$skill/SKILL.md" -o "$SKILLS_DIR/$skill/SKILL.md" || true
+```
+
+- Fetches from `main` branch — content can change at any time
+- No checksum, no signature verification
+- `|| true` silently swallows download failures (could mask MITM or DNS hijack)
+- Downloads Markdown files that become Copilot skill instructions — injected content could influence all AI-generated code
+
+**Risk:** Compromise of microsoftdocs/mcp main branch (or a force-push) injects adversarial instructions into developer skill files. This is a prompt injection via supply chain.
+
+**Fix:** Pin to a specific commit SHA: `https://raw.githubusercontent.com/microsoftdocs/mcp/<SHA>/skills/...`. Add a SHA256 checksum verification step after download.
+
+**Assign to:** Amos (Platform Engineer)
+
+#### H4: `.gitignore` missing certificate and private key patterns
+
+**File:** `base/.gitignore`
+
+The first-time-setup prompt Step 11 instructs: *"confirm `*.pfx`, `*.key`, and `.env` files are excluded"* — but the `.gitignore` does **not** include `*.pfx`, `*.key`, or `*.pem` patterns. `.env` is covered. Certificate/key patterns are not.
+
+**Risk:** A developer follows Step 11, sees no error (the instruction says "confirm"), and assumes keys are protected. A `*.pfx` or `*.key` file committed to the repo exposes private keys to anyone with repo access.
+
+**Fix:** Add to `base/.gitignore`:
+```
+# Certificates and private keys
+*.pfx
+*.key
+*.pem
+```
+
+**Assign to:** Naomi (Template Engineer)
+
+### MEDIUM Findings
+
+#### M1: TEMPLATE_PUSH_TOKEN is a PAT with cross-repo write access
+
+**File:** `.github/workflows/compose-and-publish.yml:60`
+
+A personal access token (PAT) grants write access to all downstream template repos. PATs are user-scoped, creating a bus-factor risk and a lateral movement vector if the account is compromised.
+
+Additionally, `git config --global credential.helper store` persists the token to disk during the workflow run (line 63). While ephemeral (runner is destroyed after the job), it's not the cleanest pattern.
+
+**Recommendation:** Replace with a GitHub App installation token scoped to specific repositories. This also enables audit logging per-app rather than per-user.
+
+**Pre-existing:** Tracked since Session 2.
+
+#### M2: Blazor post-create.sh has redundant Playwright MCP injection
+
+**File:** `overlays/blazor/.devcontainer/post-create.sh:68-83`
+
+Inline Python code modifies `mcp.json` to add a Playwright MCP entry using `npx -y @playwright/mcp`. This is redundant with the static entry in `overlays/blazor/.copilot/mcp-config.json:18-20`. The inline code path is an unnecessary second attack surface with the same unpinned `npx -y` risk as H2.
+
+**Recommendation:** Remove the inline Python MCP injection. The static `mcp-config.json` already configures Playwright MCP.
+
+#### M3: Dependabot PR for actions/checkout pending
+
+**Branch:** `dependabot/github_actions/actions/checkout-6.0.2`
+
+The current SHA `11bd71901bbe5b1630ceea73d27597364c9af683` (v4.2.2) has a pending Dependabot update to 6.0.2. The SHA-pinning practice is excellent, but the update should be reviewed and merged.
+
+**Recommendation:** Review and merge the Dependabot PR.
+
+#### M4: Devcontainer features pinned to major version only
+
+**Files:** Both `devcontainer.json` files
+
+All features use `:1` tag (e.g., `ghcr.io/devcontainers/features/node:1`). Minor/patch updates auto-apply. For enterprise environments requiring reproducible builds, consider SHA pinning.
+
+**Recommendation:** Document the trade-off. For enterprise deployments, consider pinning to minor versions at minimum.
+
+### LOW Findings
+
+#### L1: `uv` pip install not version-pinned
+
+**Pre-existing (Session 2).** `python3 -m pip install --user --quiet uv` — no version. Low risk: build tool, not runtime.
+
+#### L2: `|| true` patterns suppress failure signals
+
+Multiple `|| true` guards in post-create.sh mask installation failures. A failed install is indistinguishable from a successful one until the developer tries to use the tool.
+
+#### L3: squad-setup SKILL.md recommends `@latest` for upgrades
+
+`base/.copilot/skills/squad-setup/SKILL.md:82` — `npm install -g @bradygaster/squad-cli@latest`. Documentation, not automation, but sets a precedent. Should recommend specific version.
+
+#### L4: First-time-setup Step 11 wording misleads on `.gitignore` coverage
+
+Step 11 says *"confirm `appsettings.*.json`, `*.pfx`, `*.key`..."* but the gitignore only covers `appsettings.Local.json` and `appsettings.*.Local.json` (which is correct — `appsettings.Development.json` should be tracked). The step text should clarify that *`*.Local.json`* patterns are what's excluded, and that `*.pfx`/`*.key` must be added (see H4).
+
+### Positive Observations (Security Wins)
+
+1. ✅ GitHub Actions pinned to full commit SHAs in both active workflows
+2. ✅ Spec Kit CLI pinned to release tag v0.5.0 via `uv tool install`
+3. ✅ `curl | sh` pattern eliminated project-wide (confirmed: `grep -rn 'curl.*|.*sh'` returns zero)
+4. ✅ `set -euo pipefail` in all shell scripts
+5. ✅ Workflow permissions minimized (`contents: read`)
+6. ✅ Guard job verifies tag is on `main` before publishing
+7. ✅ ISO 27001 skill updated to 2022 framework with correct control numbering
+8. ✅ Comprehensive security skill tree (20+ domain-specific skills)
+9. ✅ Security Principles section covers OWASP Top 10, CSRF, CORS, CSP, PKCE, DPoP
+10. ✅ `remoteUser: vscode` — not running as root in dev containers
+11. ✅ No prompt injection risks in any prompt files
+12. ✅ All prompts properly scoped (`mode: agent` / `mode: text`)
+13. ✅ No credentials stored in project files
+14. ✅ Spec Kit integration follows secure patterns (pinned, GitHub-owned source, local-only init)
+
+### Prompt Safety Assessment
+
+- **pre-container-setup.prompt.md** — Clean. Uses `gh auth login` (browser OAuth), no PAT handling, HTTPS clone URLs.
+- **first-time-setup.prompt.md** — Clean. No credential instructions. Security setup step is a net positive.
+- **requirements-interview.prompt.md** — Clean. Correctly scoped to interview only ("don't write code").
+- **spec-driven-development/SKILL.md** — Clean. No executable patterns that bypass security controls.
+- **requirements-gathering/SKILL.md** — Clean. Discovery methodology, no code generation.
+
+### Summary
+
+The security posture on `main` is solid for a template project. The Spec Kit integration landed cleanly with good supply chain practices (v0.5.0 pinning, no `curl | sh`). The 4 HIGH findings are all supply chain / install-safety issues in the dev container setup that pre-date or are adjacent to the Spec Kit work. H4 (missing gitignore patterns) is a gap between what the setup prompt promises and what the template delivers. None are critical/exploitable today, but all should be addressed before the next version tag ships templates to downstream consumers.

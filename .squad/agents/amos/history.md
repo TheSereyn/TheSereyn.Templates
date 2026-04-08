@@ -96,3 +96,13 @@
    - Holden re-reviewed → ✅ APPROVED FOR MERGE TO MAIN
    - Orchestration log written: 2026-04-08T10:17:21Z-amos.md
    - Ready for merge to main; compose-and-publish workflow pending tag push
+
+- Session 10 (2026-04-08): Scribe administrative handoff — Main-branch security review and batch 3 assignment.
+   - Orchestration log finalized: 2026-04-08T10:17:21Z-amos.md (captures batch 2 revision completion)
+   - Main-branch comprehensive security review findings recorded to decisions.md (4 HIGH, 4 MEDIUM, 4 LOW, 14 security wins documented)
+   - NEW BATCH 3 ASSIGNMENTS IDENTIFIED (supply chain / npm pinning):
+     * H1: Pin npm packages (@bradygaster/squad-cli, @playwright/cli@latest) in post-create.sh — multiple files affected
+     * H2: Pin MCP server packages (@anthropic/github-mcp-server, @playwright/mcp) via npx -y versioning or pre-install pattern
+     * H3: Pin MSDOCS skill fetch to commit SHA + add integrity verification (microsoftdocs/mcp main branch fetch currently unpinned/unverified)
+   - Positive findings: Spec Kit integration meets security standards (v0.5.0 pinned, no curl|sh, no secrets, GitHub-owned source) ✅
+   - Team status: batch 2 approved for merge; batch 3 work (H1/H2/H3) pending prioritization and scoping

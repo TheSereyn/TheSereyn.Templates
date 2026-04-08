@@ -102,3 +102,20 @@
   - Amos completed devcontainer side: uv + specify-cli@v0.5.0 in base + Blazor overlay; Python 3.12 feature added
   - Decision inbox merge in progress — all 7 inbox files consolidated into decisions.md under 2026-04-08 section
   - Orchestration logs written; session log written; git commit pending
+
+- Session 9 (2026-04-08): Spec Kit batch 2 — Locked-out reassignment and final approval.
+  - Holden review identified 2 blocking issues (version pinning @latest vs v0.5.0; curl|sh fallback vs pip install choice)
+  - Reviewer lockout applied: Naomi forbidden from revising own artifacts per protocol
+  - Reassignment decision: Holden assigned revisions to Amos (Platform Engineer) who authored post-create.sh and understands constraints
+  - Amos completed both fixes: pre-installed binary usage, pip install fallback, consistent v0.5.0 pinning across all 3 files
+  - Drummer and Holden re-reviewed → ✅ APPROVED for merge
+  - Orchestration log written: 2026-04-08T10:17:21Z-naomi.md (documents lockout, reassignment, UX/content review outcome)
+
+- Session 10 (2026-04-08): Scribe administrative handoff — Comprehensive main-branch security review and new batch identified
+  - Orchestration logs written for all agents (Holden, Drummer, Naomi, Amos); session log written: 2026-04-08T10:17:21Z-spec-kit-batch-2.md
+  - Decision inbox fully merged: drummer-main-branch-security-review.md → decisions.md (consolidated 4 HIGH, 4 MEDIUM, 4 LOW findings)
+  - NEW ASSIGNMENT IDENTIFIED: Main-branch security review findings require remediation (batch 3):
+    * H4 (assigned to Naomi): Add *.pfx, *.key, *.pem patterns to base/.gitignore (aligns with setup prompt Step 11 promise)
+    * H1, H2, H3 (assigned to Amos): Supply chain / npm package pinning work (squad-cli, playwright-cli, MCP servers, MSDOCS skill fetch)
+  - Spec Kit integration security validated ✅ (v0.5.0 pinned, curl | sh eliminated, no secrets introduced)
+  - Team ready: batch 2 approved for merge to main; batch 3 assignments recorded; git commit pending

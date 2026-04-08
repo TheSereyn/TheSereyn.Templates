@@ -79,3 +79,14 @@
    - Security posture intact — no new concerns introduced
    - Orchestration log written: 2026-04-08T10:17:21Z-drummer.md
    - Decision entry merged to decisions.md (decision summary section)
+
+- Session 10 (2026-04-08): Scribe administrative handoff — Main-branch comprehensive security review
+   - Orchestration log finalized: 2026-04-08T10:17:21Z-drummer.md (captures spec-kit-batch-2 re-review completion)
+   - Main-branch security review findings recorded to decisions.md (4 HIGH, 4 MEDIUM, 4 LOW findings + 14 security wins)
+   - Key HIGH findings identified:
+     * H1: Unpinned npm packages in post-create.sh (@bradygaster/squad-cli, @playwright/cli@latest) — assigned to Amos
+     * H2: MCP server configs use `npx -y` with unpinned packages (@anthropic/github-mcp-server, @playwright/mcp) — assigned to Amos
+     * H3: MSDOCS skill files fetched from mutable main branch without integrity verification — assigned to Amos
+     * H4: .gitignore missing *.pfx, *.key, *.pem patterns (setup prompt says to confirm, but patterns missing) — assigned to Naomi
+   - Positive: Spec Kit integration (v0.5.0 pinned, curl | sh eliminated) meets supply chain security standards ✅
+   - Team status: spec-kit-batch-2 ready for merge; main-branch security review (batch 3) now assigned for remediation
