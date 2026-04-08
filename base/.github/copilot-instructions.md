@@ -208,12 +208,19 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 
 ## Skills
 
+### Development Workflow
 - `spec-driven-development` — Spec Kit integration, SDD workflow phases, constitution governance, and Squad handoff patterns
-- `tunit-testing` — TUnit framework patterns, MTP CLI flags, assertion syntax
-- `project-conventions` — Error handling, API patterns, code style, naming, async
 - `requirements-gathering` — Structured 10-phase requirements interview for early-stage discovery (complementary to Spec Kit)
 - `squad-setup` — Squad installation, `squad init`, team design, and implementation orchestration
-- `security-review-core` — Security review workflow, severity/confidence model, PR checklist, and required output schema. Entry point for the full security skill tree.
+
+### Code Quality and Conventions
+- `tunit-testing` — TUnit framework patterns, MTP CLI flags, assertion syntax
+- `project-conventions` — Error handling, API patterns, code style, naming, async
+- `rfc-compliance` — HTTP/REST RFC standards checking (9205, 9110, 3986, 9457)
+- `code-analyzers` — Roslyn and StyleCop analyzer setup and configuration
+
+### Security (entry point: `security-review-core`)
+- `security-review-core` — Security review workflow, severity/confidence model, PR checklist, and required output schema
 - `security-sources` — Canonical reference catalog (OWASP, NIST, Microsoft Learn, CodeQL) mapped to each security domain
 - `owasp-secure-code-review` — Manual review methodology, entry-point and data-flow analysis
 - `dotnet-authn-authz` — ASP.NET Core auth/authz, claims, policies, token and cookie review
@@ -226,5 +233,20 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 - `supply-chain-and-dependencies` — NuGet provenance, lockfiles, transitive vulns, typosquatting, action SHA pinning
 - `ci-cd-ssdf-security` — GitHub Actions permissions, pull_request_target risk, OIDC federation, SSDF alignment
 - `security-register` — Project vulnerability and security finding tracker
-- `rfc-compliance` — HTTP/REST RFC standards checking (9205, 9110, 3986, 9457)
-- `code-analyzers` — Roslyn and StyleCop analyzer setup and configuration
+
+### Compliance (opt-in per project)
+- `compliance-gdpr` — GDPR compliance guidance and data protection requirements
+- `compliance-hipaa` — HIPAA compliance guidance
+- `compliance-iso27001` — ISO 27001 information security management
+- `compliance-pcidss` — PCI DSS payment card security
+- `compliance-soc2` — SOC 2 service organisation controls
+
+## Prompts
+
+| Prompt | Description |
+|--------|-------------|
+| `first-time-setup` | In-container setup — project identity, license, compliance, security configuration |
+| `pre-container-setup` | Host-level prerequisites checklist before opening the dev container |
+| `verify-setup` | Lightweight environment health check — re-runnable at any time |
+| `requirements-interview` | Structured discovery interview for early-stage or complex-domain projects |
+| `hire-security-architect` | Opt-in prompt to add a Security Architect agent to your Squad team |

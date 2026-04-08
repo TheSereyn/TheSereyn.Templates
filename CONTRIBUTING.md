@@ -48,7 +48,7 @@ bash compose.sh
 ls output/
 
 # Compose a single template
-bash compose.sh minimalapi
+bash compose.sh --only minimalapi
 ```
 
 ### Validating Changes
@@ -91,7 +91,7 @@ test -f output/TheSereyn.Templates.Blazor/README.md && echo "Blazor OK"
 
 1. Create `overlays/<template-name>/` directory
 2. Add template-specific files and overrides
-3. Add the template to `compose.sh` TEMPLATES array
+3. Add the template to `templates.json` at the repo root (overlay name and downstream repo)
 4. Add the template to the workflow matrix in `.github/workflows/compose-and-publish.yml`
 5. Create the downstream repository at `TheSereyn/TheSereyn.Templates.<TemplateName>`
 6. Add `TEMPLATE_PUSH_TOKEN` to repository secrets (see `docs/setup/workflow-secrets.md`)
