@@ -28,12 +28,12 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 
 | Component | Description |
 |-----------|-------------|
-| **Dev Container** | .NET 10, Node 22, GitHub CLI, Docker-outside-of-Docker |
+| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
 | **MCP Servers** | Microsoft Learn, GitHub, Playwright |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
 | **Skills** | TUnit testing, project conventions, spec-driven development, Blazor architecture, CSS design system, security (modular skill tree), RFC compliance, code analyzers |
-| **Prompts** | First-time setup, pre-container setup, requirements interview, hire security architect |
+| **Prompts** | First-time setup, pre-container setup, verify setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 | **Browser Automation** | [Playwright CLI](https://playwright.dev/docs/getting-started-cli) — agent-driven browser testing and automation |
 
