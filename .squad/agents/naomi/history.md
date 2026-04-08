@@ -82,3 +82,16 @@
    - Excluded `@scope` (Baseline 2025 too new) and anchor positioning (no Firefox) per research recommendations
    - Updated `blazor-architecture` skill with CSS Architecture section and cross-reference
    - Key learning: The skill is AI guidance, not a deployable framework — same pattern as tunit-testing and stylecop-compliance skills. Prescribes principles and patterns, not boilerplate imports.
+
+- Session 7 (2026-04-08): Integrated Spec Kit as primary spec-driven development workflow.
+  - Created `base/.copilot/skills/spec-driven-development/SKILL.md` — comprehensive SDD integration skill (~233 lines, 13 sections)
+  - Architecture: Spec Kit owns planning (specify → plan → tasks); Squad owns implementation orchestration
+  - Updated `base/.github/copilot-instructions.md` with Development Workflow section and refreshed Skills list
+  - Updated `base/.github/prompts/first-time-setup.prompt.md` — added Step 10 (Initialise Spec Kit), renumbered to 12 steps, rewrote next-steps to lead with SDD flow
+  - Repositioned `requirements-interview.prompt.md` as complementary discovery tool with bridge to Spec Kit after completion
+  - Updated `requirements-gathering` skill description to clarify Spec Kit relationship
+  - Updated `squad-setup` skill with implementation orchestrator positioning and handoff diagram
+  - Updated `base/README.md` with Spec Kit in What's Included and SDD workflow summary
+  - Compose verified — both MinimalApi and Blazor templates compose cleanly with all changes
+  - Key learning: The handoff model (planning tool → implementation orchestrator) is a clean separation of concerns. Spec Kit is unopinionated about implementation tooling, which makes it a natural fit as the front half of the pipeline. Squad's multi-agent model fills the back half. The constitution concept maps well to `.github/copilot-instructions.md` — reference it, don't duplicate it.
+  - Key learning: `requirements-interview` still has value as a structured discovery tool for vague ideas or stakeholder interviews. It's not obsolete — it feeds *into* Spec Kit rather than competing with it.
