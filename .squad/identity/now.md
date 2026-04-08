@@ -1,8 +1,9 @@
-updated_at: 2026-04-08T09:09:09Z
-focus_area: Disable active Squad workflows and land Squad update
+---
+updated_at: 2026-04-08T09:53:24Z
+focus_area: Integrate Spec Kit into templates, land to main, then review main
 active_issues: []
 ---
 
 # What We're Focused On
 
-Disabling the active Squad workflows, then committing and merging the Squad update.
+Integrating Spec Kit into the templates, merging the shipped changes to main, and producing a comprehensive main-branch review.

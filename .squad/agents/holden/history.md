@@ -65,3 +65,40 @@
   - Created PR #26 (dev → main), merged. Main fully caught up to dev.
   - Amos's `.yml.disabled` rename pattern is the right call — simple, reversible, self-documenting
   - Workflow: PR #25 landed the substance, PR #26 landed the documentation trail
+
+- Session 7 (2026-04-08): Spec Kit integration decision.
+  - Reviewed Spec Kit (github/spec-kit) — Python CLI installed via `uv tool install`, scaffolds `.specify/` dir with SDD slash commands
+  - Decision: Runtime init, not pre-generated artifacts. Install `specify` CLI in devcontainer, guide users to `specify init --here --ai copilot` during first-time-setup
+  - Spec Kit + Squad pairing: Spec Kit owns specification → planning → task breakdown; Squad owns implementation. `/speckit.implement` superseded by Squad agents
+  - Placement: 100% base/, 0% overlays. SDD is template-agnostic
+  - Technical: Need `uv` (standalone installer or pip) + `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@vX.Y.Z` pinned to release tag
+  - Security: Drummer to review `curl | sh` for uv installer; pip alternative available since Python 3.12 ships with Ubuntu Noble
+  - Decision recorded to `.squad/decisions/inbox/holden-spec-kit-integration.md`
+  - Implementation assigned: Amos (devcontainer), Naomi (prompts/docs/instructions), Drummer (security review)
+
+- Session 8 (2026-04-08): Reviewed Spec Kit integration change set on dev (4 commits, 16 files, 466 insertions).
+  - APPROVED with two required revisions before merging to main.
+  - Architecture is correct: 100% base/ placement, overlay duplication where overlay replaces base, Spec Kit + Squad pairing coherent across all 10 content artifacts.
+  - Issue 1 (Naomi): Version pinning contradiction — first-time-setup.prompt.md and spec-driven-development SKILL.md use `@latest` instead of the pre-installed pinned binary. Fix: `specify init --here --ai copilot` (use the v0.5.0 binary installed by post-create.sh).
+  - Issue 2 (Naomi/Drummer): curl | sh fallback in Step 10 contradicts Amos's `pip install uv` security choice. Fix: use `python3 -m pip install --user uv` as fallback, or Drummer formally approves curl | sh.
+  - Non-blocking: `/speckit.implement` listed in SKILL.md command table but superseded by Squad — add clarifying note.
+  - Decision recorded to `.squad/decisions/inbox/holden-spec-kit-review.md`
+
+- Session 8 (2026-04-08): Spec Kit batch 1 — Team execution and decision merge.
+  - Amos completed devcontainer integration: uv + specify-cli@v0.5.0 in base + Blazor overlay post-create.sh; Python 3.12 feature added
+  - Naomi completed template guidance: spec-driven-development skill, copilot-instructions updates, first-time-setup prompt (added Step 10 — Spec Kit init), README updates
+  - Spec Kit integration is now production-ready for all downstream templates
+  - Decision inbox merge in progress — all 7 inbox files consolidated into decisions.md under 2026-04-08 section
+  - Orchestration logs written for Holden, Naomi, Amos; session log written; git commit pending
+
+- Session 9 (2026-04-08): Spec Kit batch 2 — Revised artifacts and approval.
+   - Applied reviewer lockout: Naomi (original author) forbidden from fixing her rejected artifacts
+   - Reassigned to Amos (Platform Engineer) per lockout protocol
+   - Amos completed two required revisions:
+     * Removed `@latest` version pinning — now uses pre-installed `specify` binary throughout
+     * Eliminated `curl | sh` fallback — replaced with `python3 -m pip install --user uv`
+   - Drummer re-reviewed both files → ✅ APPROVED (all issues resolved, no lockout)
+   - Final verdict: ✅ APPROVED FOR MERGE TO MAIN
+   - Orchestration logs written: 2026-04-08T10:17:21Z-holden.md, holden re-review entries in decisions.md
+   - All 4 inbox decision files merged into decisions.md; inbox directory cleaned
+   - Ready for git commit and main merge
