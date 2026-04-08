@@ -31,6 +31,12 @@ BASE_DIR="$SCRIPT_DIR/base"
 OVERLAYS_DIR="$SCRIPT_DIR/overlays"
 OUTPUT_DIR="$SCRIPT_DIR/output"
 
+# Pre-flight: jq is required to parse templates.json
+if ! command -v jq &>/dev/null; then
+  echo "Error: jq is required but not found on PATH. Install it and retry." >&2
+  exit 1
+fi
+
 # Template definitions from templates.json (single source of truth)
 TEMPLATES_JSON="$SCRIPT_DIR/templates.json"
 if [[ ! -f "$TEMPLATES_JSON" ]]; then
@@ -114,7 +120,7 @@ compose_template() {
       mv "$append_file" "$dest"
       echo "  Renamed (no base): $rel_path → $base_name"
     fi
-  done < <(find "$target" -name '*.append.md' -print0 2>/dev/null)
+  done < <(find "$target" -name '*.append.md' -print0 2>/dev/null | sort -z)
 
   # Step 4: Stamp version footer if TAG is set
   if [[ -n "$TAG" && -f "$target/README.md" ]]; then

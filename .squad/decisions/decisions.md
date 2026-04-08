@@ -377,3 +377,64 @@ Step 11 says *"confirm `appsettings.*.json`, `*.pfx`, `*.key`..."* but the gitig
 ### Summary
 
 The security posture on `main` is solid for a template project. The Spec Kit integration landed cleanly with good supply chain practices (v0.5.0 pinning, no `curl | sh`). The 4 HIGH findings are all supply chain / install-safety issues in the dev container setup that pre-date or are adjacent to the Spec Kit work. H4 (missing gitignore patterns) is a gap between what the setup prompt promises and what the template delivers. None are critical/exploitable today, but all should be addressed before the next version tag ships templates to downstream consumers.
+
+---
+
+## Decision: Solution Scaffolding Out of Scope
+
+**By:** Coordinator (via user directive from Lee Buxton)  
+**Date:** 2026-04-08T10:44:38Z  
+**Status:** DECISION CAPTURED
+
+### Directive
+
+Solution scaffolding remains intentionally out of scope for now. These templates are **environment templates** that provide:
+- The development environment (dev containers, tools, language runtime)
+- Workflow scaffolding (prompts, skills, Spec Kit integration, Squad workspace)
+
+They do **not** provide:
+- Solution/project scaffolding (project structure, sample code, starter files)
+
+### Rationale
+
+Templates are environment-first. Solution scaffolding would diverge across team preferences and project types. The environment + workflow provide the foundation; users bring their own solution shape.
+
+### Implications
+
+- Squad prompts guide users toward Spec Kit for solution definition
+- `requirements-gathering` and `spec-driven-development` skills bridge environment → solution
+- Architecture templates (MinimalApi, Blazor) are environment templates, not solution generators
+
+---
+
+## Decision: Remediation Batch Approved for Merge to Main
+
+**By:** Holden (Lead) + Drummer (Security Reviewer)  
+**Date:** 2026-04-08  
+**Status:** APPROVED
+
+### Summary
+
+All HIGH findings (H1–H4) from main-branch security review are resolved on `dev`. Spec Kit integration architecture is sound. All reviews passed. Merge to main approved; ready for v* tag.
+
+### Resolved Findings
+
+- **H1:** Unpinned npm packages → Centralised version pinning (post-create-shared.sh)
+- **H2:** MCP npx with unpinned versions → All packages version-pinned (@modelcontextprotocol/server-github@2025.4.8, @playwright/mcp@0.0.70)
+- **H3:** MSDOCS mutable main branch → Pinned to commit SHA 933e0c5044b938cbeb23709e1cb125c8d93395c0 with fatal error handling
+- **H4:** Missing certificate patterns in gitignore → Added *.pfx, *.key, *.pem, *.p12, *.cer
+
+### Key Artifacts
+
+- `post-create-shared.sh` — Centralised devcontainer setup (new)
+- `verify-setup.prompt.md` — Environment health check (new)
+- `pr-validate.yml` — Devcontainer drift detection (enhanced)
+- `compose-and-publish.yml` — Pre-flight token validation (enhanced)
+
+### Next Steps
+
+1. Merge dev to main
+2. Tag with v* (e.g., v1.0.0-spec-kit-hardening)
+3. Trigger compose-and-publish workflow
+4. Publish to downstream templates (MinimalApi, Blazor)
+

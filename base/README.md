@@ -31,6 +31,7 @@ If GitHub Copilot is unavailable, the Dev Container still provides a complete .N
    - `{{PROJECT_NAME}}` → your project name
    - `{{NAMESPACE}}` → your root namespace (e.g., `Acme.MyProject`)
    - `{{DESCRIPTION}}` → a one-line project description
+   - In `LICENSE`: `{{YEAR}}` → current year, `{{AUTHOR}}` → author or organisation name
 2. Create your solution and project files following Clean Architecture:
    ```bash
    dotnet new sln -n {{PROJECT_NAME}}
@@ -50,8 +51,8 @@ If GitHub Copilot is unavailable, the Dev Container still provides a complete .N
 | **MCP Servers** | Microsoft Learn, GitHub |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
-| **Skills** | TUnit testing, project conventions, spec-driven development, security review, RFC compliance, code analyzers |
-| **Prompts** | First-time setup, requirements interview (early-stage discovery) |
+| **Skills** | TUnit testing, project conventions, spec-driven development, security (modular skill tree), RFC compliance, code analyzers |
+| **Prompts** | First-time setup, pre-container setup, verify setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Development Workflow
@@ -87,10 +88,6 @@ src/
 ├── Infrastructure/   # Database, external services, messaging
 └── Api/              # Minimal API endpoints, DI composition root
 ```
-
-## For Template Maintainers
-
-Publishing composed templates to downstream repositories requires a `TEMPLATE_PUSH_TOKEN` secret set in repository **Settings → Secrets and Variables → Actions**. See [`docs/setup/workflow-secrets.md`](docs/setup/workflow-secrets.md) for the required scope and setup instructions.
 
 ## License
 

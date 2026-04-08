@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: "Complementary discovery interview for early-stage projects. Produces docs/planning/requirements.md that can feed into Spec Kit's /speckit.specify phase. Use when your idea is still vague or you need structured stakeholder discovery before formal specification."
-tools: ['read', 'edit', 'search', 'todo']
+tools: ['read', 'edit', 'search']
 ---
 
 # Requirements Interview
@@ -30,7 +30,7 @@ Follow the 10-phase interview structure defined in the `requirements-gathering` 
 9. Constraints, Assumptions, and Risks
 10. Prioritisation and Phasing
 
-Use the todo list to track phase progress. Present 3–5 questions per phase. Summarise and confirm before advancing.
+Track phase progress visibly. After each phase, summarise what was captured and confirm before advancing. Present 3–5 questions per phase.
 
 ## Output
 

@@ -30,3 +30,11 @@ Agent Scribe initialized and ready for work.
 ## Learnings
 
 Cross-agent coordination established. Reviewer lockout workflow: Naomi (rejected author) → Amos (reassigned to revise) → Drummer + Holden (re-review) → merge-ready. Scribe role: document execution trail, consolidate decisions, maintain agent history across sessions.
+
+- Session 5 (2026-04-08): Orchestration logging and decision archival
+   - Wrote orchestration logs for Naomi, Amos, Drummer, Holden, Coordinator
+   - Wrote session log for remediation batch
+   - Merged decision inbox files to decisions.md (deduplicated)
+   - Deleted inbox files after merge
+   - Updated all agent histories with session outcomes
+   - Git staged .squad/ artifacts for commit

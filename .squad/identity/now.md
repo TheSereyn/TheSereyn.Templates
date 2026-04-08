@@ -1,9 +1,9 @@
 ---
-updated_at: 2026-04-08T09:53:24Z
-focus_area: Integrate Spec Kit into templates, land to main, then review main
+updated_at: 2026-04-08T10:44:38Z
+focus_area: Remediate critical, high, and medium review findings
 active_issues: []
 ---
 
 # What We're Focused On
 
-Integrating Spec Kit into the templates, merging the shipped changes to main, and producing a comprehensive main-branch review.
+Fixing the critical, high, and medium review findings while preserving the environment-first template scope and keeping solution scaffolding out of scope.

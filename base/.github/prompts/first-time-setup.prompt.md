@@ -57,6 +57,13 @@ Files to update:
 - `.github/copilot-instructions.md`
 - `README.md`
 
+Also update `LICENSE` with:
+
+| Placeholder | Value |
+|-------------|-------|
+| `{{YEAR}}` | Current year (e.g., `2026`) |
+| `{{AUTHOR}}` | Author or organisation name |
+
 ## Step 6 — Select License
 
 Ask the user which license they want for the project. Offer common options:
@@ -136,7 +143,7 @@ Verify initialisation by confirming the `.specify/` directory was created and th
 
 ## Step 11 — Security Setup
 
-- Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, and `.env` files are excluded
+- Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, `*.pem`, and `.env` files are excluded
 - Run `dotnet user-secrets init` in your main project to set up local secret management
 - Enable GitHub Secret Scanning on the repository (Settings → Security → Secret scanning)
 - Configure branch protection on `main`: require PR reviews, require status checks to pass before merging
@@ -149,14 +156,19 @@ Provide a summary of what was configured, then suggest:
 2. **Specify what to build** — Run `/speckit.specify` to capture your requirements as executable specifications
 3. **Plan and implement** — Use `/speckit.plan` → `/speckit.tasks` → hand off to Squad (`@squad`) for implementation
 4. **Early-stage discovery (optional)** — If your idea is still vague, run `/requirements-interview` first to crystallise requirements before specifying
-5. **Review skills** — The project includes skills for spec-driven development, TUnit testing, project conventions, Squad setup, security review (modular skill tree led by `security-review-core`), RFC compliance, and code analyzers
+5. **Review skills** — The project includes skills for spec-driven development, TUnit testing, project conventions, Squad setup, security (modular skill tree led by `security-review-core`), RFC compliance, and code analyzers. Run `/hire-security-architect` to optionally add a dedicated Security Architect to your Squad team.
 
 ## Self-Cleanup
 
 After completing setup, instruct the user:
 
-> You can delete both setup prompts now — they are one-time operations:
+> You can delete the setup prompts now — they are one-time operations:
 > ```bash
 > rm .github/prompts/pre-container-setup.prompt.md
 > rm .github/prompts/first-time-setup.prompt.md
+> ```
+>
+> **Keep** `verify-setup` — you can re-run it any time to health-check your environment:
+> ```
+> @workspace /verify-setup
 > ```

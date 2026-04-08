@@ -106,3 +106,15 @@
      * H3: Pin MSDOCS skill fetch to commit SHA + add integrity verification (microsoftdocs/mcp main branch fetch currently unpinned/unverified)
    - Positive findings: Spec Kit integration meets security standards (v0.5.0 pinned, no curl|sh, no secrets, GitHub-owned source) ✅
    - Team status: batch 2 approved for merge; batch 3 work (H1/H2/H3) pending prioritization and scoping
+
+- Session 5 (2026-04-08): Spec Kit integration batch — platform hardening and security fixes
+   - Received reassignment per reviewer lockout policy (Naomi locked out; Amos owns revision)
+   - Fixed H1 (npm packages): Centralised version pinning in post-create-shared.sh (SQUAD_CLI_VERSION=0.9.1, PLAYWRIGHT_CLI_VERSION=0.1.6, MSDOCS_COMMIT=933e0c5)
+   - Fixed H2 (MCP npx): Updated to @modelcontextprotocol/server-github@2025.4.8, @playwright/mcp@0.0.70
+   - Fixed H3 (MSDOCS): Pinned to commit SHA with fatal error handling (no more `|| true`)
+   - Fixed H4 (gitignore): Added *.pfx, *.key, *.pem, *.p12, *.cer patterns
+   - Created pr-validate.yml (devcontainer drift detection)
+   - Enhanced compose-and-publish.yml (pre-flight token validation)
+   - Created verify-setup.prompt.md (environment health check)
+   - All HIGH findings resolved; Drummer approved remediation batch
+   - Holden cleared merge to main; ready for v* tag

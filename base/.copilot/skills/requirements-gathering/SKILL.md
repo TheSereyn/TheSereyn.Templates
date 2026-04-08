@@ -25,7 +25,7 @@ After the interview, the output (`docs/planning/requirements.md`) becomes input 
 3. **One phase at a time.** Present questions in focused batches (3–5 questions). Wait for answers before moving on.
 4. **Challenge vagueness.** Requirements like "it should be fast" or "easy to use" need concrete definitions.
 5. **Summarise before advancing.** After each phase, restate what you've captured and confirm before moving on.
-6. **Track progress visually.** Use the todo list to show which phases are complete.
+6. **Track progress visually.** Summarise phase completion status as you go (e.g., ✅ Phase 1 done, → Phase 2 next).
 
 ## Context Loading
 
@@ -119,7 +119,7 @@ Work through these phases in order. Skip or merge phases that aren't relevant ba
 1. Open with Phase 1. Briefly explain the process.
 2. After each phase, summarise and ask: *"Is this accurate? Anything to add or correct?"*
 3. If an answer reveals something about a later phase, note it but stay focused on the current phase.
-4. Use the todo list to track phase completion.
+4. Track and display phase completion status as you go.
 5. If the user goes off-topic, capture the information but steer back.
 6. When all phases are covered, announce you'll compile the requirements document.
 
