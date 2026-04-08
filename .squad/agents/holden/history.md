@@ -76,6 +76,14 @@
   - Decision recorded to `.squad/decisions/inbox/holden-spec-kit-integration.md`
   - Implementation assigned: Amos (devcontainer), Naomi (prompts/docs/instructions), Drummer (security review)
 
+- Session 8 (2026-04-08): Reviewed Spec Kit integration change set on dev (4 commits, 16 files, 466 insertions).
+  - APPROVED with two required revisions before merging to main.
+  - Architecture is correct: 100% base/ placement, overlay duplication where overlay replaces base, Spec Kit + Squad pairing coherent across all 10 content artifacts.
+  - Issue 1 (Naomi): Version pinning contradiction — first-time-setup.prompt.md and spec-driven-development SKILL.md use `@latest` instead of the pre-installed pinned binary. Fix: `specify init --here --ai copilot` (use the v0.5.0 binary installed by post-create.sh).
+  - Issue 2 (Naomi/Drummer): curl | sh fallback in Step 10 contradicts Amos's `pip install uv` security choice. Fix: use `python3 -m pip install --user uv` as fallback, or Drummer formally approves curl | sh.
+  - Non-blocking: `/speckit.implement` listed in SKILL.md command table but superseded by Squad — add clarifying note.
+  - Decision recorded to `.squad/decisions/inbox/holden-spec-kit-review.md`
+
 - Session 8 (2026-04-08): Spec Kit batch 1 — Team execution and decision merge.
   - Amos completed devcontainer integration: uv + specify-cli@v0.5.0 in base + Blazor overlay post-create.sh; Python 3.12 feature added
   - Naomi completed template guidance: spec-driven-development skill, copilot-instructions updates, first-time-setup prompt (added Step 10 — Spec Kit init), README updates
