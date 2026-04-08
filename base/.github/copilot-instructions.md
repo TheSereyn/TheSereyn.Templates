@@ -182,12 +182,37 @@ Copilot must clarify before coding if any of these are unclear:
 - **Tests:** Happy path + edge cases + failure + idempotency + concurrency
 - **Deviation:** If applicable, present Option A vs Option B with explicit flag
 
+## Development Workflow — Spec-Driven Development
+
+This project uses **Spec Kit** for spec-driven development (SDD) and **Squad** for implementation orchestration.
+
+### The Standard Flow
+
+1. **Define governance** — `/speckit.constitution` establishes project principles and constraints
+2. **Specify requirements** — `/speckit.specify` captures what to build and why
+3. **Refine and validate** — `/speckit.clarify` and `/speckit.checklist` resolve ambiguities
+4. **Plan implementation** — `/speckit.plan` produces a technical design aligned with this stack
+5. **Decompose into tasks** — `/speckit.tasks` creates actionable work items
+6. **Implement with Squad** — Squad's specialist agents execute the plan
+
+See the `spec-driven-development` skill for full details, constitution patterns, and integration guidance.
+
+### When to Use What
+
+| Need | Tool |
+|------|------|
+| Define and iterate on specifications | Spec Kit (`/speckit.specify`) |
+| Early-stage discovery for vague ideas | Requirements Interview (`/requirements-interview`) |
+| Implementation orchestration | Squad (`@squad`) |
+| Small bug fixes / refactors | Direct coding (no ceremony needed) |
+
 ## Skills
 
+- `spec-driven-development` — Spec Kit integration, SDD workflow phases, constitution governance, and Squad handoff patterns
 - `tunit-testing` — TUnit framework patterns, MTP CLI flags, assertion syntax
 - `project-conventions` — Error handling, API patterns, code style, naming, async
-- `requirements-gathering` — Structured 10-phase requirements interview and documentation
-- `squad-setup` — Squad installation, `squad init`, team design, and agent management
+- `requirements-gathering` — Structured 10-phase requirements interview for early-stage discovery (complementary to Spec Kit)
+- `squad-setup` — Squad installation, `squad init`, team design, and implementation orchestration
 - `security-review-core` — Security review workflow, severity/confidence model, PR checklist, and required output schema. Entry point for the full security skill tree.
 - `security-sources` — Canonical reference catalog (OWASP, NIST, Microsoft Learn, CodeQL) mapped to each security domain
 - `owasp-secure-code-review` — Manual review methodology, entry-point and data-flow analysis

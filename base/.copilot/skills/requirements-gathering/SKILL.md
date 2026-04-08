@@ -1,13 +1,22 @@
 ---
 name: "requirements-gathering"
-description: "Structured 10-phase requirements interview methodology — progressive-depth questioning, MoSCoW prioritisation, and comprehensive requirements.md output template"
+description: "Structured 10-phase requirements interview methodology — progressive-depth questioning, MoSCoW prioritisation, and comprehensive requirements.md output template. Complementary discovery tool for early-stage projects before Spec Kit specification."
 ---
 
 # Requirements Gathering
 
 ## Overview
 
-This skill defines a structured methodology for eliciting comprehensive project requirements through a conversational interview. It produces a `docs/planning/requirements.md` file that a Solution Architect can use to design the system.
+This skill defines a structured methodology for eliciting comprehensive project requirements through a conversational interview. It produces a `docs/planning/requirements.md` file that feeds into the Spec Kit specification workflow or can be used directly by a Solution Architect to design the system.
+
+### Relationship with Spec Kit
+
+This interview is a **complementary discovery tool**, not the primary workflow. Use it when:
+- The project idea is still vague and needs structured exploration
+- Multiple stakeholders need to be interviewed before formalising specifications
+- The domain is complex and benefits from progressive-depth questioning
+
+After the interview, the output (`docs/planning/requirements.md`) becomes input to Spec Kit's `/speckit.specify` phase, where requirements are formalised into executable specifications.
 
 ## Core Principles
 
