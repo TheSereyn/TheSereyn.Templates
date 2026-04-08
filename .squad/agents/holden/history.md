@@ -65,3 +65,13 @@
   - Created PR #26 (dev → main), merged. Main fully caught up to dev.
   - Amos's `.yml.disabled` rename pattern is the right call — simple, reversible, self-documenting
   - Workflow: PR #25 landed the substance, PR #26 landed the documentation trail
+
+- Session 7 (2026-04-08): Spec Kit integration decision.
+  - Reviewed Spec Kit (github/spec-kit) — Python CLI installed via `uv tool install`, scaffolds `.specify/` dir with SDD slash commands
+  - Decision: Runtime init, not pre-generated artifacts. Install `specify` CLI in devcontainer, guide users to `specify init --here --ai copilot` during first-time-setup
+  - Spec Kit + Squad pairing: Spec Kit owns specification → planning → task breakdown; Squad owns implementation. `/speckit.implement` superseded by Squad agents
+  - Placement: 100% base/, 0% overlays. SDD is template-agnostic
+  - Technical: Need `uv` (standalone installer or pip) + `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@vX.Y.Z` pinned to release tag
+  - Security: Drummer to review `curl | sh` for uv installer; pip alternative available since Python 3.12 ships with Ubuntu Noble
+  - Decision recorded to `.squad/decisions/inbox/holden-spec-kit-integration.md`
+  - Implementation assigned: Amos (devcontainer), Naomi (prompts/docs/instructions), Drummer (security review)
