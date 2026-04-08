@@ -85,3 +85,14 @@
   - Session 6 work (workflow disable) complete; Session 7 work (Spec Kit devcontainer) complete and committed
   - Decision inbox merge in progress — all 7 inbox files consolidated into decisions.md under 2026-04-08 section
   - Orchestration logs written for Amos; session log written; git commit pending
+
+- Session 9 (2026-04-08): Spec Kit batch 2 — Revision under lockout reassignment.
+   - Accepted lockout reassignment from Holden (Naomi cannot revise her own rejected artifacts)
+   - Completed two required revisions to restore version consistency and fix security fallback:
+     * Issue 1 (Version pinning): Replaced `uvx --from ...@latest` with direct call to pre-installed binary `specify init --here --ai copilot` in both files
+     * Issue 2 (curl | sh): Replaced fallback with `python3 -m pip install --user uv` + PATH export, aligning with my own post-create.sh security choice
+   - Ran compose.sh to verify template output regenerates cleanly with changes
+   - Drummer re-reviewed → ✅ APPROVED; no lockout triggered
+   - Holden re-reviewed → ✅ APPROVED FOR MERGE TO MAIN
+   - Orchestration log written: 2026-04-08T10:17:21Z-amos.md
+   - Ready for merge to main; compose-and-publish workflow pending tag push

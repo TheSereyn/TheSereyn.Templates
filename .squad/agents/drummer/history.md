@@ -51,3 +51,31 @@
    - Holden approved spec compliance — no changes required
    - Orchestration log created and archived
    - Inbox decisions merged to decisions.md
+
+- Session 5 (2026-04-08): Security review of Spec Kit integration on `dev`.
+  - APPROVED — Spec Kit integration follows reasonable security posture for enterprise templates
+  - Spec Kit CLI install pinned to `v0.5.0` via Git tag — good supply chain practice
+  - Source is GitHub-owned (`github/spec-kit`) — trusted origin
+  - `uv` installed via pip (not `curl | sh`) as primary path — safe
+  - No secrets, credentials, or insecure auth patterns introduced
+  - Security Setup step preserved and renumbered (now Step 11)
+  - Non-blocking: F1 — version inconsistency (`@latest` in init vs `v0.5.0` in install) is the top recommendation
+  - Non-blocking: F2 — `curl | sh` fallback for uv documented but flaggable by enterprise security
+  - Non-blocking: F3 — `uv` pip install not version-pinned
+  - Non-blocking: F4 — Git tag is mutable; commit SHA would be stronger
+  - Pre-existing unpinned installs (squad-cli, playwright, msdocs skills) remain from Session 2
+  - Decision written to `.squad/decisions/inbox/drummer-spec-kit-review.md`
+
+- Session 9 (2026-04-08): Spec Kit batch 2 — Revised artifacts re-review.
+   - APPROVED revised artifacts per Amos reassignment from Holden lockout.
+   - Issue 1 (Version pinning `@latest` → v0.5.0): RESOLVED ✅
+     - `first-time-setup.prompt.md` Step 10 now uses `specify init --here --ai copilot` (pre-installed binary)
+     - `spec-driven-development/SKILL.md` primary path uses pre-installed binary; standalone alternative correctly pinned to `@v0.5.0`
+     - All three artifacts (post-create.sh, prompt, SKILL.md) now reference consistent v0.5.0 version. No `@latest` appears.
+   - Issue 2 (curl | sh fallback removed): RESOLVED ✅
+     - `first-time-setup.prompt.md` fallback now `python3 -m pip install --user uv` with PATH export
+     - `spec-driven-development/SKILL.md` Prerequisites uses `pip install uv`, no curl | sh
+     - Full base/ sweep: `grep -rn 'curl.*|.*sh'` returns zero — pattern eliminated project-wide
+   - Security posture intact — no new concerns introduced
+   - Orchestration log written: 2026-04-08T10:17:21Z-drummer.md
+   - Decision entry merged to decisions.md (decision summary section)

@@ -90,3 +90,15 @@
   - Spec Kit integration is now production-ready for all downstream templates
   - Decision inbox merge in progress — all 7 inbox files consolidated into decisions.md under 2026-04-08 section
   - Orchestration logs written for Holden, Naomi, Amos; session log written; git commit pending
+
+- Session 9 (2026-04-08): Spec Kit batch 2 — Revised artifacts and approval.
+   - Applied reviewer lockout: Naomi (original author) forbidden from fixing her rejected artifacts
+   - Reassigned to Amos (Platform Engineer) per lockout protocol
+   - Amos completed two required revisions:
+     * Removed `@latest` version pinning — now uses pre-installed `specify` binary throughout
+     * Eliminated `curl | sh` fallback — replaced with `python3 -m pip install --user uv`
+   - Drummer re-reviewed both files → ✅ APPROVED (all issues resolved, no lockout)
+   - Final verdict: ✅ APPROVED FOR MERGE TO MAIN
+   - Orchestration logs written: 2026-04-08T10:17:21Z-holden.md, holden re-review entries in decisions.md
+   - All 4 inbox decision files merged into decisions.md; inbox directory cleaned
+   - Ready for git commit and main merge

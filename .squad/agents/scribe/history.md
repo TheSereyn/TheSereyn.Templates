@@ -18,6 +18,15 @@ Agent Scribe initialized and ready for work.
 - Merged inbox decision (holden-precontainer-var-split) into decisions.md
 - Deleted inbox file after merge
 
+**2026-04-08 Update (Session 9):**
+- Executed Spec Kit batch 2 spawn manifest (Drummer, Holden, Amos re-review)
+- Created 3 orchestration logs (Drummer, Holden, Amos) with ISO 8601 UTC timestamps
+- Created session log for spec-kit-batch-2 integration cycle
+- Merged 4 inbox decision files into unified decisions.md (drummer-spec-kit-review, drummer-spec-kit-re-review, holden-spec-kit-review, holden-spec-kit-reassignment)
+- Added decision summary section capturing full review/revision cycle
+- Deleted all 4 inbox files after merge
+- Appended team updates to affected agent history.md files (Drummer, Holden, Amos, Scribe)
+
 ## Learnings
 
-Initial setup complete. Cross-agent coordination: Holden's template variable split and v0.3.2 release both documented and merged to team decisions.
+Cross-agent coordination established. Reviewer lockout workflow: Naomi (rejected author) → Amos (reassigned to revise) → Drummer + Holden (re-review) → merge-ready. Scribe role: document execution trail, consolidate decisions, maintain agent history across sessions.
