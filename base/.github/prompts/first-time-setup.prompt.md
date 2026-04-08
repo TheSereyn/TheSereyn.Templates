@@ -116,7 +116,7 @@ Squad is installed automatically during container creation. Verify the installat
 Spec Kit provides the spec-driven development workflow for this project. Initialise it in the current directory:
 
 ```bash
-uvx --from git+https://github.com/github/spec-kit.git@latest specify init --here --ai copilot
+specify init --here --ai copilot
 ```
 
 Verify initialisation by confirming the `.specify/` directory was created and that the following slash commands are available in Copilot Chat:
@@ -124,10 +124,14 @@ Verify initialisation by confirming the `.specify/` directory was created and th
 - `/speckit.plan` — generate implementation plans
 - `/speckit.tasks` — break down into tasks
 
-> **Note:** If `uvx` is not available, install `uv` first:
+> **Note:** If `specify` is not available, the post-create script may not have completed. Re-run it:
 > ```bash
-> curl -LsSf https://astral.sh/uv/install.sh | sh
-> source $HOME/.local/bin/env
+> bash .devcontainer/post-create.sh
+> ```
+> If `uv` is also missing, install it manually:
+> ```bash
+> python3 -m pip install --user uv
+> export PATH="$HOME/.local/bin:$PATH"
 > ```
 
 ## Step 11 — Security Setup

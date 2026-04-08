@@ -29,14 +29,22 @@ Spec Kit (specify → plan → tasks)  →  Squad (implement with specialist age
 | Git | Any | `git status` |
 | GitHub Copilot | VS Code extension | Copilot Chat available |
 
-> **Note:** `uv` and `python3` are expected to be pre-installed in the Dev Container. If missing, install `uv` via `curl -LsSf https://astral.sh/uv/install.sh | sh`.
+> **Note:** `uv`, `python3`, and the `specify` CLI are pre-installed in the Dev Container. If `uv` is missing, install it via `python3 -m pip install --user uv`.
 
 ## Installation
 
 ### Initialise Spec Kit in an existing project
 
+The `specify` CLI is pre-installed in the Dev Container (pinned to v0.5.0). Run:
+
 ```bash
-uvx --from git+https://github.com/github/spec-kit.git@latest specify init --here --ai copilot
+specify init --here --ai copilot
+```
+
+For standalone installs outside the Dev Container:
+
+```bash
+uvx --from "git+https://github.com/github/spec-kit.git@v0.5.0" specify init --here --ai copilot
 ```
 
 Key flags:
