@@ -75,3 +75,10 @@
   - Security: Drummer to review `curl | sh` for uv installer; pip alternative available since Python 3.12 ships with Ubuntu Noble
   - Decision recorded to `.squad/decisions/inbox/holden-spec-kit-integration.md`
   - Implementation assigned: Amos (devcontainer), Naomi (prompts/docs/instructions), Drummer (security review)
+
+- Session 8 (2026-04-08): Spec Kit batch 1 — Team execution and decision merge.
+  - Amos completed devcontainer integration: uv + specify-cli@v0.5.0 in base + Blazor overlay post-create.sh; Python 3.12 feature added
+  - Naomi completed template guidance: spec-driven-development skill, copilot-instructions updates, first-time-setup prompt (added Step 10 — Spec Kit init), README updates
+  - Spec Kit integration is now production-ready for all downstream templates
+  - Decision inbox merge in progress — all 7 inbox files consolidated into decisions.md under 2026-04-08 section
+  - Orchestration logs written for Holden, Naomi, Amos; session log written; git commit pending

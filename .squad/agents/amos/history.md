@@ -70,3 +70,18 @@
   - compose.sh verified: both MinimalApi and Blazor outputs include the Spec Kit changes
   - Spec Kit install is idempotent (`|| true` on uv tool install) and safe to re-run
   - Chose pip over `curl | sh` for uv install to stay consistent with Drummer's security review findings
+
+- Session 7 (2026-04-08): Added Spec Kit CLI to shared dev container experience.
+  - Added `ghcr.io/devcontainers/features/python:1` (v3.12) to both base and Blazor overlay devcontainer.json
+  - Added uv install via `pip install --user` in post-create.sh, then `uv tool install specify-cli` pinned to v0.5.0
+  - Added `~/.local/bin` to PATH in .bashrc heredoc (required for uv tools and pip --user installs)
+  - All four files updated: base devcontainer.json + post-create.sh, blazor overlay devcontainer.json + post-create.sh
+  - Blazor overlay replaces base (not appends), so both must be kept in sync for shared tooling
+  - compose.sh verified: both MinimalApi and Blazor outputs include the Spec Kit changes
+  - Spec Kit install is idempotent (`|| true` on uv tool install) and safe to re-run
+  - Chose pip over `curl | sh` for uv install to stay consistent with Drummer's security review findings
+
+- Session 8 (2026-04-08): Spec Kit batch 1 — Team execution and decision merge.
+  - Session 6 work (workflow disable) complete; Session 7 work (Spec Kit devcontainer) complete and committed
+  - Decision inbox merge in progress — all 7 inbox files consolidated into decisions.md under 2026-04-08 section
+  - Orchestration logs written for Amos; session log written; git commit pending
