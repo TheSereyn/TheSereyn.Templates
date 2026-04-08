@@ -51,3 +51,12 @@
    - Naomi's implementation approved and staged
    - Orchestration log created and archived
    - Inbox decisions merged to decisions.md
+
+- Session 5 (2026-04-08): Updated Squad and disabled squad workflows.
+  - Squad update landed new/modified files: `.github/agents/squad.agent.md`, `.squad/templates/*`, 7 new workflow files, 4 modified workflow files
+  - Disabled all 11 squad workflows by renaming `.yml` → `.yml.disabled` (GitHub Actions ignores non-YAML extensions)
+  - Disablement method: file rename is simplest, clearest, and fully reversible (rename back to re-enable)
+  - `.squad/templates/` files showed as modified in working tree due to CRLF normalization but had no actual content diff — git's autocrlf handling
+  - Committed to dev, pushed, opened PR #25, merged to main
+  - Active workflows confirmed untouched: `compose-and-publish.yml`, `pr-validate.yml`
+  - Pattern: prefer `.yml.disabled` over deleting or gutting workflow files — preserves content for easy re-enablement
