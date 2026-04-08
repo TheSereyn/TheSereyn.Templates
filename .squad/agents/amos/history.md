@@ -60,3 +60,13 @@
   - Committed to dev, pushed, opened PR #25, merged to main
   - Active workflows confirmed untouched: `compose-and-publish.yml`, `pr-validate.yml`
   - Pattern: prefer `.yml.disabled` over deleting or gutting workflow files — preserves content for easy re-enablement
+
+- Session 6 (2026-04-08): Added Spec Kit CLI to shared dev container experience.
+  - Added `ghcr.io/devcontainers/features/python:1` (v3.12) to both base and Blazor overlay devcontainer.json
+  - Added uv install via `pip install --user` in post-create.sh, then `uv tool install specify-cli` pinned to v0.5.0
+  - Added `~/.local/bin` to PATH in .bashrc heredoc (required for uv tools and pip --user installs)
+  - All four files updated: base devcontainer.json + post-create.sh, blazor overlay devcontainer.json + post-create.sh
+  - Blazor overlay replaces base (not appends), so both must be kept in sync for shared tooling
+  - compose.sh verified: both MinimalApi and Blazor outputs include the Spec Kit changes
+  - Spec Kit install is idempotent (`|| true` on uv tool install) and safe to re-run
+  - Chose pip over `curl | sh` for uv install to stay consistent with Drummer's security review findings
