@@ -110,3 +110,13 @@
    - Decisions file now contains comprehensive main-branch security review with identified assignments
    - Main-branch security review findings assigned: H1/H2/H3 → Amos, H4 → Naomi (certificates in .gitignore)
    - Team status: All spec-kit-batch-2 artifacts approved for merge; spec-kit-batch-3 (main-branch security findings) pending remediation planning
+
+- Session 5 (2026-04-08): Spec Kit integration batch — architecture approval and merge gate
+   - Lead review of Spec Kit integration: approved architecture with 2 required revisions
+   - Applied reviewer lockout policy: reassigned Naomi's revisions to Amos
+   - Approved lockout reassignment decision and scope
+   - Coordinated Naomi + Amos work on docs and platform
+   - Verified Drummer re-review (all findings resolved)
+   - Made minor cleanup commit (Azure CLI mentions, verify-setup listings in overlay READMEs)
+   - APPROVED remediation batch for merge to main
+   - All gates cleared; ready for v* tag and compose-and-publish workflow

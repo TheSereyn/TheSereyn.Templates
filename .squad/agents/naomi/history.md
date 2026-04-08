@@ -119,3 +119,12 @@
     * H1, H2, H3 (assigned to Amos): Supply chain / npm package pinning work (squad-cli, playwright-cli, MCP servers, MSDOCS skill fetch)
   - Spec Kit integration security validated ✅ (v0.5.0 pinned, curl | sh eliminated, no secrets introduced)
   - Team ready: batch 2 approved for merge to main; batch 3 assignments recorded; git commit pending
+
+- Session 5 (2026-04-08): Spec Kit integration batch — documentation & validation
+   - Approved Spec Kit integration by Drummer (non-blocking recommendations)
+   - Holden lead review → 2 required revisions on version pinning and curl|sh fallback
+   - Applied reviewer lockout (original author locked out from revision)
+   - Reassigned fixes to Amos per team policy (not responsible for revisionary work)
+   - Participated in environment-first scope clarification with Coordinator
+   - All HIGH findings (H1–H4) resolved on dev branch
+   - Remediation batch approved by Drummer, Holden cleared merge to main
