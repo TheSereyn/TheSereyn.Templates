@@ -57,3 +57,11 @@
   - Removed `devcontainer.json` from first-time-setup.prompt.md Step 5 file list
   - Decision note written to .squad/decisions/inbox/holden-precontainer-var-split.md
   - Overlay devcontainer.json files unchanged — {{PROJECT_NAME}} placeholder correct as-is
+
+- Session 6 (2026-04-08): Reviewed and landed Amos follow-up commit a2c894e to main.
+  - Commit: docs-only — Amos history (Session 5) + workflow disable decision record
+  - Reviewed diff: 2 files in `.squad/`, 41 lines added, no code/config/security surface
+  - Approved as-is: accurate record of PR #25 work, follows decision recording pattern
+  - Created PR #26 (dev → main), merged. Main fully caught up to dev.
+  - Amos's `.yml.disabled` rename pattern is the right call — simple, reversible, self-documenting
+  - Workflow: PR #25 landed the substance, PR #26 landed the documentation trail
