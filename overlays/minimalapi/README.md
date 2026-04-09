@@ -28,7 +28,7 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 
 | Component | Description |
 |-----------|-------------|
-| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
+| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-in-Docker |
 | **MCP Servers** | Microsoft Learn, GitHub |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |

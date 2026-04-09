@@ -28,7 +28,7 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 
 | Component | Description |
 |-----------|-------------|
-| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
+| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-in-Docker |
 | **MCP Servers** | Microsoft Learn, GitHub, Playwright |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |

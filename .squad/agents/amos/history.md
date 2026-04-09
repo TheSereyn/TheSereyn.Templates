@@ -10,7 +10,7 @@
 - `compose.sh` — main composition script; TEMPLATES array defines overlay:RepoName pairs
 - `.github/workflows/compose-and-publish.yml` — tag-triggered publish; guard job checks tag is on main; strategy matrix per template
 - `.github/workflows/squad-*.yml` — squad automation (triage, heartbeat, issue-assign, sync-labels)
-- `base/.devcontainer/devcontainer.json` — .NET 10, Node 22, GH CLI, Azure CLI, Docker-outside-of-Docker
+- `base/.devcontainer/devcontainer.json` — .NET 10, Node 22, GH CLI, Azure CLI, Docker-in-Docker
 - `base/.copilot/mcp-config.json` — MCP servers (Microsoft Learn, Azure, GitHub)
 - `overlays/blazor/.devcontainer/devcontainer.json` — Blazor devcontainer override
 - `overlays/blazor/.copilot/mcp-config.json` — Blazor MCP override
@@ -118,3 +118,14 @@
    - Created verify-setup.prompt.md (environment health check)
    - All HIGH findings resolved; Drummer approved remediation batch
    - Holden cleared merge to main; ready for v* tag
+
+- Session 11 (2026-04-09): Restored Podman compatibility — replaced docker-outside-of-docker with docker-in-docker.
+   - Root cause: `docker-outside-of-docker` feature hardcodes a bind mount of `/var/run/docker.sock` from host. Podman hosts don't have this file, so container creation fails entirely.
+   - Fix: Switched to `docker-in-docker:2` which runs its own Docker daemon inside the container — no host socket dependency.
+   - Changed files: `base/.devcontainer/devcontainer.json`, `overlays/blazor/.devcontainer/devcontainer.json`, `base/README.md`, `overlays/blazor/README.md`, `overlays/minimalapi/README.md`
+   - Dropped `"moby": false` (docker-in-docker needs the engine; moby defaults to true)
+   - Kept `"installDockerBuildx": false` to match prior minimal intent
+   - Kept `"--security-opt=label=disable"` runArg (still needed for Podman on SELinux)
+   - Compose verified: both MinimalApi and Blazor outputs regenerated cleanly
+   - Known limitation: on rootless Podman hosts, dockerd inside the container may not start if the host doesn't grant sufficient privileges. The container itself still builds and works — only Docker commands inside would be unavailable.
+   - Docs impact: "Docker-outside-of-Docker" → "Docker-in-Docker" in all README tables. No changes needed to pre-container-setup prompt (already runtime-neutral).
