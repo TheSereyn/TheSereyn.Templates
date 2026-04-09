@@ -129,3 +129,12 @@
    - Compose verified: both MinimalApi and Blazor outputs regenerated cleanly
    - Known limitation: on rootless Podman hosts, dockerd inside the container may not start if the host doesn't grant sufficient privileges. The container itself still builds and works — only Docker commands inside would be unavailable.
    - Docs impact: "Docker-outside-of-Docker" → "Docker-in-Docker" in all README tables. No changes needed to pre-container-setup prompt (already runtime-neutral).
+
+- Session 12 (2026-04-09): Podman compatibility restoration completed — feature removal final state.
+   - Discovered blocker: docker-in-docker:2 requires `"privileged": true`, which fails on rootless Podman (default configuration).
+   - Collaborated with Naomi: proposal to remove Docker feature entirely (no template code depends on it; it was speculative).
+   - Naomi implemented full solution: removed Docker feature from base and overlays, updated all README surfaces and pre-container-setup prompt for runtime neutrality.
+   - Holden reviewed and approved: trade-off is acceptable because no workflows/scripts need Docker CLI inside container. Users can add the feature themselves if needed.
+   - Commits: 2ccef32 (interim docker-in-docker swap), 4e839ba (final feature removal), 0a2d769 (docs alignment), 2bf95b6 (approval gate)
+   - Outcome: Podman support restored; Docker Desktop experience unchanged; both runtimes now work identically for all core workflows.
+   - Decision records merged to decisions.md; orchestration logs and session log written.

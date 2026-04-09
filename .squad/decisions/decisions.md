@@ -438,3 +438,125 @@ All HIGH findings (H1–H4) from main-branch security review are resolved on `de
 3. Trigger compose-and-publish workflow
 4. Publish to downstream templates (MinimalApi, Blazor)
 
+
+---
+
+## Decision: Replace docker-outside-of-docker with docker-in-docker
+
+**By:** Amos (Platform Engineer)
+**Date:** 2026-04-09
+**Status:** Superseded (see Naomi's final decision below)
+
+### Context
+
+The `docker-outside-of-docker` devcontainer feature bind-mounts the host's `/var/run/docker.sock` into the container. On Podman hosts, this file does not exist — causing container creation to fail entirely. This broke Podman support, which was previously working.
+
+### Initial Decision
+
+Replace `ghcr.io/devcontainers/features/docker-outside-of-docker:1` with `ghcr.io/devcontainers/features/docker-in-docker:2` in both the base and Blazor overlay devcontainer.json files.
+
+### Rationale (Initial)
+
+- Runs its own Docker daemon (Moby engine) inside the container
+- Zero dependency on the host's container runtime or socket
+- Works identically on Docker, Podman, and GitHub Codespaces hosts
+
+### Known Limitation
+
+On rootless Podman hosts (the default), `dockerd` inside the container fails to start if the host doesn't grant sufficient privileges. The container itself builds and runs fine — only Docker commands inside would be unavailable.
+
+### Files Changed
+
+- `base/.devcontainer/devcontainer.json` — feature swap
+- `overlays/blazor/.devcontainer/devcontainer.json` — feature swap
+
+### Outcome
+
+Interim fix identified a blocker: `docker-in-docker:2` requires `"privileged": true`, which breaks rootless Podman (the default Podman configuration). See Naomi's final decision for the complete fix.
+
+---
+
+## Decision: Remove Docker Feature from Dev Containers
+
+**By:** Naomi (Template Engineer)
+**Date:** 2026-04-09
+**Status:** ✅ APPROVED (Final)
+
+### Context
+
+The `docker-outside-of-docker` feature broke Podman support by bind-mounting `/var/run/docker.sock` (which doesn't exist on Podman hosts). Amos's interim fix (`docker-in-docker:2`) requires `"privileged": true` in the feature spec, which fails for rootless Podman — the default Podman mode.
+
+### Final Decision
+
+Remove the Docker devcontainer feature entirely from both base and Blazor overlay `devcontainer.json` files.
+
+### Rationale
+
+1. **No runtime dependency:** No post-create scripts, workflows, or template files reference the Docker CLI inside the container.
+2. **Speculative feature:** Templates ship no Dockerfiles or docker-compose files. Docker CLI access was added for future convenience, not immediate need.
+3. **Both Docker features break Podman:** `docker-outside-of-docker` requires host socket; `docker-in-docker` requires privileged mode. Neither is runtime-neutral.
+4. **User agency:** Projects that need Docker CLI access can add the appropriate feature to their own `devcontainer.json` when they need it. The template shouldn't impose a runtime-specific dependency.
+5. **Lean dependency philosophy:** Aligns with project standards — don't ship what isn't needed.
+
+### Changes
+
+| File | Change |
+|------|--------|
+| `base/.devcontainer/devcontainer.json` | Removed `docker-in-docker:2` feature |
+| `overlays/blazor/.devcontainer/devcontainer.json` | Removed `docker-in-docker:2` feature |
+| `base/.github/prompts/pre-container-setup.prompt.md` | Runtime-neutral language, Podman Desktop recommendation |
+| `base/README.md` | Docker Desktop / Podman Desktop in Prerequisites, removed DinD from table |
+| `overlays/blazor/README.md` | Same |
+| `overlays/minimalapi/README.md` | Same |
+
+### Impact
+
+- Docker Desktop users: no change to core workflow (dotnet build/test/run unchanged)
+- Podman Desktop users: container now builds and opens successfully
+- Podman CLI (Linux): works with `podman-docker` package or `podman.socket` enabled
+- Users who need Docker CLI inside the container: add `docker-in-docker` or `docker-outside-of-docker` feature to their project's `devcontainer.json`
+
+---
+
+## Decision: Approve Podman Compatibility Restoration
+
+**By:** Holden (Lead)
+**Date:** 2026-04-09
+**Status:** ✅ APPROVED
+
+### Scope
+
+Quality gate review of commits `2ccef32`, `4e839ba`, `0a2d769` on `dev` — restoring Podman compatibility that was broken by Docker-specific devcontainer features.
+
+### Verdict: APPROVED
+
+### What was broken
+
+The `docker-outside-of-docker` devcontainer feature hardcodes a bind mount of `/var/run/docker.sock → /var/run/docker-host.sock`. On Podman hosts, `/var/run/docker.sock` does not exist, causing container creation to fail entirely.
+
+### Fix path (two iterations, correct final state)
+
+1. **Amos (2ccef32):** Swapped to `docker-in-docker:2` — removes host socket dependency but requires privileged mode, which fails on rootless Podman (the default Podman configuration). Partial fix.
+2. **Naomi (4e839ba):** Removed Docker feature entirely — no scripts, workflows, or template files need Docker CLI inside the dev container. The feature was speculative. Complete fix.
+
+### Why the trade-off is acceptable
+
+- **No capability loss:** Templates ship no Dockerfiles, docker-compose files, or CI workflows that invoke `docker` inside the dev container. The Docker feature was prospective convenience, not a dependency.
+- **User agency preserved:** Projects that later need Docker CLI access can add `docker-in-docker` or `docker-outside-of-docker` to their own `devcontainer.json`. One line of JSON.
+- **Lean dependency principle upheld:** Don't ship what isn't needed. This is core template philosophy.
+- **Both runtimes now work:** Docker Desktop users lose nothing from the core workflow (dotnet build/test/run). Podman users can now build and open the container successfully.
+
+### Documentation accuracy verified
+
+- `pre-container-setup.prompt.md`: Runtime-neutral language ("container runtime" not "Docker and VS Code"), Podman Desktop recommendation with Linux CLI fallback guidance
+- All 3 READMEs: Prerequisites link "Docker Desktop" / "Podman Desktop", no "Docker-in-Docker" in What's Included tables
+- Composition verified: both MinimalApi and Blazor templates compose cleanly
+
+### No Docker regression
+
+Confirmed: zero references to `docker.sock`, `docker-in-docker`, `docker-outside-of-docker`, or `privileged` mode in any devcontainer.json (base or overlay). `--security-opt=label=disable` correctly retained for SELinux compatibility.
+
+### Next Steps
+
+- Merge dev → main when ready
+- No further revision needed

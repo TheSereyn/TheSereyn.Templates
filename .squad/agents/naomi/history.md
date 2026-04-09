@@ -137,3 +137,12 @@
    - Compose verified: both MinimalApi and Blazor templates compose cleanly
    - Key learning: Docker features (DooD and DinD) both introduce Podman incompatibility. DooD needs host socket; DinD needs privileged mode. Neither is needed for the .NET development workflow — templates ship no Dockerfiles or compose files. Users can add Docker features later when their project needs container build capabilities.
    - Key learning: Podman Desktop handles Docker API compatibility transparently (VM-based). Podman CLI on Linux needs explicit compatibility setup (`podman-docker` package or `systemctl --user enable --now podman.socket`). Documentation should recommend Desktop path and note CLI alternative.
+
+- Session 12 (2026-04-09): Podman fix completion — decision records finalized, documentation merged.
+   - Amos's docker-in-docker interim fix identified as incomplete (requires privileged mode for rootless Podman).
+   - Collaborated with Amos: proposed Docker feature removal (lean principle — no template code needs it).
+   - Implemented final solution: removed feature from base and overlays, unified runtime-neutral language across all surfaces.
+   - Holden review gate passed: trade-off acceptable because no capability loss and user agency preserved.
+   - All three decision records (Amos interim, Naomi final, Holden gate) merged to decisions.md.
+   - Orchestration logs and session log written.
+   - Ready for PR dev → main.

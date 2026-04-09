@@ -133,3 +133,11 @@
    - Decision records (Amos's interim fix + Naomi's final resolution) both present in inbox — good audit trail
    - Key file paths: `base/.devcontainer/devcontainer.json`, `overlays/blazor/.devcontainer/devcontainer.json`, `base/.github/prompts/pre-container-setup.prompt.md`
    - Key learning: Docker devcontainer features (DooD and DinD) are fundamentally incompatible with Podman. DooD needs host socket; DinD needs privileged mode. Templates should not include either unless the development workflow requires Docker CLI access inside the container
+
+- Session 12 (2026-04-09): Podman fix gate completion — documentation, decision records, and session artifacts finalized.
+   - Reviewed session output: orchestration logs written for each agent (Amos, Naomi)
+   - Session log written (2026-04-09T16:53:52Z-podman-compatibility-fix.md)
+   - All three decision records (Amos interim, Naomi final, Holden gate) merged to decisions.md; inbox files deleted
+   - Team updates appended to each agent's history.md
+   - No archival needed (decisions.md now ~20.5KB; archive threshold is ~20KB but content is fresh; next archival at 30-day threshold)
+   - Status: Ready for PR dev → main
