@@ -128,3 +128,12 @@
    - Participated in environment-first scope clarification with Coordinator
    - All HIGH findings (H1–H4) resolved on dev branch
    - Remediation batch approved by Drummer, Holden cleared merge to main
+
+- Session 11 (2026-04-09): Podman compatibility fix — Docker feature removal and docs alignment.
+   - Root cause: `docker-outside-of-docker` feature bind-mounts `/var/run/docker.sock` which doesn't exist on Podman hosts. Amos's interim fix (`docker-in-docker:2`) requires `"privileged": true` which also fails for rootless Podman.
+   - Resolution: Removed Docker feature from both `base/.devcontainer/devcontainer.json` and `overlays/blazor/.devcontainer/devcontainer.json`. No scripts or workflows depend on Docker CLI inside the container — the feature was speculative.
+   - Updated `base/.github/prompts/pre-container-setup.prompt.md`: replaced "fully supported" with runtime-neutral language, added Podman Desktop recommendation and Linux CLI compatibility note (`podman-docker` / `podman.socket`), made Step 5 note runtime-neutral ("container runtime" not "Docker and VS Code")
+   - Updated all 3 READMEs (base, blazor, minimalapi): Prerequisites now link to "Docker Desktop" and "Podman Desktop" (not generic "Docker"/"Podman"), removed "Docker-in-Docker" from What's Included tables
+   - Compose verified: both MinimalApi and Blazor templates compose cleanly
+   - Key learning: Docker features (DooD and DinD) both introduce Podman incompatibility. DooD needs host socket; DinD needs privileged mode. Neither is needed for the .NET development workflow — templates ship no Dockerfiles or compose files. Users can add Docker features later when their project needs container build capabilities.
+   - Key learning: Podman Desktop handles Docker API compatibility transparently (VM-based). Podman CLI on Linux needs explicit compatibility setup (`podman-docker` package or `systemctl --user enable --now podman.socket`). Documentation should recommend Desktop path and note CLI alternative.

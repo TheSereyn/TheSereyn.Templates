@@ -1,9 +1,9 @@
 ---
-updated_at: 2026-04-08T10:44:38Z
-focus_area: Remediate critical, high, and medium review findings
+updated_at: 2026-04-09T16:37:22Z
+focus_area: Restore Podman-compatible devcontainer setup in the shared template base
 active_issues: []
 ---
 
 # What We're Focused On
 
-Fixing the critical, high, and medium review findings while preserving the environment-first template scope and keeping solution scaffolding out of scope.
+Restoring Podman-compatible devcontainer behavior without regressing Docker support, with attention on shared base files so both downstream templates stay aligned.
