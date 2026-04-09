@@ -120,3 +120,16 @@
    - Made minor cleanup commit (Azure CLI mentions, verify-setup listings in overlay READMEs)
    - APPROVED remediation batch for merge to main
    - All gates cleared; ready for v* tag and compose-and-publish workflow
+
+- Session 11 (2026-04-09): Quality gate review — Podman compatibility restoration.
+   - APPROVED: Current state correctly restores Podman compatibility without Docker regression
+   - Root cause confirmed: `docker-outside-of-docker` feature bind-mounted `/var/run/docker.sock` which doesn't exist on Podman hosts
+   - Fix path: Amos tried `docker-in-docker` first (2ccef32) — still required privileged mode, broken on rootless Podman. Naomi then removed Docker feature entirely (4e839ba) — correct final resolution
+   - Architecture validation: No post-create scripts, workflows, or template files reference Docker CLI inside the container. The Docker feature was speculative — templates ship no Dockerfiles or compose files
+   - Doc updates verified: pre-container-setup prompt now uses runtime-neutral language ("container runtime" not "Docker and VS Code"), all 3 READMEs updated consistently, "Docker-in-Docker" removed from What's Included tables
+   - Composition verified: both MinimalApi and Blazor templates compose cleanly with `./compose.sh`
+   - Trade-off accepted: Users who need Docker CLI inside the container can add the feature themselves. This is the correct lean-dependency posture for a template
+   - `--security-opt=label=disable` correctly retained in runArgs — needed for Podman on SELinux
+   - Decision records (Amos's interim fix + Naomi's final resolution) both present in inbox — good audit trail
+   - Key file paths: `base/.devcontainer/devcontainer.json`, `overlays/blazor/.devcontainer/devcontainer.json`, `base/.github/prompts/pre-container-setup.prompt.md`
+   - Key learning: Docker devcontainer features (DooD and DinD) are fundamentally incompatible with Podman. DooD needs host socket; DinD needs privileged mode. Templates should not include either unless the development workflow requires Docker CLI access inside the container
