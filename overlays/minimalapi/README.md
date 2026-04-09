@@ -10,7 +10,7 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 
 ### Prerequisites
 
-- [Docker](https://www.docker.com/) or [Podman](https://podman.io/)
+- [Docker Desktop](https://www.docker.com/) or [Podman Desktop](https://podman.io/)
 - [VS Code](https://code.visualstudio.com/) with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 ### First-Time Setup
@@ -28,7 +28,7 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 
 | Component | Description |
 |-----------|-------------|
-| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-in-Docker |
+| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI |
 | **MCP Servers** | Microsoft Learn, GitHub |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
