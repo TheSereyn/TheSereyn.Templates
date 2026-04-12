@@ -597,3 +597,33 @@ Confirmed: zero references to `docker.sock`, `docker-in-docker`, `docker-outside
 - Template scope clarified for downstream development
 
 ---
+
+## CLI Planning Artifacts Relocation — User Directive
+
+**By:** Lee Buxton (via Copilot)  
+**Date:** 2026-04-12T22:05:35Z  
+**Decision:** Use `.tmp/` in the repo as the final location for planning artifacts
+
+### Context
+
+CLI planning work has produced finalized artifacts that need persistent home outside of temporary working directories.
+
+### Resolution
+
+- `.tmp/` directory added to `.gitignore` for local planning artifact storage
+- Moved artifacts: `thesereyn-cli-template-plan.md`, `thesereyn-cli-template-research.md`, `thesereyn-cli-template-repo-fit.md`
+- Working copies remain unfrozen until planning phase completion
+
+### Rationale
+
+- Keeps finalized planning work accessible to team while respecting planning workflow
+- Avoids polluting main codebase with intermediate research
+- Allows user to defer committing working state until ready
+
+### Impact
+
+- CLI planning artifacts now centrally located in `.tmp/`
+- Team has reference location for CLI requirements and analysis
+- Deferred move of working copies allows continued iteration
+
+---
