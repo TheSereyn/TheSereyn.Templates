@@ -63,3 +63,18 @@
    - Orchestration logs and session log written.
    - Ready for PR dev → main.
 
+
+### Session 13 (2026-04-12T21:59:52Z): CLI Template Planning Preferences
+
+- Orchestration logs created: 2026-04-12T21:59:52Z-naomi.md (research update and template guidance)
+- Session log created: 2026-04-12T21:59:52Z-cli-template-planning-preferences.md
+- Decision inbox merged: Two directives consolidated into decisions.md:
+  * Prefer maintained CLI packages (no deprecated/abandoned tooling)
+  * Spectre.Console as primary default
+  * Spectre.Console.Cli, CliFx, Terminal.Gui as alternatives
+  * Cocona marked not recommended (maintenance concerns)
+  * MIT licensing preference confirmed
+- Inbox files deleted: copilot-directive-2026-04-12T21:54:08Z.md, copilot-directive-2026-04-12T21:55:56Z.md
+- CLI research document updated with package maintenance prioritization and Spectre.Console recommendation
+- Template guidance refined for CLI template composition
+- Ready for downstream CLI template implementation

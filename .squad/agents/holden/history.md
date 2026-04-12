@@ -141,3 +141,17 @@
    - Team updates appended to each agent's history.md
    - No archival needed (decisions.md now ~20.5KB; archive threshold is ~20KB but content is fresh; next archival at 30-day threshold)
    - Status: Ready for PR dev → main
+
+- Session 13 (2026-04-12T21:59:52Z): CLI template planning preference refinement
+    - Orchestration logs created: 2026-04-12T21:59:52Z-holden.md (plan refinement), 2026-04-12T21:59:52Z-naomi.md (research update)
+    - Session log created: 2026-04-12T21:59:52Z-cli-template-planning-preferences.md
+    - Decision inbox merged: Two directives consolidated into decisions.md (maintained packages preference, Spectre.Console primary default, MIT licensing)
+    - Inbox files deleted: copilot-directive-2026-04-12T21:54:08Z.md, copilot-directive-2026-04-12T21:55:56Z.md
+    - CLI template planning refined per user directive (Lee Buxton):
+      * Prefer maintained CLI packages (no abandoned/deprecated tooling)
+      * Make Spectre.Console the primary default
+      * Keep Spectre.Console.Cli, CliFx, Terminal.Gui as alternatives
+      * Demote Cocona due to maintenance concerns
+      * Record MIT as licensing preference
+    - Decisions.md now ~29.5KB; archive will trigger at next ~10KB growth
+    - Status: CLI template planning preferences documented and ready for downstream composition

@@ -560,3 +560,40 @@ Confirmed: zero references to `docker.sock`, `docker-in-docker`, `docker-outside
 
 - Merge dev → main when ready
 - No further revision needed
+
+---
+
+## CLI Template Planning Preferences
+
+**By:** Lee Buxton (via Copilot)  
+**Date:** 2026-04-12T21:54:08Z  
+**Decision:** Prefer maintained CLI packages and make Spectre.Console the primary default
+
+### Scope
+
+- CLI template design and package selection
+- Alternative frameworks documentation
+- Maintenance and licensing considerations
+
+### Decision
+
+1. **Maintained packages only:** CLI templates prioritize actively maintained packages (no deprecated or abandoned tooling)
+2. **Primary default:** Spectre.Console as the go-to companion for CLI applications
+3. **Alternatives:** Spectre.Console.Cli, CliFx, Terminal.Gui (documented as alternatives)
+4. **Not recommended:** Cocona (due to maintenance concerns)
+5. **Licensing preference:** MIT
+
+### Why
+
+- User request — captured for team memory and template guidance
+- Spectre.Console has broad community adoption and active maintenance
+- MIT licensing aligns with template licensing strategy
+- Alternative frameworks provide flexibility for different use cases
+
+### Impact
+
+- CLI template research document updated
+- CLI plan refined to prioritize maintained packages
+- Template scope clarified for downstream development
+
+---
