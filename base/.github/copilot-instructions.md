@@ -159,7 +159,8 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 | Need | Tool |
 |------|------|
 | Define and iterate on specifications | Spec Kit (`/speckit.specify`) |
-| Early-stage discovery for vague ideas | Requirements Interview (`/requirements-interview`) |
+| Compliance configuration or revision | Compliance Setup (`/compliance-setup`) |
+| Early-stage discovery for vague ideas | Requirements Interview (`/requirements-interview`) — optional |
 | Implementation orchestration | Squad (`@squad`) |
 | Small bug fixes / refactors | Direct coding (no ceremony needed) |
 
@@ -196,10 +197,11 @@ See the `spec-driven-development` skill for full details, constitution patterns,
 
 ## Prompts
 
-| Prompt | Description |
+| Prompt | When to Use |
 |--------|-------------|
-| `first-time-setup` | In-container setup — project identity, license, compliance, security configuration |
-| `pre-container-setup` | Host-level prerequisites checklist before opening the dev container |
-| `verify-setup` | Lightweight environment health check — re-runnable at any time |
-| `requirements-interview` | Structured discovery interview for early-stage or complex-domain projects |
-| `hire-security-architect` | Opt-in prompt to add a Security Architect agent to your Squad team |
+| `pre-container-setup` | Before opening the dev container — host-level prerequisites |
+| `environment-check` | First thing in-container — verifies tools and configuration are healthy (re-runnable) |
+| `project-setup` | After environment check — project identity, security baseline, license, compliance declaration, Spec Kit |
+| `compliance-setup` | Any time — configure, revise, or deepen compliance framework settings (re-runnable) |
+| `hire-security-architect` | Opt-in — add a Security Architect agent to your Squad team |
+| `requirements-interview` | Optional — structured discovery interview for early-stage or complex-domain projects |

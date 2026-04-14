@@ -70,8 +70,14 @@ This installs tools and configures the development environment. It may take seve
 
 ### 8. Next Step
 
-Once the container is ready, open **Copilot Chat** and run:
+Once the container is ready, open **Copilot Chat** and run the environment check:
 
 ```
-@workspace /first-time-setup
+@workspace /environment-check
+```
+
+When the environment check passes, run the project setup:
+
+```
+@workspace /project-setup
 ```

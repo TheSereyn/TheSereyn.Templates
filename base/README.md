@@ -2,7 +2,7 @@
 
 {{DESCRIPTION}}
 
-> **Note:** This README is a starting point provided by the project template. Running `@workspace /first-time-setup` in Copilot Chat will collect your project details and rewrite this file as your project's own README. A manual setup section is provided below for environments where Copilot is unavailable.
+> **Note:** This README is a starting point provided by the project template. Running `@workspace /project-setup` in Copilot Chat will collect your project details and rewrite this file as your project's own README. A manual setup section is provided below for environments where Copilot is unavailable.
 
 ## Getting Started
 
@@ -18,10 +18,10 @@ This project uses a **Dev Container** for a consistent development environment. 
 1. Complete the **[pre-container setup](.github/prompts/pre-container-setup.prompt.md)** — install prerequisites on your local machine
 2. Click **"Use this template"** on GitHub, clone your new repository, and open it in VS Code
 3. When prompted, click **"Reopen in Container"** (or run `Dev Containers: Reopen in Container` from the command palette)
-4. Once the container is ready, run the **first-time-setup** prompt:
+4. Once the container is ready, run the **environment check** then **project setup**:
    - Open Copilot Chat
-   - Type: `@workspace /first-time-setup`
-   - Follow the prompts to configure your project identity
+   - Type: `@workspace /environment-check` — verify the environment is healthy
+   - Type: `@workspace /project-setup` — configure your project identity, security baseline, license, and compliance
 
 ### Manual Setup (Without Copilot)
 
@@ -48,7 +48,7 @@ If GitHub Copilot is unavailable, the Dev Container still provides a complete .N
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
 | **Skills** | TUnit testing, project conventions, spec-driven development, security (modular skill tree), code analyzers |
-| **Prompts** | First-time setup, pre-container setup, verify setup, requirements interview, hire security architect |
+| **Prompts** | Environment check, project setup, compliance setup, pre-container setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Development Workflow
@@ -60,7 +60,7 @@ This project uses **Spec-Driven Development** with Spec Kit and Squad:
 3. `/speckit.plan` → `/speckit.tasks` — Technical plan and task breakdown
 4. `@squad` — Implementation orchestration with specialist agents
 
-For early-stage discovery, run `/requirements-interview` before specifying.
+For early-stage discovery, run `/requirements-interview` before specifying (optional).
 
 ```bash
 # Build the solution

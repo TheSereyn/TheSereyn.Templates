@@ -6,7 +6,7 @@
 
 Back-end only template for .NET projects with Minimal APIs, Worker Services, and shared contracts.
 
-> **Note:** Running `@workspace /first-time-setup` in Copilot Chat will collect your project details and rewrite this README as your project's own documentation.
+> **Note:** Running `@workspace /project-setup` in Copilot Chat will collect your project details and rewrite this README as your project's own documentation.
 
 ## Getting Started
 
@@ -21,10 +21,10 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 2. Click **"Use this template"** on GitHub to create your new repository
 3. Clone your new repo and open it in VS Code
 4. When prompted, click **"Reopen in Container"**
-5. Once the container is built, run the **first-time-setup** prompt:
+5. Once the container is built, run the **environment check** then **project setup**:
    - Open Copilot Chat
-   - Type: `@workspace /first-time-setup`
-   - Follow the prompts to configure your project identity
+   - Type: `@workspace /environment-check` — verify the environment is healthy
+   - Type: `@workspace /project-setup` — configure your project identity, security baseline, license, and compliance
 
 ### What's Included
 
@@ -35,7 +35,7 @@ Back-end only template for .NET projects with Minimal APIs, Worker Services, and
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
 | **Skills** | TUnit testing, project conventions, spec-driven development, security (modular skill tree), RFC compliance, code analyzers |
-| **Prompts** | First-time setup, pre-container setup, verify setup, requirements interview, hire security architect |
+| **Prompts** | Environment check, project setup, compliance setup, pre-container setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Development Workflow
@@ -47,7 +47,7 @@ This project uses **Spec-Driven Development** with Spec Kit and Squad:
 3. `/speckit.plan` → `/speckit.tasks` — Technical plan and task breakdown
 4. `@squad` — Implementation orchestration with specialist agents
 
-For early-stage discovery, run `/requirements-interview` before specifying.
+For early-stage discovery, run `/requirements-interview` before specifying (optional).
 
 ## Architecture
 

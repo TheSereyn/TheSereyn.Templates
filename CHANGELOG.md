@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Setup workflow redesigned** — clearer responsibilities and leaner compliance:
+  - `first-time-setup` → `project-setup` — project identity, security baseline, license, lean compliance declaration, Spec Kit handoff
+  - `verify-setup` → `environment-check` — promoted to first in-container readiness gate
+  - New `compliance-setup` prompt — dedicated, idempotent, deeper compliance configuration (re-runnable at any stage)
+  - Security baseline moved to Step 2 in project-setup; implementation-specific steps deferred until project structure exists
+  - Compliance in project-setup reduced to two questions (framework selection + apply/defer)
+  - `requirements-interview` demoted from setup prominence; kept as optional discovery tool
+- Updated prompt references across all READMEs (base, minimalapi, blazor, cli), copilot-instructions.md, post-create scripts, and pre-container-setup
+- Quick-start guidance now shows: `pre-container-setup` → `/environment-check` → `/project-setup`
+
 ## [0.3.3] - 2026-04-04
 
 ### Added

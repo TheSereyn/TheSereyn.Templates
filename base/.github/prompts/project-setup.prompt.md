@@ -1,12 +1,14 @@
 ---
 mode: agent
-description: "In-container setup prompt. Run this from Copilot Chat after the dev container is ready. Configures project info, license, compliance, and security settings."
+description: "In-container project setup. Run this from Copilot Chat after the environment check passes. Configures project identity, security baseline, license, compliance declaration, and Spec Kit."
 tools: ['read', 'edit', 'search', 'terminal']
 ---
 
-# First-Time Setup
+# Project Setup
 
-You are running the first-time setup for a new project created from a TheSereyn template.
+You are running the project setup for a new project created from a TheSereyn template.
+
+> **Prerequisite:** Run `/environment-check` first to confirm the dev container is healthy.
 
 ## Step 1 — GitHub Authentication
 
@@ -26,15 +28,20 @@ They should follow the browser-based flow (or device code flow) to complete auth
 
 Once authenticated, verify with `gh auth status` and proceed.
 
-## Step 2 — Check MCP Servers
+## Step 2 — Security Baseline
 
-Confirm that MCP configuration exists at `.copilot/mcp-config.json`. List the configured servers (Microsoft Learn, GitHub, NuGet). Note that the user-level Copilot CLI MCP config at `/home/vscode/.copilot/mcp.json` is seeded separately during container creation.
+Establish the project's security foundation. These checks apply regardless of project structure.
 
-## Step 3 — Setup Verification
+1. **Review `.gitignore`** — confirm it excludes:
+   - `appsettings.*.json`, `*.pfx`, `*.key`, `*.pem` (certificates and private keys)
+   - `.env`, `.env.local` (environment secrets)
+   - `appsettings.Local.json` (local configuration overrides)
+2. **Enable GitHub Secret Scanning** — recommend the user enable it under Settings → Security → Secret scanning
+3. **Configure branch protection** on `main` — recommend requiring PR reviews and status checks before merging
 
-Verify `.editorconfig` and `stylecop.json` are present — these enforce code style and can be customised to your team preferences.
+> **Note:** Implementation-specific steps like `dotnet user-secrets init` or project-level security configuration should wait until the project structure exists. These are covered by the `security-review-core` skill during development.
 
-## Step 4 — Collect Project Info
+## Step 3 — Collect Project Info
 
 Ask the user for:
 
@@ -46,20 +53,20 @@ Ask the user for:
 6. **Target users** (who will use this — internal team, external developers, end users?)
 7. **GitHub repo URL** (optional — e.g., `https://github.com/org/repo`)
 
-## Step 5 — Resolve Placeholders
+## Step 4 — Resolve Placeholders
 
 Update the following files, replacing placeholders:
 
 | Placeholder | Value |
 |-------------|-------|
-| `{{PROJECT_NAME}}` | Project name from Step 4 |
-| `{{NAMESPACE}}` | Namespace root from Step 4 |
-| `{{DESCRIPTION}}` | Description from Step 4 |
+| `{{PROJECT_NAME}}` | Project name from Step 3 |
+| `{{NAMESPACE}}` | Namespace root from Step 3 |
+| `{{DESCRIPTION}}` | Description from Step 3 |
 
 Files to update:
 - `.github/copilot-instructions.md`
 
-> **Note:** Do not replace placeholders in `README.md` — it will be fully rewritten in Step 6.
+> **Note:** Do not replace placeholders in `README.md` — it will be fully rewritten in Step 5.
 
 Also update `LICENSE` with:
 
@@ -68,15 +75,15 @@ Also update `LICENSE` with:
 | `{{YEAR}}` | Current year (e.g., `2026`) |
 | `{{AUTHOR}}` | Author or organisation name |
 
-## Step 6 — Rewrite README
+## Step 5 — Rewrite README
 
-Using the project information from Step 4, rewrite `README.md` so it reads as **the project's own documentation** — not a template instruction manual.
+Using the project information from Step 3, rewrite `README.md` so it reads as **the project's own documentation** — not a template instruction manual.
 
 ### Structure to produce
 
 1. **`# {Project name}`**
 2. **Overview** — expand the brief description with the problem/purpose statement. Explain what the project does, why it exists, and who it's for.
-3. **Key Capabilities** — bullet list from Step 4
+3. **Key Capabilities** — bullet list from Step 3
 4. **Getting Started** — keep Dev Container prerequisites and the build/test/run commands. Write them as project onboarding steps, not template instructions.
 5. **Architecture** — if the current README has an Architecture section, preserve it as project documentation. Reframe any "This template is designed for..." language to "This project follows..."
 6. **Key Conventions** — if present, keep as project coding standards
@@ -99,7 +106,7 @@ Add one line at the very end of the file:
 
 Write in a clear, professional tone. The reader should see a real project README, not a template walkthrough.
 
-## Step 7 — Select License
+## Step 6 — Select License
 
 Ask the user which license they want for the project. Offer common options:
 
@@ -114,35 +121,51 @@ Based on their choice:
 
 If the user is unsure, suggest MIT as a sensible default for open-source projects, or Proprietary if it's a commercial/internal project.
 
-## Step 8 — Compliance Frameworks
+## Step 7 — Compliance Declaration
 
-Ask the user:
+Ask the user two questions:
+
+**Question 1:**
 
 > "Does this project need to comply with any industry standards or compliance frameworks?"
+>
+> - ISO 27001 — Information security management
+> - SOC 2 — Service organisation controls
+> - PCI DSS — Payment card industry data security
+> - HIPAA — Health information privacy (US)
+> - GDPR — General data protection regulation (EU)
+> - None / Not sure yet
 
-Offer common examples:
-- **ISO 27001** — Information security management
-- **SOC 2** — Service organisation controls
-- **PCI DSS** — Payment card industry data security
-- **HIPAA** — Health information privacy (US)
-- **GDPR** — General data protection regulation (EU)
-- **None / Not sure yet**
+**Question 2** (only if frameworks are selected):
 
-Based on their response:
+> "Would you like to apply these now, or mark them for later configuration with `/compliance-setup`?"
+>
+> - **Apply now** — record the frameworks and activate the corresponding compliance skills
+> - **Mark for later** — record the selection and defer detailed configuration
+
+### Based on their response
+
+**If "None / Not sure yet":**
+- Record in `.github/copilot-instructions.md` under `## Compliance`: `No compliance frameworks selected. Run \`/compliance-setup\` when requirements are known.`
+- Move on — do not ask follow-up questions about compliance
+
+**If frameworks are selected and "Apply now":**
 - Note the selected frameworks in `.github/copilot-instructions.md` under a new `## Compliance` section
-- Append each selected compliance skill to the `## Skills` section in `.github/copilot-instructions.md`, using the format:
+- Append each selected compliance skill to the `## Skills` section in `.github/copilot-instructions.md`:
   `- \`compliance-<framework>\` — <Framework name> compliance guidance`
-  For example: `- \`compliance-gdpr\` — GDPR compliance guidance and data protection requirements`
-- Recommend the corresponding compliance skills for reference during development
-- If they select any framework, create a `docs/planning/compliance-notes.md` stub with sections for each selected framework
+- Move on — do not ask per-framework deep questions here. Point the user to `/compliance-setup` for detailed configuration after the project is underway.
 
-## Step 9 — Git Initialisation
+**If frameworks are selected and "Mark for later":**
+- Record in `.github/copilot-instructions.md` under `## Compliance`: `Frameworks identified: <list>. Detailed configuration deferred — run \`/compliance-setup\` to configure.`
+- Move on
+
+## Step 8 — Git Initialisation
 
 If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 10 — Verify Squad
+## Step 9 — Verify Squad
 
 Squad is installed automatically during container creation. Verify the installation:
 - Report the installed version (`squad --version`)
@@ -153,7 +176,7 @@ Squad is installed automatically during container creation. Verify the installat
 > bash .devcontainer/post-create.sh
 > ```
 
-## Step 11 — Initialise Spec Kit
+## Step 10 — Initialise Spec Kit
 
 Spec Kit provides the spec-driven development workflow for this project. Initialise it in the current directory:
 
@@ -176,22 +199,21 @@ Verify initialisation by confirming the `.specify/` directory was created and th
 > export PATH="$HOME/.local/bin:$PATH"
 > ```
 
-## Step 12 — Security Setup
-
-- Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, `*.pem`, and `.env` files are excluded
-- Run `dotnet user-secrets init` in your main project to set up local secret management
-- Enable GitHub Secret Scanning on the repository (Settings → Security → Secret scanning)
-- Configure branch protection on `main`: require PR reviews, require status checks to pass before merging
-
-## Step 13 — Summary and Next Steps
+## Step 11 — Summary and Next Steps
 
 Provide a summary of what was configured, then suggest:
 
 1. **Define your constitution** — Run `/speckit.constitution` in Copilot Chat with your project's core principles and constraints (reference `.github/copilot-instructions.md` for established standards)
 2. **Specify what to build** — Run `/speckit.specify` to capture your requirements as executable specifications
 3. **Plan and implement** — Use `/speckit.plan` → `/speckit.tasks` → hand off to Squad (`@squad`) for implementation
-4. **Early-stage discovery (optional)** — If your idea is still vague, run `/requirements-interview` first to crystallise requirements before specifying
-5. **Review skills** — The project includes skills for spec-driven development, TUnit testing, project conventions, Squad setup, security (modular skill tree led by `security-review-core`), RFC compliance, and code analyzers. Run `/hire-security-architect` to optionally add a dedicated Security Architect to your Squad team.
+
+If compliance was deferred or skipped, include:
+
+> **Compliance:** When your project's compliance requirements are clearer, run `/compliance-setup` to configure framework-specific guidance. This can be done at any time.
+
+If compliance was applied, include:
+
+> **Compliance:** Your compliance frameworks are recorded. For deeper per-framework configuration (data flows, control mappings, audit evidence), run `/compliance-setup` when you're ready.
 
 ## Self-Cleanup
 
@@ -200,10 +222,9 @@ After completing setup, instruct the user:
 > You can delete the setup prompts now — they are one-time operations:
 > ```bash
 > rm .github/prompts/pre-container-setup.prompt.md
-> rm .github/prompts/first-time-setup.prompt.md
+> rm .github/prompts/project-setup.prompt.md
 > ```
 >
-> **Keep** `verify-setup` — you can re-run it any time to health-check your environment:
-> ```
-> @workspace /verify-setup
-> ```
+> **Keep these** — they're re-runnable at any time:
+> - `/environment-check` — health-check your development environment
+> - `/compliance-setup` — configure or revise compliance frameworks

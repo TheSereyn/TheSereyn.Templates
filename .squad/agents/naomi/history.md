@@ -145,6 +145,29 @@ Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) appro
   - Per-framework deep questions capped at 3 to prevent interview fatigue
 - **Awaiting:** Lee's approval to implement
 
+### Session 19 (2026-04-14): Setup Workflow Implementation — Full-but-Lean Model
+
+- **Task:** Implement the setup workflow redesign: rename prompts for clarity, add dedicated compliance prompt, lean compliance in main flow, demote requirements-interview.
+- **Prompt renames:**
+  - `first-time-setup.prompt.md` → `project-setup.prompt.md` (11 steps: auth, security baseline, project info, placeholders, README rewrite, license, compliance declaration, git, Squad, Spec Kit, summary)
+  - `verify-setup.prompt.md` → `environment-check.prompt.md` (promoted to first in-container readiness gate, 9 checks)
+- **New prompt:** `compliance-setup.prompt.md` — idempotent, 5-step flow: read current state, framework selection, per-framework deep questions (≤3 per framework), record to copilot-instructions + compliance-notes.md, summary. Re-runnable at any project stage.
+- **Security baseline repositioned:** Step 2 in project-setup. Covers .gitignore review, secret scanning recommendation, branch protection recommendation. Does NOT include `dotnet user-secrets init` or other project-structure-dependent steps — those wait for the `security-review-core` skill during development.
+- **Lean compliance declaration (Step 7):** Exactly 2 questions: (1) which frameworks apply (incl. "None / Not sure yet"), (2) apply now or defer to `/compliance-setup`. No per-framework deep questions in main setup.
+- **Skip-later support:** All three compliance outcomes (none, applied, deferred) record clearly in copilot-instructions.md and point to `/compliance-setup`.
+- **Requirements-interview demotion:** Removed from setup "Next Steps"; marked "(optional)" in all When-to-Use tables and README guidance; kept as available prompt.
+- **Files changed (15):**
+  - Created: `base/.github/prompts/project-setup.prompt.md`, `environment-check.prompt.md`, `compliance-setup.prompt.md`
+  - Deleted: `base/.github/prompts/first-time-setup.prompt.md`, `verify-setup.prompt.md`
+  - Updated: `pre-container-setup.prompt.md`, `requirements-interview.prompt.md`, `base/.github/copilot-instructions.md`, `base/README.md`, `base/.devcontainer/post-create.sh`, `overlays/blazor/.devcontainer/post-create.sh`, `overlays/minimalapi/README.md`, `overlays/blazor/README.md`, `overlays/cli/README.md`, `CHANGELOG.md`
+- **Compose verified:** `./compose.sh --dry-run` passes for all three templates (MinimalApi, Blazor, CLI).
+- **Key design decisions:**
+  - Security baseline is non-negotiable and always early, but scoped to what's meaningful without a project structure
+  - Compliance is intentionally shallow in the main flow to keep setup under 5 minutes
+  - `/compliance-setup` is idempotent — handles first-time, add, remove, and revise flows
+  - Per-framework deep questions capped at 3 per framework
+  - Self-cleanup updated: project-setup and pre-container-setup are deletable; environment-check and compliance-setup are keepable
+
 ### Session 19 (2026-04-14): Team Synthesis — Full Setup with Skip-Later Compliance Approved
 
 - **Scribe finalized orchestration logs, session log, and decision merge**
