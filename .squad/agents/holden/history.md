@@ -50,3 +50,25 @@
 - Session 14 (2026-04-12T22:13:20Z): CLI planning artifacts relocation
     - Coordinator completed artifact move to `.tmp/` — finalized CLI planning files now centrally located
     - Scribe merging decision inbox and creating orchestration artifacts
+
+- Session 15: CLI template composition strategy — final planning pass
+    - Full audit of base/ contents for CLI compatibility: identified ~120 lines of web-specific content in copilot-instructions.md, project-conventions skill ~65% web-specific
+    - Architecture decision: Refactored Base + Overlays, no mixins. Make base universal .NET, push web content to overlay append files.
+    - Key insight: base/.github/copilot-instructions.md is the critical refactoring target — Stack table, HTTP RFCs, CORS, security headers, CSRF, OpenTelemetry ASP.NET example all web-specific
+    - 4 web-specific skills (aspnetcore-api-security, browser-security-headers, rfc-compliance, dotnet-authn-authz) stay in base as harmless reference material — not referenced in CLI copilot-instructions
+    - project-conventions skill: CLI overlay replaces with CLI-specific version (exit codes, output discipline, command design) rather than splitting base
+    - Mixin layer deferred: duplication (~120 lines copilot-instructions append) manageable at 3 templates. Revisit at 4+.
+    - MinimalApi overlay grows: needs new copilot-instructions.append.md for web content removed from base
+    - devcontainer.json: ports kept in base (harmless for CLI, avoids MinimalApi needing override)
+    - Open question flagged: source code in CLI overlay (starter Program.cs) vs AI-first consistency
+    - Decision written to: .squad/decisions/inbox/holden-cli-template-plan.md
+    - Key file paths: .tmp/thesereyn-cli-template-plan.md (package strategy), .tmp/thesereyn-cli-template-research.md (ecosystem research), .tmp/thesereyn-cli-template-repo-fit.md (repo fit analysis)
+
+- Session 16 (2026-04-14T17:24:29Z): CLI Template Planning — Squad Execution & Artifact Merge
+     - **Three-agent cycle execution complete:** Holden (lead architectural decision), Amos (platform readiness), Naomi (content audit) converged on unified strategy
+     - **Decision committed:** All three inbox files (holden-cli-template-plan, amos-cli-template-wiring, naomi-cli-template-split) consolidated into decisions.md
+     - **Orchestration log created:** 2026-04-14T17:24:29Z-holden.md documents lead recommendation
+     - **Session log created:** Consolidated team outcome showing three-agent convergence on base refactoring prerequisite
+     - **Inbox file deleted:** holden-cli-template-plan.md removed post-merge
+     - **Agent history updated:** Tracks architectural decision and next-phase sequencing
+     - **Key outcomes:** Base refactoring is prerequisite; mixin layer deferred to 4+ templates; no infrastructure changes needed

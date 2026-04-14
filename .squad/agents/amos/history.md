@@ -138,3 +138,25 @@
    - Commits: 2ccef32 (interim docker-in-docker swap), 4e839ba (final feature removal), 0a2d769 (docs alignment), 2bf95b6 (approval gate)
    - Outcome: Podman support restored; Docker Desktop experience unchanged; both runtimes now work identically for all core workflows.
    - Decision records merged to decisions.md; orchestration logs and session log written.
+
+- Session 13 (2026-04-12): CLI template onboarding — read-only planning pass.
+    - Audited all input artifacts: plan, research, repo-fit analysis, templates.json, compose.sh, workflows, base/, overlays/
+    - Key finding: base/ is MinimalApi-centric — copilot-instructions.md has ASP.NET Core stack table, CORS/CSRF/antiforgery sections, REST micro-checklists, webapi manual setup. README.md has Clean Architecture with Api/ project. devcontainer.json has forwardPorts [5000, 5001].
+    - If CLI overlay is added without base refactoring, the composed CLI template ships with web API copilot instructions that are wrong for a console app.
+    - Recommended Option A: refactor base to generic .NET, move web-specific content to overlays/minimalapi/ append files, then add CLI overlay cleanly.
+    - compose.sh needs zero changes — fully data-driven from templates.json. Workflow matrix is dynamically generated. pr-validate.yml drift checks also work automatically.
+    - MinimalApi currently has no devcontainer override (uses base as-is). Refactoring forwardPorts out of base means MinimalApi needs a new devcontainer.json overlay.
+    - Blazor overlay already replaces devcontainer.json (adds port 5173 + Playwright extension) — refactoring would simplify it.
+    - CLI overlay needs: README.md, copilot-instructions.append.md, cli-development SKILL.md, src/ project files. Does NOT need devcontainer, post-create, or MCP config overrides — base versions are correct for CLI.
+    - Sequencing: Phase 1 (base refactoring) → Phase 2 (CLI overlay) → Phase 3 (downstream repo + wiring). Phase 3 can parallel Phase 2.
+    - Decision proposal written to inbox: .squad/decisions/inbox/amos-cli-template-wiring.md
+    - Key file paths for CLI work: templates.json, base/.github/copilot-instructions.md, base/README.md, base/.devcontainer/devcontainer.json, README.md (workspace root)
+
+- Session 16 (2026-04-14T17:24:29Z): CLI Template Planning — Squad Execution & Artifact Merge
+     - **Execution complete:** Platform analysis merged into unified team strategy
+     - **Decision committed:** amos-cli-template-wiring.md consolidated into decisions.md (deduplicated with Holden and Naomi inputs)
+     - **Orchestration log created:** 2026-04-14T17:24:29Z-amos.md documents platform findings
+     - **Inbox file deleted:** amos-cli-template-wiring.md removed post-merge
+     - **Agent history updated:** Tracks Phase 1/2/3 sequencing, base refactoring prerequisite, compose.sh stability
+     - **Key confirmation:** Infrastructure (compose.sh, templates.json schema, workflows) needs zero changes
+     - **Platform readiness:** Phase 3 (templates.json + downstream repo creation) ready for execution once Phases 1–2 complete

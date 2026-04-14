@@ -78,3 +78,29 @@
 - CLI research document updated with package maintenance prioritization and Spectre.Console recommendation
 - Template guidance refined for CLI template composition
 - Ready for downstream CLI template implementation
+
+### Session 14 (2026-04-12): CLI Template Content Split Audit
+
+- **Read-only planning pass:** Audited all base/ and overlay/ content to identify what must change before CLI template can compose cleanly.
+- **Core finding:** base/ is not template-neutral — copilot-instructions.md, project-conventions skill, README.md, devcontainer.json, and first-time-setup prompt all carry web/API assumptions that would mislead Copilot in a CLI context.
+- **Recommended approach:** Generalize base/ to be template-neutral, use `.append.md` in all three overlays (minimalapi, blazor, cli) to add template-specific content.
+- **Key split decisions:**
+  - copilot-instructions.md: Stack table, security principles, observability, delivery format, ask-first triggers, micro-checklists all need web content extracted.
+  - project-conventions skill: Must be split — universal .NET patterns stay in base, API-specific patterns (REPR, RFC 9457, pagination, URL structure) move to a new `api-conventions` skill in web overlays.
+  - Base README: Architecture diagram, manual setup commands, example commands all web-specific — need generalization.
+  - Devcontainer: `forwardPorts` must leave base. MinimalApi overlay needs its own devcontainer.json (currently inherits base's).
+  - Security skills in base: Can stay — they're reference material, not injected into every interaction.
+- **MinimalApi overlay impact:** Grows from 1 file to ~5 files (README, copilot-instructions.append, devcontainer, api-conventions skill).
+- **5 user decisions identified** that materially affect the content plan (starter code, Azure CLI, Generic Host, forwarded ports, minimalapi devcontainer).
+- **Decision record written:** `.squad/decisions/inbox/naomi-cli-template-split.md`
+- **Key learning:** The base/.github/copilot-instructions.md is the highest-impact file — it's read by Copilot for every interaction. Web-specific content here actively misleads CLI development. Skills are lower-impact because they're only consulted when referenced.
+- **Key learning:** The thin minimalapi overlay (1 file) only works because base IS the minimalapi template. Once base is generalized, minimalapi must carry its own web-specific content — it can no longer free-ride on base.
+
+### Session 16 (2026-04-14T17:24:29Z): CLI Template Planning — Squad Execution & Artifact Merge
+
+- **Execution complete:** Content audit merged into unified team strategy
+- **Decision committed:** naomi-cli-template-split.md consolidated into decisions.md (deduplicated with Holden and Amos inputs)
+- **Orchestration log created:** 2026-04-14T17:24:29Z-naomi.md documents audit findings and CLI overlay content
+- **Inbox file deleted:** naomi-cli-template-split.md removed post-merge
+- **Agent history updated:** Tracks content split specifics, user decision flags, overlay growth calculations
+- **Template engineering readiness:** Phase 1 (base generalization) planned; Phase 2 (CLI overlay creation) scoped and ready for execution

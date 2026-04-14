@@ -38,3 +38,13 @@ Cross-agent coordination established. Reviewer lockout workflow: Naomi (rejected
    - Deleted inbox files after merge
    - Updated all agent histories with session outcomes
    - Git staged .squad/ artifacts for commit
+
+- Session 16 (2026-04-14T17:24:29Z): CLI Template Planning — Squad Execution & Artifact Merge
+     - **Orchestration logs created:** Three logs per agent (Holden, Amos, Naomi) with ISO 8601 UTC timestamps
+     - **Session log created:** 2026-04-14T17:24:29Z-cli-template-plan.md consolidates three-agent cycle outcome
+     - **Decision inbox merged:** Three files (holden-cli-template-plan, amos-cli-template-wiring, naomi-cli-template-split) consolidated into decisions.md; deduplicated overlapping findings
+     - **Inbox files deleted:** All three decision files removed post-merge
+     - **Agent histories updated:** Holden, Amos, Naomi, Scribe all track team execution and outcomes
+     - **Decision archive status:** decisions.md ~636 lines; no archive trigger (under 20KB threshold)
+     - **Git staging prepared:** .squad/ artifacts ready for commit
+     - **Next phase:** User approval on 5 flagged decisions, then Phase 1 execution (base refactoring)

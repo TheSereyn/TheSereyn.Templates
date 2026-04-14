@@ -627,3 +627,152 @@ CLI planning work has produced finalized artifacts that need persistent home out
 - Deferred move of working copies allows continued iteration
 
 ---
+
+
+---
+
+## CLI Template Composition Strategy
+
+**By:** Holden (Lead)  
+**Date:** 2026-04-12  
+**Status:** RECOMMENDATION — pending user approval
+
+### Context
+
+Lee has asked for a plan to add a third template (TheSereyn.Templates.CLI) to the composition workspace. This requires evaluating whether the current base + overlay model holds, or whether web-specific content in base/ needs restructuring.
+
+### Core Finding
+
+**Base/ is currently web-flavored .NET, not universal .NET.** This was acceptable with two web templates but adding CLI exposes the bias.
+
+Web-specific content currently in base:
+- `.github/copilot-instructions.md` (~120 lines): Stack table (Minimal APIs, REPR), HTTP/REST RFCs, CORS, security headers, CSRF, rate limiting, ASP.NET OpenTelemetry, REST/OpenAPI micro-checklists
+- `.copilot/skills/project-conventions/SKILL.md` (~130 lines): RFC 9457 Problem Details, REPR Pattern, cursor-based pagination, Clean Architecture, health check endpoints, API patterns
+- `.copilot/skills/aspnetcore-api-security/`, `browser-security-headers/`, `rfc-compliance/`, `dotnet-authn-authz/` (entirely web-specific)
+- `.devcontainer/devcontainer.json`: `forwardPorts: [5000, 5001]` (Kestrel ports)
+- `README.md`: Clean Architecture with Api/ folder, `dotnet run --project src/YourProject.Api/`
+
+### Recommendation: Refactored Base + Overlays (No Mixins Yet)
+
+**Make base/ truly universal .NET. Move web-specific content to overlay append files and overlay skill overrides.**
+
+#### Why Not Mixins
+
+| Factor | Assessment |
+|--------|-----------|
+| Duplication cost | ~120 lines in one file (copilot-instructions append), duplicated in 2 overlays |
+| Mixin complexity cost | compose.sh changes, templates.json schema change, new directory, documentation, CI updates |
+| Template count | 3 (threshold was "4+" per existing compose.sh guidance) |
+| Verdict | Duplication is cheaper than mixin infrastructure at this scale |
+
+#### Changes
+
+**Stays in base (universal .NET):**
+- `.editorconfig`, `.gitattributes`, `.gitignore`, `LICENSE`
+- `Directory.Build.props`, `Directory.Packages.props`, `global.json`, `stylecop.json`
+- `.vscode/settings.json`
+- `.devcontainer/devcontainer.json` (keep as-is; ports are harmless for CLI)
+- `.devcontainer/post-create-shared.sh`, `post-create.sh`
+- `.copilot/mcp-config.json`
+- `.github/CODEOWNERS`
+- `.github/prompts/*` (first-time-setup needs minor CLI-awareness)
+- All 25 skills in `.copilot/skills/` (including 4 web-specific ones, which stay as reference material)
+
+**Moves from base to overlays (web-specific):**
+
+1. **`base/.github/copilot-instructions.md`** → Refactor to universal .NET
+2. **`overlays/minimalapi/.github/copilot-instructions.append.md`** — NEW file with web-specific content
+3. **`overlays/blazor/.github/copilot-instructions.append.md`** — EXPAND with web-specific content
+4. **`base/README.md`** → Make universal
+5. **`overlays/cli/`** — NEW overlay with CLI-specific content
+
+### Impact
+
+- MinimalApi overlay grows to ~5 files (README, append, skill overrides)
+- Blazor overlay adds append pattern
+- Base becomes genuinely template-neutral
+- No changes needed to compose.sh, templates.json schema, or CI workflows
+
+---
+
+## CLI Template Onboarding — Platform Plan
+
+**By:** Amos (Platform Engineer)  
+**Date:** 2026-04-12  
+**Status:** PROPOSED — awaiting Holden review
+
+### Finding: Base Is MinimalApi-Centric
+
+Current `base/` carries web-specific assumptions wrong for CLI:
+- Stack table: "ASP.NET Core Minimal APIs, REPR pattern"
+- Clean Architecture with Api/ project
+- CORS/CSRF/antiforgery/rate-limiting security sections
+- OpenTelemetry with `AddAspNetCoreInstrumentation`
+- REST micro-checklists
+- `dotnet new webapi` in manual setup
+- `forwardPorts: [5000, 5001]` in devcontainer
+
+If we add CLI with current base, the composed CLI template ships with irrelevant web API instructions and port-forwarding rules.
+
+### Recommendation: Refactor Base Before Adding CLI Overlay
+
+**Option A (RECOMMENDED):** Extract web-specific content from base → overlays
+1. Refactor `base/.github/copilot-instructions.md` to generic .NET
+2. Move API-specific sections to `overlays/minimalapi/.github/copilot-instructions.append.md`
+3. Refactor `base/README.md` to generic template README
+4. Remove `forwardPorts` from base devcontainer; web overlays add their own
+
+**Why:** Refactoring work is bounded (3–4 base files) and pays for itself immediately. Compose mechanics (compose.sh, templates.json, workflows) need zero changes.
+
+### Sequencing
+
+1. **Phase 1: Base refactoring** — extract web-specific content from base (Amos + Naomi)
+2. **Phase 2: CLI overlay creation** — add `overlays/cli/` with CLI-specific content (Naomi)
+3. **Phase 3: Wiring** — add to `templates.json`, create downstream repo, verify publish flow (Amos)
+
+**Phase 1 must land before Phase 2.** Phase 3 can happen in parallel with Phase 2.
+
+### Risk
+
+Phase 1 touches files that affect both MinimalApi and Blazor output. Must compose-and-verify all three templates after refactoring.
+
+---
+
+## CLI Template Content Split — Audit Findings
+
+**By:** Naomi (Template Engineer)  
+**Date:** 2026-04-12  
+**Status:** PROPOSED — awaiting user decisions
+
+### Finding Summary
+
+Of ~18 content surfaces in base, **6 carry web-specific content that would actively mislead Copilot in CLI context**:
+
+**Critical (actively misleading):**
+1. `base/.github/copilot-instructions.md` — Stack table, security, observability, delivery format all assume web
+2. `base/.copilot/skills/project-conventions/SKILL.md` — Almost entirely web-specific (REPR, pagination, health checks, Clean Architecture)
+3. `base/README.md` — Scaffolds `dotnet new webapi`; architecture shows Api/ layer
+
+**Moderate (inaccurate but harmless):**
+4. `base/.devcontainer/devcontainer.json` — `forwardPorts: [5000, 5001]` meaningless for CLI
+5. `base/.github/prompts/first-time-setup.prompt.md` — References web patterns
+6. `base/.editorconfig` — `[*.razor]` section (harmless)
+
+### Proposed Approach: Generalize Base
+
+Generalize `base/` to be template-neutral; use `.append.md` in all three overlays for template-specific content.
+
+### Decisions Needed from User
+
+1. **CLI template source code?** (Program.cs + .csproj vs. AI-first)
+2. **Azure CLI in base devcontainer?** (Keep for all or web-only?)
+3. **Generic Host in CLI?** (Default or opt-in?)
+4. **MinimalApi devcontainer override?** (Needed if ports move to overlay)
+
+### Impact
+
+- **MinimalApi:** Grows from 1 to ~5 files
+- **Blazor:** Adds append pattern content
+- **Base:** Genuinely template-neutral; scales to 4+ templates
+
+---
