@@ -161,3 +161,14 @@ Squad orchestration cycle completed. Prompt guidance review (commit 2f86516) app
 **Follow-up:** Post-release, minor stale wording in already-published CLI README identified; Naomi corrected source docs on dev (pending dev push for cleanup).
 
 **Orchestration log created:** 2026-04-14T20:29:04Z-holden.md documents two-phase review and approval flow.
+
+## Learnings
+
+- Session 23 (2026-04-14): dev → main merge gate — post-v0.5.0 cleanup
+    - **Verdict:** ✅ APPROVE — three dev-only commits are all `docs:` category, no code or composition changes
+    - Commits reviewed: `e92bb27` (Amos history), `370d204` (CHANGELOG/README/CONTRIBUTING fixes), `b2e8307` (Naomi history)
+    - Critical commit `370d204` fixes documentation accuracy gaps shipped with v0.5.0 — must land on main
+    - Other two commits are Squad bookkeeping — harmless, consistent with `.squad/` sync practice
+    - Untracked enabled Squad workflow files (`.yml` without `.disabled`) flagged as local cleanup prerequisite — not a merge blocker
+    - No security-sensitive content; no Drummer review needed; no re-publish needed
+    - Decision written to: `.squad/decisions/inbox/holden-merge-gate.md`
