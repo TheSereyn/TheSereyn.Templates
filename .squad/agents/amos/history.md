@@ -202,3 +202,17 @@ Implemented CLI template onboarding: added to templates.json, updated workspace 
     - **Final workflow state:** 2 active (`compose-and-publish.yml`, `pr-validate.yml`), 11 disabled (`.yml.disabled`), zero untracked.
     - **No tags touched:** v0.5.0 tag preserved on its original commit.
     - **Key pattern:** When Squad updates drop enabled `.yml` copies alongside tracked `.disabled` files, always delete the untracked copies — the `.disabled` naming is the disablement mechanism.
+
+- Session 21 (2026-04-14): Final dev/main alignment — closing residual single-commit drift.
+    - **Drift:** One docs-only commit on dev (c8e7644: Amos history + sync decision inbox) not yet on main after PR #31 merge.
+    - **Resolution:** Opened PR #32 (dev → main), merged via `--admin`, then fast-forwarded dev to main's merge commit.
+    - **Verification:** Both branches at a9dbeb6, zero divergence in either direction.
+    - **Pattern confirmed:** After merging dev → main via PR, always fast-forward dev to main's new merge commit to avoid residual 0/1 drift.
+
+- Session 24 (2026-04-14T21:12:35Z): Post-release documentation finalization (Scribe)
+    - **Inbox decisions merged:** holden-merge-gate.md, amos-sync-main.md, copilot-directive-20260414T210436Z.md → decisions.md (deduplicated, no conflicts).
+    - **Inbox files deleted:** All three inbox/*.md files removed after merge.
+    - **Orchestration logs created:** 2026-04-14T21:12:35Z-amos.md documents scope, status, key actions, verification.
+    - **Session log created:** 2026-04-14T21:12:35Z-main-sync.md tracks post-release cleanup checkpoint.
+    - **History updated:** Both Holden and Amos history.md updated with cross-agent team status.
+    - **Next:** decisions.md size check (74.7 KB → archive if needed), history.md summarization, git commit.

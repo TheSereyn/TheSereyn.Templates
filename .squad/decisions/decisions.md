@@ -1544,3 +1544,82 @@ All three blockers are resolved in commit 370d204:
 1. PR dev → main
 2. Merge
 3. Tag v0.5.0 on main
+
+---
+
+## Decision: Approve dev → main merge (post-v0.5.0 cleanup)
+
+**Date:** 2026-04-14  
+**Author:** Holden (Lead)  
+**Status:** Approved
+
+### Context
+
+After the v0.5.0 release, `origin/dev` is ahead of `origin/main` by three commits:
+
+1. `e92bb27` — Squad bookkeeping: Amos agent history + release-readiness decision record
+2. `370d204` — Documentation fixes: CHANGELOG [0.4.0] backfill, v0.5.0 entry expansion, README/CONTRIBUTING stale reference fixes (resolves Session 20 blockers)
+3. `b2e8307` — Squad bookkeeping: Naomi agent history + release-docs decision record
+
+`origin/main` is ahead of `origin/dev` only by the PR #30 merge commit (`3201d75`), which is a fast-forward-compatible parent.
+
+### Decision
+
+**Approve** merging current `dev` into `main`.
+
+### Rationale
+
+- All three commits are `docs:` category — no code, no composition, no workflow changes.
+- Commit `370d204` is critical: it fixes documentation accuracy that shipped with v0.5.0 (CHANGELOG gap, README stale refs). These corrections belong on main.
+- Commits `e92bb27` and `b2e8307` are Squad-internal bookkeeping (agent history, decision records). Harmless and consistent with our practice of keeping `.squad/` state synced across branches.
+- No security-sensitive content — Drummer review not required.
+- No template composition changes — no re-publish needed.
+
+### Conditions
+
+- The untracked enabled Squad workflow files (`.github/workflows/squad-*.yml`) in the working tree must be deleted before committing anything new. They are local artifacts and do not affect the remote merge, but should not be committed.
+- The modified `.squad/identity/now.md` should be committed or reset before the merge PR.
+
+### Non-blockers
+
+- The untracked workflow files are a local cleanup concern, not a merge blocker.
+- No new tag is needed — these are post-release housekeeping, not a release.
+
+---
+
+## Decision: Post-release branch sync procedure
+
+**By:** Amos (Platform Engineer)  
+**Date:** 2026-04-14  
+**Status:** Executed
+
+### Context
+
+After v0.5.0 release (PR #30 merge + tag), dev had 3 post-release doc commits not yet on main. Additionally, 11 untracked enabled Squad workflow files (`.yml`) coexisted with the tracked `.disabled` variants.
+
+### Decision
+
+1. **Squad workflow cleanup:** Delete untracked enabled `.yml` copies; `.disabled` naming is the sole disablement mechanism.
+2. **Branch sync:** Merge `origin/main` into dev (to absorb the release merge commit), PR dev → main (PR #31), then fast-forward dev to main — achieving zero divergence.
+3. **No tags touched:** v0.5.0 remains on its original commit.
+
+### Rationale
+
+- Untracked enabled workflow files would activate Squad automation if accidentally committed — removing them eliminates that risk.
+- Merge-then-PR-then-fast-forward is the cleanest flow when dev and main diverged only via a merge commit.
+- Docs-only changes carry no risk and don't warrant a new release tag.
+
+### Outcome
+
+PR #31 merged. Both branches aligned. Working tree clean.
+
+---
+
+## Directive: Keep Squad workflows disabled (user request)
+
+**Date:** 2026-04-14T21:04:36Z  
+**By:** Lee Buxton (via Copilot)
+
+Keep the Squad-related workflows disabled using the existing `.disabled` naming approach, and make sure any remaining `dev` changes are committed, synced, and merged into `main`.
+
+**Rationale:** User request — captured for team memory.
