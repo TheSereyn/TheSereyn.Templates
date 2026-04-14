@@ -2,7 +2,7 @@
 
 {{DESCRIPTION}}
 
-> **Note:** This is an AI-first template designed to work with GitHub Copilot. The project scaffold and architecture are generated through Copilot Chat prompts during first-time setup. A fallback manual setup section is provided below for environments where Copilot is unavailable.
+> **Note:** This README is a starting point provided by the project template. Running `@workspace /project-setup` in Copilot Chat will collect your project details and rewrite this file as your project's own README. A manual setup section is provided below for environments where Copilot is unavailable.
 
 ## Getting Started
 
@@ -10,7 +10,7 @@
 
 This project uses a **Dev Container** for a consistent development environment. You need:
 
-- [Docker](https://www.docker.com/) or [Podman](https://podman.io/)
+- [Docker Desktop](https://www.docker.com/) or [Podman Desktop](https://podman.io/)
 - [VS Code](https://code.visualstudio.com/) with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 ### First-Time Setup
@@ -18,10 +18,10 @@ This project uses a **Dev Container** for a consistent development environment. 
 1. Complete the **[pre-container setup](.github/prompts/pre-container-setup.prompt.md)** — install prerequisites on your local machine
 2. Click **"Use this template"** on GitHub, clone your new repository, and open it in VS Code
 3. When prompted, click **"Reopen in Container"** (or run `Dev Containers: Reopen in Container` from the command palette)
-4. Once the container is ready, run the **first-time-setup** prompt:
+4. Once the container is ready, run the **environment check** then **project setup**:
    - Open Copilot Chat
-   - Type: `@workspace /first-time-setup`
-   - Follow the prompts to configure your project identity
+   - Type: `@workspace /environment-check` — verify the environment is healthy
+   - Type: `@workspace /project-setup` — configure your project identity, security baseline, license, and compliance
 
 ### Manual Setup (Without Copilot)
 
@@ -32,13 +32,9 @@ If GitHub Copilot is unavailable, the Dev Container still provides a complete .N
    - `{{NAMESPACE}}` → your root namespace (e.g., `Acme.MyProject`)
    - `{{DESCRIPTION}}` → a one-line project description
    - In `LICENSE`: `{{YEAR}}` → current year, `{{AUTHOR}}` → author or organisation name
-2. Create your solution and project files following Clean Architecture:
+2. Create your solution and project files:
    ```bash
    dotnet new sln -n {{PROJECT_NAME}}
-   dotnet new classlib -n {{PROJECT_NAME}}.Domain
-   dotnet new classlib -n {{PROJECT_NAME}}.Application
-   dotnet new classlib -n {{PROJECT_NAME}}.Infrastructure
-   dotnet new webapi -n {{PROJECT_NAME}}.Api --use-minimal-apis
    ```
 3. Configure StyleCop by reviewing `stylecop.json` and `.editorconfig`
 4. Review `.copilot/skills/` for documented conventions and patterns
@@ -47,12 +43,12 @@ If GitHub Copilot is unavailable, the Dev Container still provides a complete .N
 
 | Component | Description |
 |-----------|-------------|
-| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI, Docker-outside-of-Docker |
+| **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI |
 | **MCP Servers** | Microsoft Learn, GitHub |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
-| **Skills** | TUnit testing, project conventions, spec-driven development, security (modular skill tree), RFC compliance, code analyzers |
-| **Prompts** | First-time setup, pre-container setup, verify setup, requirements interview, hire security architect |
+| **Skills** | TUnit testing, project conventions, spec-driven development, security (modular skill tree), code analyzers |
+| **Prompts** | Environment check, project setup, compliance setup, pre-container setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Development Workflow
@@ -64,7 +60,7 @@ This project uses **Spec-Driven Development** with Spec Kit and Squad:
 3. `/speckit.plan` → `/speckit.tasks` — Technical plan and task breakdown
 4. `@squad` — Implementation orchestration with specialist agents
 
-For early-stage discovery, run `/requirements-interview` before specifying.
+For early-stage discovery, run `/requirements-interview` before specifying (optional).
 
 ```bash
 # Build the solution
@@ -72,21 +68,6 @@ dotnet build
 
 # Run tests
 dotnet test
-
-# Run the application
-dotnet run --project src/YourProject.Api/
-```
-
-## Architecture
-
-This project follows **Clean Architecture** principles:
-
-```
-src/
-├── Domain/           # Entities, value objects, domain events, interfaces
-├── Application/      # Use cases, commands, queries, handlers, DTOs
-├── Infrastructure/   # Database, external services, messaging
-└── Api/              # Minimal API endpoints, DI composition root
 ```
 
 ## License

@@ -24,99 +24,91 @@
 
 **Release process:** dev → PR → main → `v*` tag → compose-and-publish workflow fires
 
+**Key decisions archive (Sessions 1-10, 2026-04-04 to 2026-04-08):**
+- **Session 1-2:** Team initialized. Comprehensive template review (62 recommendations, 6 critical blockers). Most critical: MCP packages non-existent `@anthropic/*` names, devcontainer Podman-only, GitHub Actions mutable tags.
+- **Session 3-4:** Prompt split implementation approved (3 files match spec). Pre-container-setup.md needs `git add`. Lesson: splitting composite steps improves scannability.
+- **Session 5-6:** Pre-container variable split for `devcontainer.json` and `{{PROJECT_NAME}}` rationalized. Amos PR #26 merge; `.yml.disabled` pattern approved.
+- **Sessions 7-10:** Spec Kit integration (github/spec-kit). Installed via `uv tool install`, scaffolds `.specify/` dir. Spec Kit owns spec→planning→breakdown; Squad owns implementation. Base files only. Two revision iterations (version pinning, fallback security). Drummer security review: main-branch 4 HIGH, 4 MEDIUM, 4 LOW findings.
+- **Sessions 11-12:** Podman compatibility restoration approved. Docker features (DooD/DinD) removed — incompatible with Podman. Trade-off: users add Docker feature themselves if needed.
+
 ## Learnings
 
-- Session 1 (2026-04-04): Team initialized. Holden is Lead. Universe: The Expanse.
+- Session 13 (2026-04-12T21:59:52Z): CLI template planning preference refinement
+    - Orchestration logs created: 2026-04-12T21:59:52Z-holden.md (plan refinement), 2026-04-12T21:59:52Z-naomi.md (research update)
+    - Session log created: 2026-04-12T21:59:52Z-cli-template-planning-preferences.md
+    - Decision inbox merged: Two directives consolidated into decisions.md (maintained packages preference, Spectre.Console primary default, MIT licensing)
+    - Inbox files deleted: copilot-directive-2026-04-12T21:54:08Z.md, copilot-directive-2026-04-12T21:55:56Z.md
+    - CLI template planning refined per user directive (Lee Buxton):
+      * Prefer maintained CLI packages (no abandoned/deprecated tooling)
+      * Make Spectre.Console the primary default
+      * Keep Spectre.Console.Cli, CliFx, Terminal.Gui as alternatives
+      * Demote Cocona due to maintenance concerns
+      * Record MIT as licensing preference
+    - Decisions.md now ~29.5KB; archive will trigger at next ~10KB growth
+    - Status: CLI template planning preferences documented and ready for downstream composition
 
-- Session 2 (2026-04-04): Led comprehensive template review with all team members.
-  - Identified 62 consolidated recommendations across architecture, content, platform, security
-  - 6 Critical blockers must be fixed before templates are production-ready
-  - Key finding: MCP packages, devcontainer (Podman-only), postCreateCommand chain all broken
-  - Most critical: All MCP tooling fails day one due to non-existent `@anthropic/*` package names
-  - Devcontainer hard-fails on Docker Desktop (majority of target users)
-  - GitHub Actions pinned to mutable tags (supply chain risk)
-  - Assembled individual findings into consolidated 341-line review with full remediation guidance
-  - Cross-cutting findings indicate high confidence in critical issues
+- Session 14 (2026-04-12T22:13:20Z): CLI planning artifacts relocation
+    - Coordinator completed artifact move to `.tmp/` — finalized CLI planning files now centrally located
+    - Scribe merging decision inbox and creating orchestration artifacts
 
-- Session 3 (2026-04-05): Reviewed Naomi's prompt split implementation against spec.
-  - APPROVED: All three files (`pre-container-setup.prompt.md`, `first-time-setup.prompt.md`, `README.md`) match the design spec
-  - Minor acceptable deviations: 8 steps vs 7 (better UX), "Podman Desktop" vs "Podman" (better for target audience), 4 README steps vs 3 (self-contained)
-  - Key finding: `pre-container-setup.prompt.md` is untracked in git — needs `git add` before PR
-  - Lesson: Splitting composite steps (open + wait) into discrete steps improves scannability for checklist-style prompts
+- Session 15: CLI template composition strategy — final planning pass
+    - Full audit of base/ contents for CLI compatibility: identified ~120 lines of web-specific content in copilot-instructions.md, project-conventions skill ~65% web-specific
+    - Architecture decision: Refactored Base + Overlays, no mixins. Make base universal .NET, push web content to overlay append files.
+    - Key insight: base/.github/copilot-instructions.md is the critical refactoring target — Stack table, HTTP RFCs, CORS, security headers, CSRF, OpenTelemetry ASP.NET example all web-specific
+    - 4 web-specific skills (aspnetcore-api-security, browser-security-headers, rfc-compliance, dotnet-authn-authz) stay in base as harmless reference material — not referenced in CLI copilot-instructions
+    - project-conventions skill: CLI overlay replaces with CLI-specific version (exit codes, output discipline, command design) rather than splitting base
+    - Mixin layer deferred: duplication (~120 lines copilot-instructions append) manageable at 3 templates. Revisit at 4+.
+    - MinimalApi overlay grows: needs new copilot-instructions.append.md for web content removed from base
+    - devcontainer.json: ports kept in base (harmless for CLI, avoids MinimalApi needing override)
+    - Open question flagged: source code in CLI overlay (starter Program.cs) vs AI-first consistency
+    - Decision written to: .squad/decisions/inbox/holden-cli-template-plan.md
+    - Key file paths: .tmp/thesereyn-cli-template-plan.md (package strategy), .tmp/thesereyn-cli-template-research.md (ecosystem research), .tmp/thesereyn-cli-template-repo-fit.md (repo fit analysis)
 
-- Session 4 (2026-04-04T17:49:01Z): Scribe closed prompt-split phase.
-   - Naomi's implementation matches spec — approved for PR #21
-   - Drummer approved security — no changes required
-   - Amos opened PR to dev
-   - Orchestration log created and archived
-   - Inbox decisions merged to decisions.md
+- Session 16 (2026-04-14T17:24:29Z): CLI Template Planning — Squad Execution & Artifact Merge
+     - **Three-agent cycle execution complete:** Holden (lead architectural decision), Amos (platform readiness), Naomi (content audit) converged on unified strategy
+     - **Decision committed:** All three inbox files (holden-cli-template-plan, amos-cli-template-wiring, naomi-cli-template-split) consolidated into decisions.md
+     - **Orchestration log created:** 2026-04-14T17:24:29Z-holden.md documents lead recommendation
+     - **Session log created:** Consolidated team outcome showing three-agent convergence on base refactoring prerequisite
+     - **Inbox file deleted:** holden-cli-template-plan.md removed post-merge
+     - **Agent history updated:** Tracks architectural decision and next-phase sequencing
+     - **Key outcomes:** Base refactoring is prerequisite; mixin layer deferred to 4+ templates; no infrastructure changes needed
 
-- Session 5 (2026-04-06): Fixed pre-container vs in-container template variable split.
-  - `devcontainer.json` `{{PROJECT_NAME}}` moved to pre-container phase (Step 5 in pre-container-setup.prompt.md)
-  - Rationale: Docker/VS Code reads container name at build time; setting it inside container after first build is a silent no-op
-  - Removed `devcontainer.json` from first-time-setup.prompt.md Step 5 file list
-  - Decision note written to .squad/decisions/inbox/holden-precontainer-var-split.md
-  - Overlay devcontainer.json files unchanged — {{PROJECT_NAME}} placeholder correct as-is
+## 2026-04-14: CLI Template Architecture Review
 
-- Session 6 (2026-04-08): Reviewed and landed Amos follow-up commit a2c894e to main.
-  - Commit: docs-only — Amos history (Session 5) + workflow disable decision record
-  - Reviewed diff: 2 files in `.squad/`, 41 lines added, no code/config/security surface
-  - Approved as-is: accurate record of PR #25 work, follows decision recording pattern
-  - Created PR #26 (dev → main), merged. Main fully caught up to dev.
-  - Amos's `.yml.disabled` rename pattern is the right call — simple, reversible, self-documenting
-  - Workflow: PR #25 landed the substance, PR #26 landed the documentation trail
+Reviewed Amos (wiring) + Naomi (base/overlay split). Verdict: ✅ APPROVED. Base is template-neutral; web guidance correctly in overlay appends; CLI overlay uses all three overlay semantics correctly. Known trade-off: base project-conventions is web-specific, replaced by CLI overlay. Non-blocking nit: remove .gitkeep in housekeeping.
 
-- Session 7 (2026-04-08): Spec Kit integration decision.
-  - Reviewed Spec Kit (github/spec-kit) — Python CLI installed via `uv tool install`, scaffolds `.specify/` dir with SDD slash commands
-  - Decision: Runtime init, not pre-generated artifacts. Install `specify` CLI in devcontainer, guide users to `specify init --here --ai copilot` during first-time-setup
-  - Spec Kit + Squad pairing: Spec Kit owns specification → planning → task breakdown; Squad owns implementation. `/speckit.implement` superseded by Squad agents
-  - Placement: 100% base/, 0% overlays. SDD is template-agnostic
-  - Technical: Need `uv` (standalone installer or pip) + `uv tool install specify-cli --from git+https://github.com/github/spec-kit.git@vX.Y.Z` pinned to release tag
-  - Security: Drummer to review `curl | sh` for uv installer; pip alternative available since Python 3.12 ships with Ubuntu Noble
-  - Decision recorded to `.squad/decisions/inbox/holden-spec-kit-integration.md`
-  - Implementation assigned: Amos (devcontainer), Naomi (prompts/docs/instructions), Drummer (security review)
+## 2026-04-14: Team Orchestration — Prompt Guidance Update
 
-- Session 8 (2026-04-08): Reviewed Spec Kit integration change set on dev (4 commits, 16 files, 466 insertions).
-  - APPROVED with two required revisions before merging to main.
-  - Architecture is correct: 100% base/ placement, overlay duplication where overlay replaces base, Spec Kit + Squad pairing coherent across all 10 content artifacts.
-  - Issue 1 (Naomi): Version pinning contradiction — first-time-setup.prompt.md and spec-driven-development SKILL.md use `@latest` instead of the pre-installed pinned binary. Fix: `specify init --here --ai copilot` (use the v0.5.0 binary installed by post-create.sh).
-  - Issue 2 (Naomi/Drummer): curl | sh fallback in Step 10 contradicts Amos's `pip install uv` security choice. Fix: use `python3 -m pip install --user uv` as fallback, or Drummer formally approves curl | sh.
-  - Non-blocking: `/speckit.implement` listed in SKILL.md command table but superseded by Squad — add clarifying note.
-  - Decision recorded to `.squad/decisions/inbox/holden-spec-kit-review.md`
+Squad orchestration cycle completed. Prompt guidance review (commit 2f86516) approved and archived to decisions. Three inbox entries merged to decisions.md; orchestration logs written; team history updated cross-agent. Ready for tag push to main.
 
-- Session 8 (2026-04-08): Spec Kit batch 1 — Team execution and decision merge.
-  - Amos completed devcontainer integration: uv + specify-cli@v0.5.0 in base + Blazor overlay post-create.sh; Python 3.12 feature added
-  - Naomi completed template guidance: spec-driven-development skill, copilot-instructions updates, first-time-setup prompt (added Step 10 — Spec Kit init), README updates
-  - Spec Kit integration is now production-ready for all downstream templates
-  - Decision inbox merge in progress — all 7 inbox files consolidated into decisions.md under 2026-04-08 section
-  - Orchestration logs written for Holden, Naomi, Amos; session log written; git commit pending
+## Learnings
 
-- Session 9 (2026-04-08): Spec Kit batch 2 — Revised artifacts and approval.
-   - Applied reviewer lockout: Naomi (original author) forbidden from fixing her rejected artifacts
-   - Reassigned to Amos (Platform Engineer) per lockout protocol
-   - Amos completed two required revisions:
-     * Removed `@latest` version pinning — now uses pre-installed `specify` binary throughout
-     * Eliminated `curl | sh` fallback — replaced with `python3 -m pip install --user uv`
-   - Drummer re-reviewed both files → ✅ APPROVED (all issues resolved, no lockout)
-   - Final verdict: ✅ APPROVED FOR MERGE TO MAIN
-   - Orchestration logs written: 2026-04-08T10:17:21Z-holden.md, holden re-review entries in decisions.md
-   - All 4 inbox decision files merged into decisions.md; inbox directory cleaned
-   - Ready for git commit and main merge
+- Session 19: Setup workflow redesign review (commit eca2808)
+    - **Verdict:** ✅ APPROVED — Naomi's full-but-lean setup redesign
+    - Reviewed 15 changed files across base, overlays (minimalapi, blazor, cli), post-create scripts, copilot-instructions, and CHANGELOG
+    - Flow coherence confirmed: `pre-container-setup` → `/environment-check` → `/project-setup` is a clean linear progression
+    - Naming improved: `project-setup` describes what it does (not when); `environment-check` describes its role as readiness gate
+    - Compliance model is well-scoped: two-question declaration in main setup (~60s), dedicated idempotent `/compliance-setup` for depth
+    - Security baseline correctly placed at Step 2 — repo-level settings that don't need project structure
+    - All four READMEs aligned identically; post-create scripts updated; copilot-instructions prompt table restructured
+    - No stale references to old names (`first-time-setup`, `verify-setup`) in any active template files
+    - Self-cleanup section in project-setup correctly separates one-time vs re-runnable prompts
+    - Slight gh auth redundancy between environment-check and project-setup is acceptable (gate vs wizard pattern)
+    - Decision written to: .squad/decisions/inbox/holden-review-setup-flow.md
 
-- Session 10 (2026-04-08): Scribe administrative handoff — Full spec-kit-batch-2 review completion
-   - Orchestration logs created: 2026-04-08T10:17:21Z-holden.md, drummer.md, naomi.md, amos.md
-   - Session log created: 2026-04-08T10:17:21Z-spec-kit-batch-2.md
-   - Decision inbox merged: drummer-main-branch-security-review.md → decisions.md (4 HIGH findings, 4 MEDIUM, 4 LOW, 14 security wins)
-   - Decisions file now contains comprehensive main-branch security review with identified assignments
-   - Main-branch security review findings assigned: H1/H2/H3 → Amos, H4 → Naomi (certificates in .gitignore)
-   - Team status: All spec-kit-batch-2 artifacts approved for merge; spec-kit-batch-3 (main-branch security findings) pending remediation planning
+### Session 19 (2026-04-14) — Setup Workflow Implementation Lead Review Complete
 
-- Session 5 (2026-04-08): Spec Kit integration batch — architecture approval and merge gate
-   - Lead review of Spec Kit integration: approved architecture with 2 required revisions
-   - Applied reviewer lockout policy: reassigned Naomi's revisions to Amos
-   - Approved lockout reassignment decision and scope
-   - Coordinated Naomi + Amos work on docs and platform
-   - Verified Drummer re-review (all findings resolved)
-   - Made minor cleanup commit (Azure CLI mentions, verify-setup listings in overlay READMEs)
-   - APPROVED remediation batch for merge to main
-   - All gates cleared; ready for v* tag and compose-and-publish workflow
+**Review delivered:** Holden approved setup workflow redesign (2026-04-14).
+
+- ✅ **Flow coherence:** Renamed prompts clarify *what* they do. `environment-check` promoted to first in-container gate (validate before configuring).
+- ✅ **Compliance model:** Full-but-lean design coherent. Two questions + skip/defer in main setup, dedicated `/compliance-setup` for depth (≤3 per framework).
+- ✅ **Cross-template alignment:** All four READMEs identical. Post-create scripts updated. No stale references.
+- ✅ **Scope:** Tightly scoped to setup flow. Requirements-interview correctly demoted to "(optional)".
+
+**Non-blocking observations:** `gh auth status` appears in both environment-check and project-setup (acceptable: one is passive gate, one acts). Self-cleanup correctly separates one-time vs re-runnable.
+
+**Verdict:** Approved. All checks pass.
+
+**Decision merge:** Input merged to `.squad/decisions/decisions.md` by Scribe.
+
+**Team synthesis:** Implementation, security review, and lead review all complete. Ready for merge and publication.

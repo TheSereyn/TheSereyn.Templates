@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-04-14
+
+### Added
+- **CLI template** — new `TheSereyn.Templates.CLI` for command-line tools (System.CommandLine + Spectre.Console)
+  - `cli-development` skill — CLI architecture patterns, argument parsing, Spectre.Console rendering
+  - `project-conventions` skill — CLI-specific coding standards and project structure
+  - `copilot-instructions.append.md` — CLI-targeted AI guidance
+  - `README.md` — CLI template documentation with feature table and quick-start
+  - Downstream repo: [TheSereyn/TheSereyn.Templates.CLI](https://github.com/TheSereyn/TheSereyn.Templates.CLI)
+- **Blazor copilot-instructions overlay** — Blazor-specific AI guidance appended to base instructions
+- **MinimalApi copilot-instructions overlay** — MinimalApi-specific AI guidance appended to base instructions
+- `compliance-setup.prompt.md` — dedicated, idempotent compliance configuration prompt (re-runnable at any stage)
+- `project-setup.prompt.md` — replaces `first-time-setup` with project identity, security baseline, license, lean compliance declaration, Spec Kit handoff
+
+### Changed
+- **Base generalized to template-neutral** — web-specific copilot instructions moved from base to MinimalApi/Blazor overlays; base now works for any .NET project type
+- **Setup workflow redesigned** — clearer responsibilities and leaner compliance:
+  - `first-time-setup` → `project-setup` — project identity, security baseline, license, lean compliance declaration, Spec Kit handoff
+  - `verify-setup` → `environment-check` — promoted to first in-container readiness gate
+  - Security baseline moved to Step 2 in project-setup; implementation-specific steps deferred until project structure exists
+  - Compliance in project-setup reduced to two questions (framework selection + apply/defer)
+  - `requirements-interview` demoted from setup prominence; kept as optional discovery tool
+- Updated prompt references across all READMEs (base, minimalapi, blazor, cli), copilot-instructions.md, post-create scripts, and pre-container-setup
+- Quick-start guidance now shows: `pre-container-setup` → `/environment-check` → `/project-setup`
+
+### Removed
+- Docker feature removed from devcontainer — no template code depends on it; restores Podman compatibility
+- `first-time-setup.prompt.md` — replaced by `project-setup.prompt.md`
+
+### Fixed
+- **Podman compatibility restored** — removed `docker-outside-of-docker` feature that hardcodes host Docker socket mount (fails on Podman hosts)
+
 ## [0.3.3] - 2026-04-04
 
 ### Added

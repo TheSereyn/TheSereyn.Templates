@@ -7,6 +7,7 @@ docs/reviews/findings-*.md
 
 # Reference materials (not shipped)
 /_reference/
+/.tmp/
 
 # OS
 .DS_Store

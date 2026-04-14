@@ -2,9 +2,9 @@
 
 {{DESCRIPTION}}
 
-## Template: TheSereyn.Templates.Blazor
+## Template: TheSereyn.Templates.CLI
 
-Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Services, and shared contracts.
+Command-line application template for .NET projects with System.CommandLine and Spectre.Console.
 
 > **Note:** Running `@workspace /project-setup` in Copilot Chat will collect your project details and rewrite this README as your project's own documentation.
 
@@ -31,13 +31,12 @@ Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Servi
 | Component | Description |
 |-----------|-------------|
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI |
-| **MCP Servers** | Microsoft Learn, GitHub, Playwright |
+| **MCP Servers** | Microsoft Learn, GitHub |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
-| **Skills** | TUnit testing, project conventions, spec-driven development, Blazor architecture, CSS design system, security (modular skill tree), RFC compliance, code analyzers |
+| **Skills** | TUnit testing, CLI development, project conventions, spec-driven development, security (modular skill tree), code analyzers |
 | **Prompts** | Environment check, project setup, compliance setup, pre-container setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
-| **Browser Automation** | [Playwright CLI](https://playwright.dev/docs/getting-started-cli) — agent-driven browser testing and automation |
 
 ### Development Workflow
 
@@ -52,31 +51,16 @@ For early-stage discovery, run `/requirements-interview` before specifying (opti
 
 ## Architecture
 
-This template is designed for **full-stack** projects following **Clean Architecture**:
+This template is designed for **command-line applications** built on System.CommandLine and Spectre.Console:
 
 ```
 src/
-├── Domain/           # Entities, value objects, domain events, interfaces
-├── Application/      # Use cases, commands, queries, handlers, DTOs
-├── Infrastructure/   # Database repos, external service clients, messaging
-├── Api/              # ASP.NET Core Minimal API endpoints, DI composition root
-├── Web/              # Blazor UI (Server, WASM, or Hybrid — decided per feature)
-├── Web.Components/   # Reusable Razor Class Library (RCL) for shared UI components
-├── Worker/           # Background processing with BackgroundService
-└── Shared/           # Contracts, DTOs shared between projects
+├── Commands/         # Command definitions and handlers
+├── Infrastructure/   # External service clients, file I/O, configuration
+└── Program.cs        # Entry point — RootCommand, parsing, invocation
+tests/
+└── Commands/         # TUnit tests for command handlers
 ```
-
-### Blazor Hosting Models
-
-The hosting model should be decided **per feature** (this is an ask-first trigger):
-
-| Model | Use When |
-|-------|----------|
-| **Blazor Server** | Server-only data, real-time updates, thin-client needed |
-| **Blazor WebAssembly** | Offline capability, zero-trust client, reduced server load |
-| **Blazor Hybrid** | Mix of both — feature-level decision |
-
-See the `blazor-architecture` and `css-design-system` skills for detailed patterns and guidance.
 
 ## Development
 
@@ -87,32 +71,31 @@ dotnet build
 # Test (TUnit on Microsoft Testing Platform)
 dotnet test
 
-# Run the API
-dotnet run --project src/YourProject.Api/
+# Run the CLI
+dotnet run -- --help
 
-# Run the Blazor app
-dotnet run --project src/YourProject.Web/
+# Run with arguments
+dotnet run -- <command> [options]
 ```
 
 ## Key Conventions
 
-- **API Style:** Minimal APIs with REPR pattern (one endpoint per file)
-- **Error Handling:** RFC 9457 Problem Details for all errors
+- **Parsing:** System.CommandLine for argument parsing, command routing, and help generation
+- **Output:** Spectre.Console for rich terminal output (tables, progress, prompts, markup)
+- **Error Handling:** Structured exit codes (0 = success, 1 = usage error, 2 = runtime error)
 - **Testing:** TUnit on Microsoft Testing Platform (NOT xUnit/NUnit)
-- **Pagination:** Cursor-based for all list endpoints
 - **Observability:** OpenTelemetry (traces, metrics, logs)
-- **Blazor:** Hosting model per feature, RCL for reusable components, minimal JS interop
-- **CSS:** Design Tokens + CUBE CSS + Blazor CSS Isolation
 
-See the `project-conventions`, `tunit-testing`, `blazor-architecture`, and `css-design-system` skills for detailed guidance.
+See the `cli-development` and `project-conventions` skills for detailed guidance.
 
 ## Dependencies
 
+- [System.CommandLine](https://learn.microsoft.com/dotnet/standard/commandline/) — command-line parsing and invocation (Microsoft-maintained, MIT)
+- [Spectre.Console](https://spectreconsole.net/) — rich terminal output (.NET Foundation, MIT)
 - [Roslyn Analyzers](https://learn.microsoft.com/dotnet/fundamentals/code-analysis/overview) — code quality and style analysis via `Directory.Build.props`
 - [StyleCop Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers) — formatting and structure rules via `Directory.Build.props`
 - [TUnit](https://tunit.dev/) — testing framework on Microsoft Testing Platform
 - [Squad](https://github.com/bradygaster/squad) — AI development team, installed via DevContainer
-- [Playwright CLI](https://playwright.dev/docs/getting-started-cli) — browser automation for coding agents, installed via DevContainer
 
 ## License
 

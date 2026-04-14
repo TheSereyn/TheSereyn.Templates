@@ -1,9 +1,9 @@
 ---
-updated_at: 2026-04-08T10:44:38Z
-focus_area: Remediate critical, high, and medium review findings
+updated_at: 2026-04-14T19:13:12Z
+focus_area: Review the setup workflow split and decide how early compliance and security setup should appear in onboarding
 active_issues: []
 ---
 
 # What We're Focused On
 
-Fixing the critical, high, and medium review findings while preserving the environment-first template scope and keeping solution scaffolding out of scope.
+Reviewing the onboarding flow from template creation through setup completion, with specific attention on whether compliance and security hardening should stay in the default first-run path, be split into early vs later stages, or be repositioned without losing their project-shaping value.

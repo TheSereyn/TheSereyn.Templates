@@ -8,6 +8,7 @@ Composition workspace for .NET project templates. Composes shared base files + p
 |----------|-------------|------|
 | **TheSereyn.Templates.MinimalApi** | Back-end only: Minimal API + Worker + shared contracts | [TheSereyn/TheSereyn.Templates.MinimalApi](https://github.com/TheSereyn/TheSereyn.Templates.MinimalApi) |
 | **TheSereyn.Templates.Blazor** | Full-stack: extends MinimalApi with Blazor skills and multi-frontend patterns | [TheSereyn/TheSereyn.Templates.Blazor](https://github.com/TheSereyn/TheSereyn.Templates.Blazor) |
+| **TheSereyn.Templates.CLI** | Command-line tools: System.CommandLine + Spectre.Console | [TheSereyn/TheSereyn.Templates.CLI](https://github.com/TheSereyn/TheSereyn.Templates.CLI) |
 
 ## What's Included in Each Template
 
@@ -25,7 +26,8 @@ TheSereyn.Templates/
 ├── base/           # Shared files for ALL templates
 ├── overlays/       # Per-template additions and overrides
 │   ├── minimalapi/
-│   └── blazor/
+│   ├── blazor/
+│   └── cli/
 ├── compose.sh      # Merges base + overlay → output/<template>/
 └── output/         # .gitignored — composed template repos (build artifacts)
 ```
@@ -56,6 +58,7 @@ dev → PR → main → tag (v*) → compose-and-publish workflow
 # Inspect output
 ls output/TheSereyn.Templates.MinimalApi/
 ls output/TheSereyn.Templates.Blazor/
+ls output/TheSereyn.Templates.CLI/
 ```
 
 ## License

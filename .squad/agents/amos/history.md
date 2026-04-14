@@ -10,7 +10,7 @@
 - `compose.sh` — main composition script; TEMPLATES array defines overlay:RepoName pairs
 - `.github/workflows/compose-and-publish.yml` — tag-triggered publish; guard job checks tag is on main; strategy matrix per template
 - `.github/workflows/squad-*.yml` — squad automation (triage, heartbeat, issue-assign, sync-labels)
-- `base/.devcontainer/devcontainer.json` — .NET 10, Node 22, GH CLI, Azure CLI, Docker-outside-of-Docker
+- `base/.devcontainer/devcontainer.json` — .NET 10, Node 22, GH CLI, Azure CLI, Docker-in-Docker
 - `base/.copilot/mcp-config.json` — MCP servers (Microsoft Learn, Azure, GitHub)
 - `overlays/blazor/.devcontainer/devcontainer.json` — Blazor devcontainer override
 - `overlays/blazor/.copilot/mcp-config.json` — Blazor MCP override
@@ -118,3 +118,59 @@
    - Created verify-setup.prompt.md (environment health check)
    - All HIGH findings resolved; Drummer approved remediation batch
    - Holden cleared merge to main; ready for v* tag
+
+- Session 11 (2026-04-09): Restored Podman compatibility — replaced docker-outside-of-docker with docker-in-docker.
+   - Root cause: `docker-outside-of-docker` feature hardcodes a bind mount of `/var/run/docker.sock` from host. Podman hosts don't have this file, so container creation fails entirely.
+   - Fix: Switched to `docker-in-docker:2` which runs its own Docker daemon inside the container — no host socket dependency.
+   - Changed files: `base/.devcontainer/devcontainer.json`, `overlays/blazor/.devcontainer/devcontainer.json`, `base/README.md`, `overlays/blazor/README.md`, `overlays/minimalapi/README.md`
+   - Dropped `"moby": false` (docker-in-docker needs the engine; moby defaults to true)
+   - Kept `"installDockerBuildx": false` to match prior minimal intent
+   - Kept `"--security-opt=label=disable"` runArg (still needed for Podman on SELinux)
+   - Compose verified: both MinimalApi and Blazor outputs regenerated cleanly
+   - Known limitation: on rootless Podman hosts, dockerd inside the container may not start if the host doesn't grant sufficient privileges. The container itself still builds and works — only Docker commands inside would be unavailable.
+   - Docs impact: "Docker-outside-of-Docker" → "Docker-in-Docker" in all README tables. No changes needed to pre-container-setup prompt (already runtime-neutral).
+
+- Session 12 (2026-04-09): Podman compatibility restoration completed — feature removal final state.
+   - Discovered blocker: docker-in-docker:2 requires `"privileged": true`, which fails on rootless Podman (default configuration).
+   - Collaborated with Naomi: proposal to remove Docker feature entirely (no template code depends on it; it was speculative).
+   - Naomi implemented full solution: removed Docker feature from base and overlays, updated all README surfaces and pre-container-setup prompt for runtime neutrality.
+   - Holden reviewed and approved: trade-off is acceptable because no workflows/scripts need Docker CLI inside container. Users can add the feature themselves if needed.
+   - Commits: 2ccef32 (interim docker-in-docker swap), 4e839ba (final feature removal), 0a2d769 (docs alignment), 2bf95b6 (approval gate)
+   - Outcome: Podman support restored; Docker Desktop experience unchanged; both runtimes now work identically for all core workflows.
+   - Decision records merged to decisions.md; orchestration logs and session log written.
+
+- Session 13 (2026-04-12): CLI template onboarding — read-only planning pass.
+    - Audited all input artifacts: plan, research, repo-fit analysis, templates.json, compose.sh, workflows, base/, overlays/
+    - Key finding: base/ is MinimalApi-centric — copilot-instructions.md has ASP.NET Core stack table, CORS/CSRF/antiforgery sections, REST micro-checklists, webapi manual setup. README.md has Clean Architecture with Api/ project. devcontainer.json has forwardPorts [5000, 5001].
+    - If CLI overlay is added without base refactoring, the composed CLI template ships with web API copilot instructions that are wrong for a console app.
+    - Recommended Option A: refactor base to generic .NET, move web-specific content to overlays/minimalapi/ append files, then add CLI overlay cleanly.
+    - compose.sh needs zero changes — fully data-driven from templates.json. Workflow matrix is dynamically generated. pr-validate.yml drift checks also work automatically.
+    - MinimalApi currently has no devcontainer override (uses base as-is). Refactoring forwardPorts out of base means MinimalApi needs a new devcontainer.json overlay.
+    - Blazor overlay already replaces devcontainer.json (adds port 5173 + Playwright extension) — refactoring would simplify it.
+    - CLI overlay needs: README.md, copilot-instructions.append.md, cli-development SKILL.md, src/ project files. Does NOT need devcontainer, post-create, or MCP config overrides — base versions are correct for CLI.
+    - Sequencing: Phase 1 (base refactoring) → Phase 2 (CLI overlay) → Phase 3 (downstream repo + wiring). Phase 3 can parallel Phase 2.
+    - Decision proposal written to inbox: .squad/decisions/inbox/amos-cli-template-wiring.md
+    - Key file paths for CLI work: templates.json, base/.github/copilot-instructions.md, base/README.md, base/.devcontainer/devcontainer.json, README.md (workspace root)
+
+- Session 16 (2026-04-14T17:24:29Z): CLI Template Planning — Squad Execution & Artifact Merge
+     - **Execution complete:** Platform analysis merged into unified team strategy
+     - **Decision committed:** amos-cli-template-wiring.md consolidated into decisions.md (deduplicated with Holden and Naomi inputs)
+     - **Orchestration log created:** 2026-04-14T17:24:29Z-amos.md documents platform findings
+     - **Inbox file deleted:** amos-cli-template-wiring.md removed post-merge
+     - **Agent history updated:** Tracks Phase 1/2/3 sequencing, base refactoring prerequisite, compose.sh stability
+     - **Key confirmation:** Infrastructure (compose.sh, templates.json schema, workflows) needs zero changes
+     - **Platform readiness:** Phase 3 (templates.json + downstream repo creation) ready for execution once Phases 1–2 complete
+
+## 2026-04-14: CLI Template Wiring
+
+Implemented CLI template onboarding: added to templates.json, updated workspace README, confirmed data-driven infrastructure. Commit: 0296327. Approval: ✅ Holden (Lead), ✅ Drummer (Security). Ready for downstream repo creation.
+
+- Session 17 (2026-04-14T18:27:28Z): CLI Downstream Repo Creation — Execution & Scribe Handoff
+      - **Repo created:** TheSereyn/TheSereyn.Templates.CLI on GitHub (public, template repo, MIT license, issues/wiki disabled, main default branch)
+      - **Alignment:** Settings matched to sibling repos (MinimalApi, Blazor) per user guidance
+      - **Orchestration log created:** 2026-04-14T18:27:28Z-amos.md documents repo creation execution
+      - **Session log written:** 2026-04-14T18:27:28Z-cli-repo-creation.md consolidates repo outcome
+      - **Decision inbox merged:** amos-create-cli-repo.md incorporated into decisions.md with full context
+      - **Inbox file deleted:** amos-create-cli-repo.md removed post-merge
+      - **Platform status:** Phase 3 (downstream repo wiring) complete; ready for Phase 1/2 base refactoring + CLI overlay implementation
+      - **Follow-up tokens:** TEMPLATE_PUSH_TOKEN secret (Lee to configure); first publish triggers on v* tag push to main

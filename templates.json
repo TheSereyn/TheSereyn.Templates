@@ -6,5 +6,9 @@
   {
     "overlay": "blazor",
     "repo": "TheSereyn/TheSereyn.Templates.Blazor"
+  },
+  {
+    "overlay": "cli",
+    "repo": "TheSereyn/TheSereyn.Templates.CLI"
   }
 ]

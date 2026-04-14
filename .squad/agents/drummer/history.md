@@ -100,3 +100,69 @@
    - New artifacts clean (post-create-shared.sh, verify-setup.prompt, pr-validate.yml)
    - APPROVED for merge to main
    - All reviews passed; supply chain dependencies hardened project-wide
+
+## 2026-04-14: CLI Template Security Review
+
+Reviewed base/overlay refactor + CLI overlay content. Verdict: ✅ APPROVED. No security regression; all web guidance preserved in overlays; CLI overlay security verified against Microsoft Learn (System.CommandLine, Spectre.Console). No issues found.
+
+- Session (2026-04-14): Security placement analysis — compliance declaration vs security hardening in setup flow.
+  - Lee challenged Holden/Naomi gap analysis proposal to make compliance/security "optional follow-up"
+  - Distinguished two categories: compliance declaration (governance intent, shapes Copilot guidance) vs security hardening (technical controls, irrecoverable failure modes)
+  - Evaluated three options: keep both early, split them, defer both
+  - Recommendation: Keep both. Move hardening EARLIER (Step 12 → before README rewrite). Keep compliance declaration early with better value-proposition framing. Do NOT make either optional.
+  - Key insight: `.gitignore` verification and `user-secrets init` must happen before first commit — a committed secret is irrecoverable. Compliance declaration before first code means Copilot is compliance-aware for every suggestion.
+  - Lee values compliance/security as core project pillars — respect this preference in all future flow changes
+  - User preference: Lee prefers alternatives presented clearly so he can decide, not prescriptive removal of features he values
+  - Orchestration completed: comprehensive analysis documented with three options, non-negotiable items identified, structural distinctions clarified
+  - Position: **Option A (Keep Both, Restructure)** — preserves maximum protection; sufficient to address concerns via reordering and framing improvement
+  - Decision merged to `.squad/decisions.md`; inbox file deleted; orchestration log written (2026-04-14T19:21:07Z-drummer.md)
+  - Awaiting Lee's final decision between Drummer's (keep both) and Naomi's (split with elevation) proposals before implementation
+
+- Session (2026-04-14): Compliance scope analysis — "full setup + skip-later" hybrid model
+  - Lee inclined to full setup but wants skip option and dedicated compliance prompt
+  - Defined hybrid: security hardening non-negotiable (3 items, no skip), compliance question stays early (skip allowed), compliance depth moves to dedicated `/compliance-setup` prompt
+  - `/compliance-setup` design: idempotent, standalone, additive, skip-friendly. 5 steps: state assessment, framework selection with context, wiring, framework guidance, verify.
+  - "Too detailed" line: initial setup asks "which?" — `/compliance-setup` explains "what and how." If setup starts explaining what GDPR requires, it has crossed the line.
+  - Step count ceiling: 13. Adding `/compliance-setup` should not add steps to initial setup.
+  - Skip path: writes `<!-- Compliance: not yet configured -->` marker, nudges to `/compliance-setup`
+  - Recommendation: hybrid is acceptable. Preserves security posture, compliance question stays early, dedicated prompt adds depth current setup never had.
+  - User preference confirmed: Lee values both security and compliance as core pillars, but wants practical skip-later support
+  - Decision written to `.squad/decisions/inbox/drummer-compliance-scope.md`
+
+- Session 19 (2026-04-14): Team synthesis — hybrid model approved
+  - Scribe finalized orchestration logs, session log, and decision merge
+  - Team synthesis approved (Coordinator): Hybrid model accepted — full setup with lean compliance + dedicated `/compliance-setup`
+  - Security hardening: baseline-focused, early (non-negotiable)
+  - Compliance in setup: declaration-only (two questions: which framework + any known constraints), lightweight wiring
+  - Dedicated `/compliance-setup`: handles deeper framework configuration, education, multi-framework guidance
+  - Status: Approved — implementation pending
+  - Next: Implementation team drafts initial setup Step 8 and `/compliance-setup` prompt
+
+- Session (2026-04-14): Security review of setup workflow redesign (commit eca2808)
+  - APPROVED — Naomi's implementation is security-positive across all dimensions
+  - Security baseline moved from Step 12 (of 13) to Step 2 (of 11) — most impactful change
+  - Lean compliance declaration (Step 7, two questions) with dedicated `/compliance-setup` for depth — no harmful gap
+  - `dotnet user-secrets init` correctly deferred — no project structure exists during setup
+  - Environment check (re-runnable) adds Security Basics verification (Check 9) — net positive
+  - Post-create script changes: echo messages only, no behavioral/security impact
+  - All old file references (`first-time-setup`, `verify-setup`) properly cleaned from active artifacts
+  - Cross-references consistent across all 4 READMEs, copilot-instructions.md, pre-container-setup, and post-create scripts
+  - Non-blocking: minor categorization label mismatch in Step 2 gitignore grouping (cosmetic)
+  - Decision written to `.squad/decisions/inbox/drummer-review-setup-flow.md`
+
+### Session 19 (2026-04-14) — Setup Workflow Implementation Review Complete
+
+**Review delivered:** Drummer approved setup workflow redesign (2026-04-14).
+
+- ✅ Security baseline timing: Step 2 (vs Step 12 in old flow) — **significant improvement**
+- ✅ Lean compliance UX: Two questions + `/compliance-setup` depth — no harmful gaps
+- ✅ Wording review: No weakened posture, `dotnet user-secrets init` deferral justified
+- ✅ Post-create changes: Echo messages only, zero behavioral impact
+- ✅ Environment-check security basics: New `.gitignore` pattern verification (net positive)
+- ✅ Cross-reference cleanup: All old names removed from active artifacts
+
+**Non-blocking observations:** Minor categorization label and redundant appsettings patterns (harmless).
+
+**Verdict:** Approved as submitted. No changes required.
+
+**Decision merge:** Input merged to `.squad/decisions/decisions.md` by Scribe.
