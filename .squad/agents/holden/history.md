@@ -80,3 +80,35 @@ Reviewed Amos (wiring) + Naomi (base/overlay split). Verdict: ✅ APPROVED. Base
 ## 2026-04-14: Team Orchestration — Prompt Guidance Update
 
 Squad orchestration cycle completed. Prompt guidance review (commit 2f86516) approved and archived to decisions. Three inbox entries merged to decisions.md; orchestration logs written; team history updated cross-agent. Ready for tag push to main.
+
+## Learnings
+
+- Session 19: Setup workflow redesign review (commit eca2808)
+    - **Verdict:** ✅ APPROVED — Naomi's full-but-lean setup redesign
+    - Reviewed 15 changed files across base, overlays (minimalapi, blazor, cli), post-create scripts, copilot-instructions, and CHANGELOG
+    - Flow coherence confirmed: `pre-container-setup` → `/environment-check` → `/project-setup` is a clean linear progression
+    - Naming improved: `project-setup` describes what it does (not when); `environment-check` describes its role as readiness gate
+    - Compliance model is well-scoped: two-question declaration in main setup (~60s), dedicated idempotent `/compliance-setup` for depth
+    - Security baseline correctly placed at Step 2 — repo-level settings that don't need project structure
+    - All four READMEs aligned identically; post-create scripts updated; copilot-instructions prompt table restructured
+    - No stale references to old names (`first-time-setup`, `verify-setup`) in any active template files
+    - Self-cleanup section in project-setup correctly separates one-time vs re-runnable prompts
+    - Slight gh auth redundancy between environment-check and project-setup is acceptable (gate vs wizard pattern)
+    - Decision written to: .squad/decisions/inbox/holden-review-setup-flow.md
+
+### Session 19 (2026-04-14) — Setup Workflow Implementation Lead Review Complete
+
+**Review delivered:** Holden approved setup workflow redesign (2026-04-14).
+
+- ✅ **Flow coherence:** Renamed prompts clarify *what* they do. `environment-check` promoted to first in-container gate (validate before configuring).
+- ✅ **Compliance model:** Full-but-lean design coherent. Two questions + skip/defer in main setup, dedicated `/compliance-setup` for depth (≤3 per framework).
+- ✅ **Cross-template alignment:** All four READMEs identical. Post-create scripts updated. No stale references.
+- ✅ **Scope:** Tightly scoped to setup flow. Requirements-interview correctly demoted to "(optional)".
+
+**Non-blocking observations:** `gh auth status` appears in both environment-check and project-setup (acceptable: one is passive gate, one acts). Self-cleanup correctly separates one-time vs re-runnable.
+
+**Verdict:** Approved. All checks pass.
+
+**Decision merge:** Input merged to `.squad/decisions/decisions.md` by Scribe.
+
+**Team synthesis:** Implementation, security review, and lead review all complete. Ready for merge and publication.

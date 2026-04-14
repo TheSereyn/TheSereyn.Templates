@@ -174,3 +174,26 @@ Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) appro
 - **Team synthesis approved (Coordinator):** Hybrid model accepted — full setup with lean compliance + dedicated `/compliance-setup`
 - **Status:** Approved — implementation pending
 - **Next:** Implement initial setup Step 8 (compliance framework question with skip) and create `/compliance-setup` prompt
+
+### Session 19 (2026-04-14) — Setup Workflow Implementation Complete
+
+**Implementation delivered:** Naomi completed setup workflow redesign per Option B.
+
+- ✅ Prompt renames: `first-time-setup` → `project-setup`, `verify-setup` → `environment-check`
+- ✅ New prompt: `/compliance-setup` (idempotent, per-framework, ≤3 questions per framework)
+- ✅ Security baseline moved to Step 2 (critical safety improvement)
+- ✅ Lean compliance at Step 7 with skip-later + defer options
+- ✅ All READMEs updated (base, minimalapi, blazor, cli)
+- ✅ Post-create scripts updated (message text only, no behavior changes)
+- ✅ Requirements-interview demoted to "(optional)"
+- ✅ Compose dry-run clean
+
+**Reviews:**
+- **Drummer (2026-04-14):** ✅ Approved — security posture improved, no harmful gaps, cross-reference verification passed
+- **Holden (2026-04-14):** ✅ Approved — flow coherence, compliance model, template alignment all pass
+
+**Decision outcomes:** Merged to `.squad/decisions/decisions.md` (deduplicated, no conflicts)
+
+**Scribe actions:** Orchestration log, session log, and decision archive complete.
+
+**Status:** Ready for merge and publication.

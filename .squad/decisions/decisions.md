@@ -1260,3 +1260,148 @@ CLI template onboarding requires a downstream GitHub repo to receive composed ou
 ### Notes
 
 - Coordinator clarified to refer to Blazor/MinimalApi repos for settings if needed; repo creation already followed that guidance
+
+---
+
+## Decision: Setup Workflow — Full-but-Lean Model
+
+**By:** Naomi (Template Engineer)
+**Date:** 2026-04-14
+**Status:** Implemented on `dev`
+
+### Decision
+
+Implemented Option B (from Session 17–18 analysis) with Lee's requested shape: security baseline stays early and non-negotiable in the main setup flow; compliance gets a lean two-question declaration in main setup plus a dedicated `/compliance-setup` prompt for depth.
+
+### Changes
+
+**Prompt renames:**
+- `first-time-setup` → `project-setup` — name reflects what it does, not when it runs
+- `verify-setup` → `environment-check` — promoted from post-setup verification to first in-container readiness gate
+
+**New prompt:**
+- `compliance-setup` — idempotent, re-runnable at any project stage, handles first-time config, framework addition/removal, and per-framework deep questions (≤3 per framework)
+
+**Security baseline (project-setup Step 2):**
+- .gitignore review, GitHub Secret Scanning, branch protection recommendations
+- Does NOT include `dotnet user-secrets init` or other steps requiring project structure — covered by `security-review-core` during development
+
+**Lean compliance (project-setup Step 7):**
+- Question 1: Which frameworks? (incl. "None / Not sure yet")
+- Question 2: Apply now or defer? (only if frameworks selected)
+- All outcomes recorded in copilot-instructions.md with clear pointer to `/compliance-setup`
+
+**Requirements-interview demotion:**
+- Removed from setup Next Steps suggestions
+- Marked "(optional)" in When-to-Use tables and README guidance
+- Kept as available prompt for early-stage discovery
+
+### Rationale
+
+- Security is always early because it prevents immediate harm — repo-level settings don't need project structure
+- Compliance is intentionally shallow in main setup (~60s) because compliance knowledge often comes later in a project's lifecycle
+- Dedicated compliance prompt enables richer treatment without bloating first-run setup
+- Requirements-interview is valuable but not part of the default happy path — Spec Kit is the primary flow
+
+### Impact
+
+All downstream templates affected (MinimalApi, Blazor, CLI). Compose verified clean.
+
+---
+
+## Decision: Security Review — Setup Workflow Redesign
+
+**By:** Drummer (Security Reviewer)
+**Date:** 2026-04-14
+**Verdict:** ✅ APPROVED
+
+### Scope
+
+Reviewed Naomi's setup workflow redesign: `first-time-setup` → `project-setup`, `verify-setup` → `environment-check`, new `compliance-setup` prompt, plus all updated READMEs, copilot-instructions.md, and post-create scripts.
+
+### Security Analysis
+
+**1. Security Baseline — Timing (Critical Check)**
+
+- **Old flow:** Security setup at Step 12 of 13 — nearly last. A developer could commit secrets before reaching it.
+- **New flow:** Security baseline at Step 2 of 11 — immediately after authentication.
+- **Verdict:** Significant improvement. The most impactful change in this redesign.
+
+**2. Lean Compliance + `/compliance-setup` Design**
+
+- **Old flow:** One question ("which frameworks?") at Step 8. Created empty compliance-notes.md stub with no meaningful content.
+- **New flow:** Two questions at Step 7 (which frameworks + apply/defer). Dedicated `/compliance-setup` prompt with per-framework targeted questions, proper recording in both copilot-instructions.md and compliance-notes.md.
+- **Gap assessment:** No harmful gap. The "Apply now" path immediately records frameworks and activates compliance skills. The "Mark for later" path preserves intent. The dedicated prompt provides deeper configuration than the old flow ever did.
+
+**3. Wording Review**
+
+- No wording weakens security posture
+- `dotnet user-secrets init` deferral is correctly justified — no project structure (.csproj) exists at Step 2
+- The note "covered by the `security-review-core` skill during development" provides proper tracking
+- "None / Not sure yet" compliance path records a `/compliance-setup` nudge — does not dismiss
+
+**4. Post-Create Changes**
+
+Both base and Blazor post-create scripts: echo message changes only (old prompt names → new). No behavioral changes. No security impact.
+
+**5. Environment Check — Security Basics**
+
+New Check 9 verifies `.gitignore` patterns for `*.pfx`, `*.key`, `*.pem`, `.env`, `.env.local`, `appsettings.Local.json`. This is a re-runnable ongoing verification that didn't exist before. Net positive.
+
+### Non-Blocking Observations
+
+- **NB-1:** `project-setup` Step 2 line 36 groups `appsettings.*.json` with certificates under the label "(certificates and private keys)" — minor categorization confusion. Not a security issue; the patterns are correct.
+- **NB-2:** `appsettings.Local.json` is listed separately on line 38 despite being covered by `appsettings.*.json` on line 36. Redundant but harmless.
+
+### Cross-Reference Verification
+
+- All active artifacts reference `project-setup` and `environment-check` (not old names)
+- Old `first-time-setup` and `verify-setup` references exist only in historical documents
+- Old prompt files properly deleted
+- All four READMEs (base, minimalapi, blazor, cli) consistently updated
+
+### Outcome
+
+No changes required. Approved as submitted.
+
+---
+
+## Decision: Setup Workflow Redesign — Lead Review
+
+**By:** Holden (Lead)
+**Date:** 2026-04-14
+**Status:** ✅ APPROVED
+
+### Reviewed
+
+Naomi's setup workflow redesign implementing Option B (full-but-lean compliance model) per Session 17–18 analysis and Lee's requested shape.
+
+### Verdict: APPROVE
+
+**1. Flow Coherence — ✅ Pass**
+
+The onboarding journey reads linearly:
+
+`pre-container-setup` → `/environment-check` → `/project-setup` → `/compliance-setup`
+
+Renaming improves discoverability. Names describe *what* they do, not *when* they run. Promoting environment-check to first in-container step is correct.
+
+**2. Compliance Model — ✅ Pass**
+
+Full-but-lean design is coherent:
+- **project-setup Step 7:** Two questions, three outcomes, ~60 seconds with clear pointers to `/compliance-setup`
+- **compliance-setup:** Idempotent, re-runnable, ≤3 questions per framework
+- Separation avoids first-run bloat while ensuring compliance is surfaced early
+
+**3. Cross-Template Alignment — ✅ Pass**
+
+All four READMEs show identical onboarding flow. Post-create scripts updated. No stale references.
+
+**4. Scope — ✅ Pass**
+
+Changes tightly scoped to setup flow. Requirements-interview demotion to "(optional)" is appropriate.
+
+### Non-Blocking Observations
+
+- `gh auth status` appears in both environment-check and project-setup — acceptable (one is gate, one acts on it)
+- Self-cleanup section correctly identifies one-time vs re-runnable prompts

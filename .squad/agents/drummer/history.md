@@ -137,3 +137,32 @@ Reviewed base/overlay refactor + CLI overlay content. Verdict: ✅ APPROVED. No 
   - Dedicated `/compliance-setup`: handles deeper framework configuration, education, multi-framework guidance
   - Status: Approved — implementation pending
   - Next: Implementation team drafts initial setup Step 8 and `/compliance-setup` prompt
+
+- Session (2026-04-14): Security review of setup workflow redesign (commit eca2808)
+  - APPROVED — Naomi's implementation is security-positive across all dimensions
+  - Security baseline moved from Step 12 (of 13) to Step 2 (of 11) — most impactful change
+  - Lean compliance declaration (Step 7, two questions) with dedicated `/compliance-setup` for depth — no harmful gap
+  - `dotnet user-secrets init` correctly deferred — no project structure exists during setup
+  - Environment check (re-runnable) adds Security Basics verification (Check 9) — net positive
+  - Post-create script changes: echo messages only, no behavioral/security impact
+  - All old file references (`first-time-setup`, `verify-setup`) properly cleaned from active artifacts
+  - Cross-references consistent across all 4 READMEs, copilot-instructions.md, pre-container-setup, and post-create scripts
+  - Non-blocking: minor categorization label mismatch in Step 2 gitignore grouping (cosmetic)
+  - Decision written to `.squad/decisions/inbox/drummer-review-setup-flow.md`
+
+### Session 19 (2026-04-14) — Setup Workflow Implementation Review Complete
+
+**Review delivered:** Drummer approved setup workflow redesign (2026-04-14).
+
+- ✅ Security baseline timing: Step 2 (vs Step 12 in old flow) — **significant improvement**
+- ✅ Lean compliance UX: Two questions + `/compliance-setup` depth — no harmful gaps
+- ✅ Wording review: No weakened posture, `dotnet user-secrets init` deferral justified
+- ✅ Post-create changes: Echo messages only, zero behavioral impact
+- ✅ Environment-check security basics: New `.gitignore` pattern verification (net positive)
+- ✅ Cross-reference cleanup: All old names removed from active artifacts
+
+**Non-blocking observations:** Minor categorization label and redundant appsettings patterns (harmless).
+
+**Verdict:** Approved as submitted. No changes required.
+
+**Decision merge:** Input merged to `.squad/decisions/decisions.md` by Scribe.
