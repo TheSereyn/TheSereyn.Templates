@@ -112,3 +112,18 @@ Squad orchestration cycle completed. Prompt guidance review (commit 2f86516) app
 **Decision merge:** Input merged to `.squad/decisions/decisions.md` by Scribe.
 
 **Team synthesis:** Implementation, security review, and lead review all complete. Ready for merge and publication.
+
+## Session 20 (2026-04-14): v0.5.0 Release Gate Review
+
+**Verdict:** ❌ REJECT — documentation blockers prevent tagging.
+
+**Content assessment:** v0.5.0 scope is substantial and justified — CLI template addition, base generalisation, Podman fix, setup workflow redesign. All three templates compose cleanly. CLI downstream repo exists.
+
+**Blockers found:**
+1. CHANGELOG missing entire [0.4.0] section (v0.4.0 was tagged but never documented)
+2. CHANGELOG [Unreleased] incomplete — only covers setup workflow, missing CLI template, Podman fix, base refactor
+3. README.md has stale references ("Docker-outside-of-docker", "First-time Setup Prompt")
+
+**Assignment:** Naomi to resolve all three documentation blockers. After fixes, PR dev → main, then Holden re-gates for tag.
+
+**Decision written to:** `.squad/decisions/inbox/holden-release-gate.md`

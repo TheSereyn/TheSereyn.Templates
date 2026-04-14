@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Blazor copilot-instructions overlay** — Blazor-specific AI guidance appended to base instructions
 - **MinimalApi copilot-instructions overlay** — MinimalApi-specific AI guidance appended to base instructions
 - `compliance-setup.prompt.md` — dedicated, idempotent compliance configuration prompt (re-runnable at any stage)
-- `project-setup.prompt.md` — replaces `first-time-setup` with project identity, security baseline, license, lean compliance declaration, Spec Kit handoff
+- `project-setup.prompt.md` — replaces `first-time-setup`: collects project identity, rewrites README, configures security baseline, license, lean compliance declaration, and Spec Kit handoff
 
 ### Changed
 - **Base generalized to template-neutral** — web-specific copilot instructions moved from base to MinimalApi/Blazor overlays; base now works for any .NET project type
@@ -38,6 +38,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - **Podman compatibility restored** — removed `docker-outside-of-docker` feature that hardcodes host Docker socket mount (fails on Podman hosts)
+
+## [0.4.0] - 2026-04-08
+
+### Added
+- **Spec Kit integration** — spec-driven development as the primary planning workflow
+  - `specify` CLI installed in devcontainer (pre-installed binary, no `curl | sh`)
+  - `spec-driven-development` skill — specifications, plans, and task decomposition patterns
+  - Copilot-instructions updated with Spec Kit workflow and development lifecycle
+  - READMEs updated with Spec Kit quick-start guidance
+- `verify-setup.prompt.md` — lightweight environment health check after container build
+- Certificate and key ignore patterns added to `.gitignore` (`*.pfx`, `*.key`, `*.pem`, `*.p12`, `*.cer`)
+
+### Changed
+- Squad updated to latest; squad-managed workflows disabled (managed externally)
+- GitHub Actions pinned to full commit SHAs for supply-chain security
+  - `actions/checkout` bumped from 4.2.2 to 6.0.2
+- Post-create scripts made idempotent with marker guards and pre-check validation
+- CI pipeline hardened — dynamic template validation from `templates.json`, pre-flight checks, deterministic compose ordering
+- MCP server packages corrected and pinned: GitHub (`@modelcontextprotocol/server-github`), NuGet (`nuget.mcp.server`), Playwright (`@playwright/mcp`)
+- All tool versions pinned: `squad-cli@0.9.1`, `specify-cli@v0.5.0`, `playwright-cli@0.1.6`
+- Azure CLI restored in README What's Included tables
+- Skills categorised in copilot-instructions.md (Development Workflow, Code Quality, Security, Compliance)
+- All prompts documented in copilot-instructions.md Prompts table
+- Overlay READMEs updated with current toolchain, Spec Kit workflow, and pre-container setup reference
+
+### Fixed
+- GitHub MCP server: replaced non-existent `@anthropic/github-mcp-server` with `@modelcontextprotocol/server-github`
+- NuGet MCP server: corrected package ID and command name
+- StyleCop `AdditionalFiles` wiring in `Directory.Build.props` — `stylecop.json` now consumed by subdirectory projects
+- CODEOWNERS placeholder rule commented out to prevent GitHub validation errors
+- LICENSE template: added `{{YEAR}}` and `{{AUTHOR}}` placeholders to setup instructions
+- CONTRIBUTING.md: corrected compose syntax and `templates.json` reference
+- Removed fragile todo-tool dependency from requirements-interview prompt
+
+### Removed
+- Deprecated `security-review` skill — `security-review-core` is the active entry point
+- Stale Azure CLI reference from base README (restored correctly in overlay tables)
 
 ## [0.3.3] - 2026-04-04
 
