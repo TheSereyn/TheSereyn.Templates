@@ -174,3 +174,22 @@ Implemented CLI template onboarding: added to templates.json, updated workspace 
       - **Inbox file deleted:** amos-create-cli-repo.md removed post-merge
       - **Platform status:** Phase 3 (downstream repo wiring) complete; ready for Phase 1/2 base refactoring + CLI overlay implementation
       - **Follow-up tokens:** TEMPLATE_PUSH_TOKEN secret (Lee to configure); first publish triggers on v* tag push to main
+
+- Session 18 (2026-04-14): v0.5.0 release — tag, PR, and publish.
+    - **Workflow check:** compose-and-publish.yml already supports CLI template — matrix is data-driven from templates.json, no workflow changes needed.
+    - **Compose verified:** all 3 templates (MinimalApi, Blazor, CLI) compose cleanly via compose.sh.
+    - **CHANGELOG updated:** [Unreleased] to [0.5.0] - 2026-04-14 with full release notes covering CLI template, base generalization, setup workflow redesign, Podman fix, per-template copilot instruction overlays.
+    - **PR #30 opened and merged:** dev to main, release: v0.5.0.
+    - **Tag v0.5.0 pushed:** triggers compose-and-publish workflow (run ID 24420932683, confirmed queued).
+    - **GitHub Release created:** https://github.com/TheSereyn/TheSereyn.Templates/releases/tag/v0.5.0
+    - **Key finding:** No workflow or infrastructure changes needed — data-driven architecture from templates.json handled CLI onboarding with zero pipeline modifications.
+    - **Reminder:** TEMPLATE_PUSH_TOKEN must have push access to TheSereyn/TheSereyn.Templates.CLI for the publish to succeed.
+
+- Session 19 (2026-04-14T20:29:04Z): v0.5.0 Release Orchestration & Scribe Documentation
+    - **Release readiness verified:** Workflow already supports CLI; all 3 templates compose cleanly.
+    - **Execution complete:** PR #30 merged (dev → main), tag v0.5.0 pushed, GitHub Release published.
+    - **Compose-and-publish workflow:** Run 24420932683 executed successfully; all three downstream repos (MinimalApi, Blazor, CLI) pushed and tagged v0.5.0.
+    - **Release artifacts:** GitHub Release v0.5.0 targeting main; downstream repos contain expected prompts and manifests.
+    - **Orchestration log created:** 2026-04-14T20:29:04Z-amos.md documents end-to-end execution.
+    - **Note:** Post-release, minor stale wording identified in already-published CLI README; source docs corrected on dev by Naomi (follow-up doc cleanup pending dev push).
+    - **Outcome:** v0.5.0 successfully released; all infrastructure and composition performed as designed.

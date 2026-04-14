@@ -1,9 +1,9 @@
 ---
-updated_at: 2026-04-14T19:13:12Z
-focus_area: Review the setup workflow split and decide how early compliance and security setup should appear in onboarding
+updated_at: 2026-04-14T21:04:36Z
+focus_area: Sync dev and main after the v0.5.0 release, and ensure Squad workflows remain disabled in the repository state
 active_issues: []
 ---
 
 # What We're Focused On
 
-Reviewing the onboarding flow from template creation through setup completion, with specific attention on whether compliance and security hardening should stay in the default first-run path, be split into early vs later stages, or be repositioned without losing their project-shaping value.
+Checking whether `dev` still contains post-release work that should land on `main`, cleaning up the local enabled copies of Squad workflows so the `.disabled` variants remain the authoritative disabled state, and then syncing the branches cleanly.

@@ -1405,3 +1405,142 @@ Changes tightly scoped to setup flow. Requirements-interview demotion to "(optio
 
 - `gh auth status` appears in both environment-check and project-setup — acceptable (one is gate, one acts on it)
 - Self-cleanup section correctly identifies one-time vs re-runnable prompts
+
+---
+
+## Decision: v0.5.0 Release Readiness
+
+**Date:** 2026-04-14
+**Author:** Amos (Platform Engineer)
+**Status:** Executed
+
+### Context
+
+Lee requested a v0.5.0 release with CLI template publish support verified beforehand.
+
+### Findings
+
+1. **Workflow already supports CLI** — compose-and-publish.yml reads templates.json dynamically. CLI was added to templates.json previously. No workflow changes needed.
+2. **Compose verified** — all 3 templates (MinimalApi, Blazor, CLI) compose cleanly.
+3. **CHANGELOG updated** — [Unreleased] section promoted to [0.5.0] - 2026-04-14 with complete release notes.
+
+### Actions Taken
+
+- CHANGELOG.md updated and committed on dev
+- PR #30 opened (dev → main), merged
+- Tag v0.5.0 pushed to origin/main — compose-and-publish workflow triggered
+- GitHub Release created at https://github.com/TheSereyn/TheSereyn.Templates/releases/tag/v0.5.0
+
+### Risk
+
+- If TEMPLATE_PUSH_TOKEN does not have push access to TheSereyn/TheSereyn.Templates.CLI, the CLI publish job will fail. MinimalApi and Blazor jobs are unaffected (fail-fast: false).
+
+---
+
+## Decision: v0.5.0 Release Gate — REJECT (Later Approved)
+
+**Author:** Holden (Lead)
+**Date:** 2026-04-14
+**Status:** Initial REJECT; later APPROVED after remediation
+
+### Context
+
+Lee requested a v0.5.0 tag release. Holden reviewed repo state for release readiness.
+
+### Findings
+
+#### Content justifies 0.5.0
+
+The scope since v0.4.0 is substantial — new CLI template, base generalisation to template-neutral .NET, Podman compatibility restoration, and setup workflow redesign. A minor version bump is warranted.
+
+Composition pipeline is healthy: all three templates (MinimalApi, Blazor, CLI) compose cleanly. CLI downstream repo exists on GitHub. Workflow reads templates.json dynamically — no hardcoded matrix to update.
+
+#### Blockers (3)
+
+1. **CHANGELOG missing [0.4.0] section.** The file jumps from `[Unreleased]` to `[0.3.3]`. v0.4.0 was tagged and shipped but never documented. Must be backfilled before we add a 0.5.0 heading.
+
+2. **CHANGELOG [Unreleased] incomplete.** Only mentions setup workflow redesign. Missing: CLI template addition, base generalisation to template-neutral, Podman compatibility restoration, prompt guidance refactoring.
+
+3. **README.md stale references.**
+   - Line 15: "Docker-outside-of-docker" — removed in Podman fix
+   - Line 20: "First-time Setup Prompt" — renamed to environment-check / project-setup
+
+### Recommendation
+
+**Assign to: Naomi** (Template Engineer — owns content and documentation).
+
+Tasks:
+1. Backfill `[0.4.0]` CHANGELOG section from commit history (v0.3.3..v0.4.0)
+2. Complete `[0.5.0]` CHANGELOG section with all features since v0.4.0
+3. Fix README.md stale references (Docker-outside-of-docker, First-time Setup Prompt)
+4. After fixes: PR dev → main, then Holden re-reviews for tag
+
+### Verdict
+
+REJECT release tagging until blockers resolved. Content is ready; documentation is not.
+
+---
+
+## Decision: v0.5.0 Release Documentation — Blockers Resolved
+
+**Author:** Naomi (Template Engineer)
+**Date:** 2026-04-14
+**Status:** Completed — ready for re-review
+
+### Context
+
+Holden REJECTED v0.5.0 tagging citing 3 documentation blockers. Per reviewer lockout, Naomi assigned to fix.
+
+### Actions Taken
+
+1. **CHANGELOG [0.4.0] backfilled** from commit history (v0.3.3..v0.4.0): Spec Kit integration, supply-chain pinning, post-create idempotency, CI hardening, MCP server corrections, verify-setup prompt, certificate gitignore patterns, Squad update, deprecated security-review skill removal.
+
+2. **CHANGELOG [0.5.0] expanded**: project-setup entry now mentions README auto-rewrite feature (commit 2f86516).
+
+3. **README.md stale references fixed**: removed "Docker-outside-of-docker", "First-time Setup Prompt", "Business Analyst Agent". What's Included section rewritten to match base/README.md source of truth (DevContainer, MCP Servers, Spec Kit, Squad, Skills, Prompts, Code Quality).
+
+4. **Adjacent fix — CONTRIBUTING.md**: added CLI template to downstream repo list and compose validation commands.
+
+### Verification
+
+- `compose.sh` passes for all 3 templates (MinimalApi, Blazor, CLI)
+- No stale references to removed features in any current-facing documentation
+- Commit: 370d204
+
+### Recommendation
+
+Holden should re-review for release gate. After approval: PR dev → main, re-tag v0.5.0.
+
+---
+
+## Decision: v0.5.0 Documentation Re-Review — APPROVED
+
+**Author:** Holden (Lead)
+**Date:** 2026-04-14
+**Status:** Approved
+**Commits:** 370d204, b2e8307
+
+### Context
+
+Holden rejected v0.5.0 tagging due to three documentation blockers:
+1. CHANGELOG missing entire [0.4.0] section
+2. CHANGELOG [Unreleased/0.5.0] incomplete — missing CLI template, Podman fix, base refactor
+3. README.md stale references ("Docker-outside-of-docker", "First-time Setup Prompt")
+
+Naomi was assigned to resolve all three.
+
+### Review
+
+All three blockers are resolved in commit 370d204:
+
+- **[0.4.0] backfill:** 36 lines of well-structured changelog covering Spec Kit integration, supply-chain pinning, CI hardening, MCP corrections, post-create idempotency, and verify-setup prompt.
+- **[0.5.0] completion:** CLI template, base generalisation, setup workflow redesign, compliance-setup, project-setup (with README rewrite), Podman fix — all present and accurate.
+- **README.md:** "Docker-outside-of-docker" removed; "First-time Setup Prompt" and "Business Analyst Agent" replaced with current names (Spec Kit, Squad, environment check, project setup, compliance setup).
+- **CONTRIBUTING.md (bonus):** CLI template added to downstream list and validation section.
+
+### Decision
+
+**APPROVE.** Documentation is release-ready. The release workflow can proceed:
+1. PR dev → main
+2. Merge
+3. Tag v0.5.0 on main

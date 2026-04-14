@@ -112,3 +112,63 @@ Squad orchestration cycle completed. Prompt guidance review (commit 2f86516) app
 **Decision merge:** Input merged to `.squad/decisions/decisions.md` by Scribe.
 
 **Team synthesis:** Implementation, security review, and lead review all complete. Ready for merge and publication.
+
+## Session 20 (2026-04-14): v0.5.0 Release Gate Review
+
+**Verdict:** ❌ REJECT — documentation blockers prevent tagging.
+
+**Content assessment:** v0.5.0 scope is substantial and justified — CLI template addition, base generalisation, Podman fix, setup workflow redesign. All three templates compose cleanly. CLI downstream repo exists.
+
+**Blockers found:**
+1. CHANGELOG missing entire [0.4.0] section (v0.4.0 was tagged but never documented)
+2. CHANGELOG [Unreleased] incomplete — only covers setup workflow, missing CLI template, Podman fix, base refactor
+3. README.md has stale references ("Docker-outside-of-docker", "First-time Setup Prompt")
+
+**Assignment:** Naomi to resolve all three documentation blockers. After fixes, PR dev → main, then Holden re-gates for tag.
+
+**Decision written to:** `.squad/decisions/inbox/holden-release-gate.md`
+
+## Session 21 (2026-04-14): Doc-Fix Re-Review — v0.5.0 Release Gate
+
+**Verdict:** ✅ APPROVE — all three documentation blockers from Session 20 resolved.
+
+**Commits reviewed:** 370d204 (doc fixes), b2e8307 (Naomi history + decision record)
+
+**Blocker resolution:**
+1. ✅ CHANGELOG [0.4.0] backfilled — comprehensive section covering Spec Kit, supply-chain pinning, CI hardening, MCP fixes, verify-setup, and more
+2. ✅ CHANGELOG [0.5.0] complete — CLI template, base generalisation, Podman fix, setup workflow redesign, compliance-setup, project-setup (with README rewrite) all documented
+3. ✅ README.md stale references fixed — "Docker-outside-of-docker" → current DevContainer list; "First-time Setup Prompt" and "Business Analyst Agent" replaced with Spec Kit, Squad, and current prompt names
+
+**Bonus:** CONTRIBUTING.md updated with CLI template in downstream list and validation section.
+
+**[Unreleased]** section is empty (correct — everything moved to [0.5.0]).
+
+**Status:** Documentation is release-ready. PR dev → main can proceed, then tag v0.5.0.
+
+## Session 22 (2026-04-14T20:29:04Z): v0.5.0 Release Orchestration & Scribe Documentation
+
+**Role in release execution:**
+- **Initial gating (Session 20):** Identified three documentation blockers; rejected tagging; assigned remediation to Naomi.
+- **Re-review (Session 21):** Verified all blockers resolved; approved release gate.
+- **Release authorization:** Approved dev → main PR merge and v0.5.0 tag push.
+
+**Release outcome:**
+- ✅ GitHub Release v0.5.0 published targeting main
+- ✅ Compose-and-publish workflow 24420932683 completed successfully
+- ✅ All three downstream repos (MinimalApi, Blazor, CLI) pushed and tagged v0.5.0
+- ✅ CLI repository contains expected prompts
+
+**Follow-up:** Post-release, minor stale wording in already-published CLI README identified; Naomi corrected source docs on dev (pending dev push for cleanup).
+
+**Orchestration log created:** 2026-04-14T20:29:04Z-holden.md documents two-phase review and approval flow.
+
+## Learnings
+
+- Session 23 (2026-04-14): dev → main merge gate — post-v0.5.0 cleanup
+    - **Verdict:** ✅ APPROVE — three dev-only commits are all `docs:` category, no code or composition changes
+    - Commits reviewed: `e92bb27` (Amos history), `370d204` (CHANGELOG/README/CONTRIBUTING fixes), `b2e8307` (Naomi history)
+    - Critical commit `370d204` fixes documentation accuracy gaps shipped with v0.5.0 — must land on main
+    - Other two commits are Squad bookkeeping — harmless, consistent with `.squad/` sync practice
+    - Untracked enabled Squad workflow files (`.yml` without `.disabled`) flagged as local cleanup prerequisite — not a merge blocker
+    - No security-sensitive content; no Drummer review needed; no re-publish needed
+    - Decision written to: `.squad/decisions/inbox/holden-merge-gate.md`

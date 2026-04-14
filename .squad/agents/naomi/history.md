@@ -197,3 +197,35 @@ Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) appro
 **Scribe actions:** Orchestration log, session log, and decision archive complete.
 
 **Status:** Ready for merge and publication.
+
+### Session 20 (2026-04-14): v0.5.0 Release Documentation Fix
+
+- **Task:** Holden REJECTED v0.5.0 tagging due to 3 documentation blockers. Per reviewer lockout, Naomi assigned to fix.
+- **Blockers resolved:**
+  1. **CHANGELOG v0.4.0 backfilled** — complete section covering Spec Kit integration, supply-chain pinning, post-create idempotency, CI hardening, MCP server corrections, verify-setup prompt, certificate gitignore patterns, Squad update, and deprecation of security-review skill
+  2. **CHANGELOG v0.5.0 expanded** — project-setup entry now mentions README auto-rewrite feature
+  3. **README.md stale references fixed** — removed "Docker-outside-of-docker", "First-time Setup Prompt", "Business Analyst Agent"; replaced What's Included with current-state list matching base/README.md (Spec Kit, Squad, Code Quality, Prompts)
+- **Adjacent fixes:**
+  - CONTRIBUTING.md: added CLI template to downstream repo list and compose validation commands
+- **Compose verified:** all three templates (MinimalApi, Blazor, CLI) compose cleanly
+- **Commit:** 370d204
+- **Key learning:** Workspace README (root) must stay aligned with base/README.md What's Included table — they describe the same content from different perspectives (workspace maintainer vs template consumer). When base changes, root README needs a matching update.
+- **Key learning:** CHANGELOG backfilling requires tracing commit messages for the tag range, not relying on memory or session history — commit messages carry the authoritative details (especially platform remediation and review finding commits which bundle many changes).
+
+### Session 21 (2026-04-14): v0.5.0 Release Gate Re-Review
+
+- **Holden's re-review:** All three documentation blockers from Session 20 are resolved in commit 370d204.
+  - [0.4.0] backfilled with 36 lines covering all platform and process changes
+  - [0.5.0] complete with all features (CLI template, base generalization, setup workflow, Podman fix, compliance/project-setup)
+  - README.md stale references removed and replaced with current names
+  - CONTRIBUTING.md bonus update applied
+- **Approval:** ✅ Documentation release-ready
+- **Release flow authorized:** PR dev → main, tag v0.5.0
+
+### Session 22 (2026-04-14T20:29:04Z): v0.5.0 Release Orchestration & Scribe Documentation
+
+- **Amos execution:** v0.5.0 released successfully — all three downstream repos published and tagged.
+- **Release artifacts:** GitHub Release published targeting main; compose-and-publish workflow 24420932683 completed; CLI template verified in downstream repo.
+- **Post-release discovery:** Minor stale wording identified in already-published CLI README (README mentions "First-time Setup Prompt" name, but downstream was generated before the prompt rename fix).
+- **Remediation:** Corrected source docs (base/README.md and overlays/cli/README.md) on dev branch to match published state. Awaiting dev push for cleanup.
+- **Orchestration log created:** 2026-04-14T20:29:04Z-naomi.md documents documentation fix execution and post-release correction.

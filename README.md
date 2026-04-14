@@ -12,12 +12,13 @@ Composition workspace for .NET project templates. Composes shared base files + p
 
 ## What's Included in Each Template
 
-- **DevContainer** — .NET 10, Node 22, GH CLI, Azure CLI, Docker-outside-of-docker
-- **MCP Servers** — Microsoft Learn, Azure, GitHub
-- **Skills** — TUnit testing, project conventions, requirements gathering, Playwright CLI
-- **Business Analyst Agent** — Structured requirements-gathering interview
-- **Squad** — Auto-installed via DevContainer (always latest)
-- **First-time Setup Prompt** — One-shot prompt to configure project identity and verify environment
+- **DevContainer** — .NET 10, Node 22, GitHub CLI, Azure CLI
+- **MCP Servers** — Microsoft Learn, GitHub
+- **Spec Kit** — Spec-Driven Development (specifications, plans, task decomposition)
+- **Squad** — AI development team, auto-installed via DevContainer
+- **Skills** — TUnit testing, project conventions, spec-driven development, security (modular skill tree), code analyzers
+- **Prompts** — Environment check, project setup, compliance setup, pre-container setup
+- **Code Quality** — StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types
 
 ## Workspace Structure
 

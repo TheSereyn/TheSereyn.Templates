@@ -27,7 +27,7 @@ This repository uses a base + overlay composition model:
 
 ### Composition is Authoritative
 
-**The composition workspace is the single source of truth.** Downstream template repositories (`TheSereyn.Templates.MinimalApi`, `TheSereyn.Templates.Blazor`) are generated from this workspace on every tag push. Any direct commits to downstream repos will be **overwritten** on the next publish.
+**The composition workspace is the single source of truth.** Downstream template repositories (`TheSereyn.Templates.MinimalApi`, `TheSereyn.Templates.Blazor`, `TheSereyn.Templates.CLI`) are generated from this workspace on every tag push. Any direct commits to downstream repos will be **overwritten** on the next publish.
 
 If you need to hotfix a downstream repo, make the change here and republish.
 
@@ -59,6 +59,7 @@ Before pushing, verify your compose output is valid:
 bash compose.sh
 test -f output/TheSereyn.Templates.MinimalApi/README.md && echo "MinimalApi OK"
 test -f output/TheSereyn.Templates.Blazor/README.md && echo "Blazor OK"
+test -f output/TheSereyn.Templates.CLI/README.md && echo "CLI OK"
 ```
 
 ## Making Changes
