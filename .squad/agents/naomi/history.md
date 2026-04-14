@@ -112,3 +112,18 @@ Generalised base to template-neutral (252→205 lines); created CLI overlay with
 ## 2026-04-14: Team Orchestration — Prompt Guidance Update
 
 Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) approved and archived to decisions. Three inbox entries merged to decisions.md; orchestration logs written; team history updated cross-agent. Ready for tag push to main.
+
+### Session 17 (2026-04-14): Compliance vs Security Hardening — Onboarding Analysis & Orchestration
+
+- **Task:** Evaluate whether compliance setup (Step 8) and security hardening (Step 12) should remain together in first-run setup, be split, or deferred.
+- **Key finding:** These two concerns are structurally different. Security hardening is operational infrastructure (universal, mechanical, prevents immediate harm). Compliance is strategic governance (project-specific, requires domain knowledge, no immediate risk from deferral).
+- **Gap analysis conducted:** Setup journey from "Use this template" through readiness for Spec Kit. Current issues: first-time-setup mixes four responsibilities; verify-setup duplicates verification; requirements-interview surfaced incorrectly; pre-container-setup bleeding into in-container; README sequencing backwards.
+- **Target flow identified:** README → pre-container-setup → environment-check (rename verify-setup) → project-setup (rename first-time-setup) → Spec Kit handoff
+- **Requirements-interview verdict:** Keep it, demote out of setup. Optional off-ramp for vague ideas; Spec Kit is primary default.
+- **Three options presented to Lee:**
+  - **Option A:** Keep both early (restructured) — move security hardening to Step 2; improve compliance framing; preserve maximum protection
+  - **Option B:** Split — security stays early, compliance gets dedicated `/compliance-setup` prompt — compliance elevated, not demoted
+  - **Option C:** Defer both — rejected; security gaps in interim window
+- **Recommendation (Naomi):** Option B with elevation framing. Security stays non-negotiable; compliance gets first-class dedicated prompt with richer treatment after requirements gathering.
+- **Orchestration completed:** Two decision files written (`setup-journey-gap-analysis-20260414.md`, `naomi-compliance-setup.md`); awaiting Lee's decision between Options A, B, or C before implementation phase.
+- **Decisions merged:** Gap analysis and recommendations merged to .squad/decisions.md; inbox files deleted; orchestration log written (2026-04-14T19:21:07Z-naomi.md).

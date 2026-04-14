@@ -104,3 +104,16 @@
 ## 2026-04-14: CLI Template Security Review
 
 Reviewed base/overlay refactor + CLI overlay content. Verdict: ✅ APPROVED. No security regression; all web guidance preserved in overlays; CLI overlay security verified against Microsoft Learn (System.CommandLine, Spectre.Console). No issues found.
+
+- Session (2026-04-14): Security placement analysis — compliance declaration vs security hardening in setup flow.
+  - Lee challenged Holden/Naomi gap analysis proposal to make compliance/security "optional follow-up"
+  - Distinguished two categories: compliance declaration (governance intent, shapes Copilot guidance) vs security hardening (technical controls, irrecoverable failure modes)
+  - Evaluated three options: keep both early, split them, defer both
+  - Recommendation: Keep both. Move hardening EARLIER (Step 12 → before README rewrite). Keep compliance declaration early with better value-proposition framing. Do NOT make either optional.
+  - Key insight: `.gitignore` verification and `user-secrets init` must happen before first commit — a committed secret is irrecoverable. Compliance declaration before first code means Copilot is compliance-aware for every suggestion.
+  - Lee values compliance/security as core project pillars — respect this preference in all future flow changes
+  - User preference: Lee prefers alternatives presented clearly so he can decide, not prescriptive removal of features he values
+  - Orchestration completed: comprehensive analysis documented with three options, non-negotiable items identified, structural distinctions clarified
+  - Position: **Option A (Keep Both, Restructure)** — preserves maximum protection; sufficient to address concerns via reordering and framing improvement
+  - Decision merged to `.squad/decisions.md`; inbox file deleted; orchestration log written (2026-04-14T19:21:07Z-drummer.md)
+  - Awaiting Lee's final decision between Drummer's (keep both) and Naomi's (split with elevation) proposals before implementation

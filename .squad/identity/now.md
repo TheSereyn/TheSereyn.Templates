@@ -1,9 +1,9 @@
 ---
-updated_at: 2026-04-09T16:37:22Z
-focus_area: Restore Podman-compatible devcontainer setup in the shared template base
+updated_at: 2026-04-14T19:13:12Z
+focus_area: Review the setup workflow split and decide how early compliance and security setup should appear in onboarding
 active_issues: []
 ---
 
 # What We're Focused On
 
-Restoring Podman-compatible devcontainer behavior without regressing Docker support, with attention on shared base files so both downstream templates stay aligned.
+Reviewing the onboarding flow from template creation through setup completion, with specific attention on whether compliance and security hardening should stay in the default first-run path, be split into early vs later stages, or be repositioned without losing their project-shaping value.
