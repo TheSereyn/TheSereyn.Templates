@@ -127,3 +127,37 @@ Squad orchestration cycle completed. Prompt guidance review (commit 2f86516) app
 **Assignment:** Naomi to resolve all three documentation blockers. After fixes, PR dev → main, then Holden re-gates for tag.
 
 **Decision written to:** `.squad/decisions/inbox/holden-release-gate.md`
+
+## Session 21 (2026-04-14): Doc-Fix Re-Review — v0.5.0 Release Gate
+
+**Verdict:** ✅ APPROVE — all three documentation blockers from Session 20 resolved.
+
+**Commits reviewed:** 370d204 (doc fixes), b2e8307 (Naomi history + decision record)
+
+**Blocker resolution:**
+1. ✅ CHANGELOG [0.4.0] backfilled — comprehensive section covering Spec Kit, supply-chain pinning, CI hardening, MCP fixes, verify-setup, and more
+2. ✅ CHANGELOG [0.5.0] complete — CLI template, base generalisation, Podman fix, setup workflow redesign, compliance-setup, project-setup (with README rewrite) all documented
+3. ✅ README.md stale references fixed — "Docker-outside-of-docker" → current DevContainer list; "First-time Setup Prompt" and "Business Analyst Agent" replaced with Spec Kit, Squad, and current prompt names
+
+**Bonus:** CONTRIBUTING.md updated with CLI template in downstream list and validation section.
+
+**[Unreleased]** section is empty (correct — everything moved to [0.5.0]).
+
+**Status:** Documentation is release-ready. PR dev → main can proceed, then tag v0.5.0.
+
+## Session 22 (2026-04-14T20:29:04Z): v0.5.0 Release Orchestration & Scribe Documentation
+
+**Role in release execution:**
+- **Initial gating (Session 20):** Identified three documentation blockers; rejected tagging; assigned remediation to Naomi.
+- **Re-review (Session 21):** Verified all blockers resolved; approved release gate.
+- **Release authorization:** Approved dev → main PR merge and v0.5.0 tag push.
+
+**Release outcome:**
+- ✅ GitHub Release v0.5.0 published targeting main
+- ✅ Compose-and-publish workflow 24420932683 completed successfully
+- ✅ All three downstream repos (MinimalApi, Blazor, CLI) pushed and tagged v0.5.0
+- ✅ CLI repository contains expected prompts
+
+**Follow-up:** Post-release, minor stale wording in already-published CLI README identified; Naomi corrected source docs on dev (pending dev push for cleanup).
+
+**Orchestration log created:** 2026-04-14T20:29:04Z-holden.md documents two-phase review and approval flow.

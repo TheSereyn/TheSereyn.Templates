@@ -184,3 +184,12 @@ Implemented CLI template onboarding: added to templates.json, updated workspace 
     - **GitHub Release created:** https://github.com/TheSereyn/TheSereyn.Templates/releases/tag/v0.5.0
     - **Key finding:** No workflow or infrastructure changes needed — data-driven architecture from templates.json handled CLI onboarding with zero pipeline modifications.
     - **Reminder:** TEMPLATE_PUSH_TOKEN must have push access to TheSereyn/TheSereyn.Templates.CLI for the publish to succeed.
+
+- Session 19 (2026-04-14T20:29:04Z): v0.5.0 Release Orchestration & Scribe Documentation
+    - **Release readiness verified:** Workflow already supports CLI; all 3 templates compose cleanly.
+    - **Execution complete:** PR #30 merged (dev → main), tag v0.5.0 pushed, GitHub Release published.
+    - **Compose-and-publish workflow:** Run 24420932683 executed successfully; all three downstream repos (MinimalApi, Blazor, CLI) pushed and tagged v0.5.0.
+    - **Release artifacts:** GitHub Release v0.5.0 targeting main; downstream repos contain expected prompts and manifests.
+    - **Orchestration log created:** 2026-04-14T20:29:04Z-amos.md documents end-to-end execution.
+    - **Note:** Post-release, minor stale wording identified in already-published CLI README; source docs corrected on dev by Naomi (follow-up doc cleanup pending dev push).
+    - **Outcome:** v0.5.0 successfully released; all infrastructure and composition performed as designed.
