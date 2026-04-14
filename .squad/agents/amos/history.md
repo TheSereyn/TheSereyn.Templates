@@ -174,3 +174,13 @@ Implemented CLI template onboarding: added to templates.json, updated workspace 
       - **Inbox file deleted:** amos-create-cli-repo.md removed post-merge
       - **Platform status:** Phase 3 (downstream repo wiring) complete; ready for Phase 1/2 base refactoring + CLI overlay implementation
       - **Follow-up tokens:** TEMPLATE_PUSH_TOKEN secret (Lee to configure); first publish triggers on v* tag push to main
+
+- Session 18 (2026-04-14): v0.5.0 release — tag, PR, and publish.
+    - **Workflow check:** compose-and-publish.yml already supports CLI template — matrix is data-driven from templates.json, no workflow changes needed.
+    - **Compose verified:** all 3 templates (MinimalApi, Blazor, CLI) compose cleanly via compose.sh.
+    - **CHANGELOG updated:** [Unreleased] to [0.5.0] - 2026-04-14 with full release notes covering CLI template, base generalization, setup workflow redesign, Podman fix, per-template copilot instruction overlays.
+    - **PR #30 opened and merged:** dev to main, release: v0.5.0.
+    - **Tag v0.5.0 pushed:** triggers compose-and-publish workflow (run ID 24420932683, confirmed queued).
+    - **GitHub Release created:** https://github.com/TheSereyn/TheSereyn.Templates/releases/tag/v0.5.0
+    - **Key finding:** No workflow or infrastructure changes needed — data-driven architecture from templates.json handled CLI onboarding with zero pipeline modifications.
+    - **Reminder:** TEMPLATE_PUSH_TOKEN must have push access to TheSereyn/TheSereyn.Templates.CLI for the publish to succeed.
