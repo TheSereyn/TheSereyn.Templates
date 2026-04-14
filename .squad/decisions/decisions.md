@@ -2,6 +2,81 @@
 
 ---
 
+## Decision: First-Time Setup Collects Project Context and Rewrites README
+
+**By:** Naomi (Template Engineer)
+**Date:** 2026-04-14
+**Status:** Implemented on `dev`
+
+## Decision
+
+The first-time-setup prompt now collects richer project context (problem/purpose, key capabilities, target users) and uses it to fully rewrite `README.md` as a project README — not just replace placeholders.
+
+## Changes
+
+| File | Change |
+|------|--------|
+| `base/.github/prompts/first-time-setup.prompt.md` | Step 4 expanded (3 new questions); Step 5 narrowed (excludes README); new Step 6 (Rewrite README with structure, removal, and credit-line guidance); Steps 6–12 renumbered to 7–13 |
+| `base/.github/prompts/requirements-interview.prompt.md` | Added "Update README" as step 4 in Next Steps — ties interview output back to README refinement |
+| `base/README.md` | Template note reframed: explains README will be rewritten during setup |
+| `overlays/minimalapi/README.md` | Added setup-rewrite note below template heading |
+| `overlays/blazor/README.md` | Added setup-rewrite note below template heading |
+| `overlays/cli/README.md` | Added setup-rewrite note below template heading |
+
+## Rationale
+
+- Template READMEs previously survived setup mostly intact — they still read like template instructions after placeholder replacement
+- New repos should have a README that describes the actual project: what it does, why it exists, who it's for
+- Collecting problem/purpose, capabilities, and target users gives Copilot enough context to write a real project README
+- Template-origin references reduced to a single credit line at the bottom
+- All three templates (MinimalApi, Blazor, CLI) benefit equally since the prompt is in base/
+
+## Impact
+
+Applies to all downstream templates. No overlay-specific prompt changes needed — the rewrite step reads the current README (which varies by template) and adapts accordingly.
+
+---
+
+## Decision: Prompt Guidance Review — README Rewrite Flow
+
+**By:** Holden (Lead)  
+**Date:** 2026-04-14  
+**Commit reviewed:** `2f86516`  
+**Verdict:** ✅ APPROVED
+
+## What Changed
+
+Naomi expanded first-time-setup to collect project context (problem/purpose, capabilities, target users) in Step 4, then added Step 6 (Rewrite README) with explicit structure, removal list, and a single credit line. All three overlay READMEs and the base README now set expectations that the file will be rewritten during setup. Requirements interview ties back to README update as a next step.
+
+## Review Criteria
+
+| Criterion | Assessment |
+|-----------|------------|
+| Meets user goal across all three templates | ✅ Single shared prompt serves MinimalApi, Blazor, CLI identically |
+| README-rewrite guidance prevents template-sounding repos | ✅ Explicit removal list (template headings, AI-first notes, What's Included table, setup instructions) + tone instruction |
+| Properly centralised, no unnecessary duplication | ✅ Core logic in base prompt; overlay READMEs only add a 2-line note (necessary since they replace base) |
+| Composition verified | ✅ All three templates compose successfully |
+
+## Notes
+
+- Step 5 correctly excludes README.md from placeholder resolution — avoids wasted work before full rewrite.
+- Architecture sections in overlay READMEs say "This template is designed for..." — the rewrite guidance explicitly handles this with reframing instruction.
+- Credit line is minimal: one blockquote at EOF. Satisfies "only minimal references to the starter template."
+- Requirements interview next-step (item 4) is appropriately soft ("consider updating") since it's post-setup context enrichment, not mandatory.
+
+---
+
+## User Directive: Setup Prompt Guidance for All Templates
+
+**By:** Lee Buxton (via Copilot)  
+**Date:** 2026-04-14T18:39:36Z  
+
+**What:** Update the initial prompt guidance for all three templates so setup collects project-specific information and rewrites the README to fit the actual project, leaving only minimal references to the starter template.
+
+**Why:** User request — captured for team memory
+
+---
+
 ## Security Review — Spec Kit Integration
 
 **By:** Drummer (Security Reviewer)  

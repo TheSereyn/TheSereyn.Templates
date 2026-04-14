@@ -76,3 +76,7 @@
 ## 2026-04-14: CLI Template Architecture Review
 
 Reviewed Amos (wiring) + Naomi (base/overlay split). Verdict: ✅ APPROVED. Base is template-neutral; web guidance correctly in overlay appends; CLI overlay uses all three overlay semantics correctly. Known trade-off: base project-conventions is web-specific, replaced by CLI overlay. Non-blocking nit: remove .gitkeep in housekeeping.
+
+## 2026-04-14: Team Orchestration — Prompt Guidance Update
+
+Squad orchestration cycle completed. Prompt guidance review (commit 2f86516) approved and archived to decisions. Three inbox entries merged to decisions.md; orchestration logs written; team history updated cross-agent. Ready for tag push to main.

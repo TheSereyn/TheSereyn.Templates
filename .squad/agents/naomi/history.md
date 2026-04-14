@@ -108,3 +108,7 @@
 ## 2026-04-14: CLI Template Content Split
 
 Generalised base to template-neutral (252→205 lines); created CLI overlay with System.CommandLine + Spectre.Console; preserved web guidance in MinimalApi/Blazor appends. All three templates compose successfully. Commit: 41f3efb. Approvals: ✅ Holden (Lead), ✅ Drummer (Security).
+
+## 2026-04-14: Team Orchestration — Prompt Guidance Update
+
+Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) approved and archived to decisions. Three inbox entries merged to decisions.md; orchestration logs written; team history updated cross-agent. Ready for tag push to main.
