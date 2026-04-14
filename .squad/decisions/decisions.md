@@ -2,6 +2,123 @@
 
 ---
 
+## Decision: Full Setup Shape — Compliance UX Proposal
+
+**By:** Naomi (Template Engineer)  
+**Date:** 2026-04-14  
+**Status:** Approved — implementation pending  
+
+## Summary
+
+Proposed 10-step project-setup with security at Step 2 (non-negotiable), compliance at Step 8 (skippable with "Skip for now"), and a dedicated `/compliance-setup` prompt for first-time or revision use.
+
+## Key Design Points
+
+- **Lean compliance in setup:** 2 questions only (framework checklist + known constraints)
+- **Dedicated `/compliance-setup`:** Idempotent, per-framework deep questions capped at 3 per framework
+- **"Too much" thresholds:** >10 min total, >15 questions, >80% skip rate triggers fallback to compliance-only-via-prompt
+- **Estimated timing:** ~4 min (skip) / ~6 min (answer)
+
+## Recommendation
+
+Ship full version. Fallback is removing compliance from setup entirely and relying on `/compliance-setup` — clean cut, no lost capability.
+
+---
+
+## Decision: Compliance Scope — Full Setup + Skip-Later Model
+
+**By:** Drummer (Security Reviewer)  
+**Date:** 2026-04-14  
+**Status:** Approved — implementation pending  
+
+## Context
+
+Defines minimum safe scope for initial setup when supporting skip-later compliance via `/compliance-setup`.
+
+## Non-Negotiable in Initial Setup (3 items — ~2 minutes)
+
+| Item | Why | Skip Risk |
+|------|-----|-----------|
+| `.gitignore` verification | Committed secrets are permanent in git history | **Irrecoverable** — secret rotation, history rewrite, credential compromise |
+| `dotnet user-secrets init` | Developers need secret store before writing config code | Without it, `appsettings.json` becomes the path of least resistance |
+| Branch protection on `main` | First PR can merge unreviewed without this | Unreviewed code in main during formative period |
+
+### The Compliance Question (1 item — ~30 seconds)
+
+The question "Does this project need to comply with any frameworks?" **must be asked**, but "Skip / Not sure yet" is a valid answer.
+
+- **Why the question stays:** Answering "GDPR" before writing code means Copilot suggests compliance from start (data protection by design, not retrofit)
+- **What happens on answer:** Lightweight wiring only — write frameworks to `copilot-instructions.md`, append skills. Done.
+- **What happens on skip:** Note "Compliance: not yet configured" in `copilot-instructions.md`. Print nudge: "Run `/compliance-setup` before your first feature." Move on.
+
+## Moves to `/compliance-setup`
+
+- Framework explanations (educational content)
+- `docs/planning/compliance-notes.md` creation (stub has no value until populated)
+- Detailed compliance skill walkthrough
+- Multi-framework interaction guidance
+- GitHub Secret Scanning enablement (retroactive scanning works)
+- Compliance audit checklist generation (future capability)
+
+## Proposed `/compliance-setup` Structure
+
+- **Step 1:** Current State Assessment (detect existing compliance declarations)
+- **Step 2:** Framework Selection (with context and trigger guidance)
+- **Step 3:** Wiring (update copilot-instructions.md, create compliance-notes.md, enable Secret Scanning)
+- **Step 4:** Framework-Specific Guidance (per-framework design implications)
+- **Step 5:** Verify & Summary (confirm skills registered, print changes, suggest next steps)
+
+### Key Design Principles
+
+- **Idempotent:** Safe to run multiple times. Detects existing state and offers update/add/remove.
+- **Standalone:** Works whether or not initial setup was completed. No dependency on setup having run first (beyond project existing).
+- **Additive:** Adding PCI DSS six months in doesn't break existing GDPR configuration.
+- **Skip-friendly:** "None needed" is always valid. No guilt-tripping — just clear consequences.
+
+## The "Too Detailed" Line
+
+The initial setup becomes too detailed when it crosses these thresholds:
+
+| Signal | Threshold | Current State |
+|--------|-----------|---------------|
+| Total steps | > 13 | 13 (at limit) ✅ |
+| Compliance section asks more than one question | > 1 question | 1 question ✅ |
+| Any step requires domain expertise to answer | User needs to research | Framework list is recognisable ✅ |
+| Any step takes > 3 minutes | > 3 min per step | All steps < 3 min ✅ |
+| Compliance explanation exceeds "pick from list" | Paragraphs of framework description | Currently just a list ✅ |
+
+**The Rule:** Initial setup asks "which?" — `/compliance-setup` explains "what and how." If the initial setup ever starts explaining what GDPR *requires*, or what PCI DSS controls *mean*, it has crossed the line.
+
+## Recommendation
+
+The hybrid model — full setup with lightweight compliance question + dedicated `/compliance-setup` prompt — gives the best of both worlds:
+
+1. **Security hardening stays non-negotiable** (3 items, ~2 minutes, no skip option)
+2. **Compliance question stays early** (1 question, ~30 seconds, skip allowed)
+3. **Compliance depth moves to dedicated prompt** (run anytime, idempotent, framework-aware)
+4. **Skip path is clean** — "Not sure yet" writes a marker, nudges toward `/compliance-setup`, moves on
+5. **Update path exists** — project pivots to handle payments? Run `/compliance-setup`, add PCI DSS, done
+
+The skip allowance is acceptable because `/compliance-setup` is a proper prompt (not just documentation), it's idempotent, and setup can add a soft reminder ("Compliance: not yet configured — run `/compliance-setup`").
+
+---
+
+## Decision: User Directive — Full Setup with Skip-Later Compliance
+
+**By:** Lee Buxton  
+**Date:** 2026-04-14  
+**Status:** Captured for team memory  
+
+## Request
+
+Prefer a full setup flow for compliance and security if it stays sensible, but support skipping unknown compliance answers during initial setup and add a dedicated compliance prompt so projects can complete or revise compliance configuration later.
+
+## Rationale
+
+User preference to keep initial experience efficient while preserving ability to configure compliance thoroughly when ready or when requirements become clearer.
+
+---
+
 ## Decision: First-Time Setup Collects Project Context and Rewrites README
 
 **By:** Naomi (Template Engineer)

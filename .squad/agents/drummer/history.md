@@ -117,3 +117,23 @@ Reviewed base/overlay refactor + CLI overlay content. Verdict: ✅ APPROVED. No 
   - Position: **Option A (Keep Both, Restructure)** — preserves maximum protection; sufficient to address concerns via reordering and framing improvement
   - Decision merged to `.squad/decisions.md`; inbox file deleted; orchestration log written (2026-04-14T19:21:07Z-drummer.md)
   - Awaiting Lee's final decision between Drummer's (keep both) and Naomi's (split with elevation) proposals before implementation
+
+- Session (2026-04-14): Compliance scope analysis — "full setup + skip-later" hybrid model
+  - Lee inclined to full setup but wants skip option and dedicated compliance prompt
+  - Defined hybrid: security hardening non-negotiable (3 items, no skip), compliance question stays early (skip allowed), compliance depth moves to dedicated `/compliance-setup` prompt
+  - `/compliance-setup` design: idempotent, standalone, additive, skip-friendly. 5 steps: state assessment, framework selection with context, wiring, framework guidance, verify.
+  - "Too detailed" line: initial setup asks "which?" — `/compliance-setup` explains "what and how." If setup starts explaining what GDPR requires, it has crossed the line.
+  - Step count ceiling: 13. Adding `/compliance-setup` should not add steps to initial setup.
+  - Skip path: writes `<!-- Compliance: not yet configured -->` marker, nudges to `/compliance-setup`
+  - Recommendation: hybrid is acceptable. Preserves security posture, compliance question stays early, dedicated prompt adds depth current setup never had.
+  - User preference confirmed: Lee values both security and compliance as core pillars, but wants practical skip-later support
+  - Decision written to `.squad/decisions/inbox/drummer-compliance-scope.md`
+
+- Session 19 (2026-04-14): Team synthesis — hybrid model approved
+  - Scribe finalized orchestration logs, session log, and decision merge
+  - Team synthesis approved (Coordinator): Hybrid model accepted — full setup with lean compliance + dedicated `/compliance-setup`
+  - Security hardening: baseline-focused, early (non-negotiable)
+  - Compliance in setup: declaration-only (two questions: which framework + any known constraints), lightweight wiring
+  - Dedicated `/compliance-setup`: handles deeper framework configuration, education, multi-framework guidance
+  - Status: Approved — implementation pending
+  - Next: Implementation team drafts initial setup Step 8 and `/compliance-setup` prompt

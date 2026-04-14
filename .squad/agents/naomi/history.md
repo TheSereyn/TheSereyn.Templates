@@ -127,3 +127,27 @@ Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) appro
 - **Recommendation (Naomi):** Option B with elevation framing. Security stays non-negotiable; compliance gets first-class dedicated prompt with richer treatment after requirements gathering.
 - **Orchestration completed:** Two decision files written (`setup-journey-gap-analysis-20260414.md`, `naomi-compliance-setup.md`); awaiting Lee's decision between Options A, B, or C before implementation phase.
 - **Decisions merged:** Gap analysis and recommendations merged to .squad/decisions.md; inbox files deleted; orchestration log written (2026-04-14T19:21:07Z-naomi.md).
+
+### Session 18 (2026-04-14): Full Setup Shape Proposal — Compliance UX Design
+
+- **Task:** Lee leaning toward full setup with skip support and dedicated compliance prompt. Asked Naomi to propose exact shape before committing.
+- **Proposal delivered (read-only, no file edits):**
+  - 10-step project-setup (down from 13): security at Step 2, compliance at Step 8 with explicit "Skip for now"
+  - Lean compliance: exactly 2 questions (framework checklist + optional known constraints)
+  - Dedicated `/compliance-setup` prompt: idempotent, handles first-time or revision, per-framework deep questions capped at 3 per framework
+  - "Too much" threshold defined: >10 min setup, >15 questions, >80% skip rate, >5 per-framework questions
+  - Estimated timing: ~4 min if compliance skipped, ~6 min if answered
+- **Recommendation:** Ship full version. Lean compliance adds ~60s. Dedicated prompt is insurance, not overhead. Fallback is clean if metrics show skip rates too high.
+- **Key design decisions:**
+  - Security hardening is non-negotiable and moves to Step 2 (before creative steps)
+  - Compliance gets skip support with clear call-to-action in summary
+  - `/compliance-setup` is idempotent — safe to re-run at any project stage
+  - Per-framework deep questions capped at 3 to prevent interview fatigue
+- **Awaiting:** Lee's approval to implement
+
+### Session 19 (2026-04-14): Team Synthesis — Full Setup with Skip-Later Compliance Approved
+
+- **Scribe finalized orchestration logs, session log, and decision merge**
+- **Team synthesis approved (Coordinator):** Hybrid model accepted — full setup with lean compliance + dedicated `/compliance-setup`
+- **Status:** Approved — implementation pending
+- **Next:** Implement initial setup Step 8 (compliance framework question with skip) and create `/compliance-setup` prompt
