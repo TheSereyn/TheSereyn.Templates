@@ -104,3 +104,7 @@
 - **Inbox file deleted:** naomi-cli-template-split.md removed post-merge
 - **Agent history updated:** Tracks content split specifics, user decision flags, overlay growth calculations
 - **Template engineering readiness:** Phase 1 (base generalization) planned; Phase 2 (CLI overlay creation) scoped and ready for execution
+
+## 2026-04-14: CLI Template Content Split
+
+Generalised base to template-neutral (252→205 lines); created CLI overlay with System.CommandLine + Spectre.Console; preserved web guidance in MinimalApi/Blazor appends. All three templates compose successfully. Commit: 41f3efb. Approvals: ✅ Holden (Lead), ✅ Drummer (Security).

@@ -160,3 +160,7 @@
      - **Agent history updated:** Tracks Phase 1/2/3 sequencing, base refactoring prerequisite, compose.sh stability
      - **Key confirmation:** Infrastructure (compose.sh, templates.json schema, workflows) needs zero changes
      - **Platform readiness:** Phase 3 (templates.json + downstream repo creation) ready for execution once Phases 1–2 complete
+
+## 2026-04-14: CLI Template Wiring
+
+Implemented CLI template onboarding: added to templates.json, updated workspace README, confirmed data-driven infrastructure. Commit: 0296327. Approval: ✅ Holden (Lead), ✅ Drummer (Security). Ready for downstream repo creation.

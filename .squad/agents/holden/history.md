@@ -72,3 +72,7 @@
      - **Inbox file deleted:** holden-cli-template-plan.md removed post-merge
      - **Agent history updated:** Tracks architectural decision and next-phase sequencing
      - **Key outcomes:** Base refactoring is prerequisite; mixin layer deferred to 4+ templates; no infrastructure changes needed
+
+## 2026-04-14: CLI Template Architecture Review
+
+Reviewed Amos (wiring) + Naomi (base/overlay split). Verdict: ✅ APPROVED. Base is template-neutral; web guidance correctly in overlay appends; CLI overlay uses all three overlay semantics correctly. Known trade-off: base project-conventions is web-specific, replaced by CLI overlay. Non-blocking nit: remove .gitkeep in housekeeping.

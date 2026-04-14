@@ -776,3 +776,256 @@ Generalize `base/` to be template-neutral; use `.append.md` in all three overlay
 - **Base:** Genuinely template-neutral; scales to 4+ templates
 
 ---
+
+---
+
+
+
+
+---
+---
+
+---
+
+
+# Security Review: CLI Template & Base-Layer Refactor
+
+**By:** Drummer (Security Reviewer)
+**Date:** 2026-04-14
+**Commit:** `41f3efb` (Naomi)
+**Verdict:** ✅ APPROVED
+
+## Scope
+
+- Base copilot-instructions generalisation (web content → overlays)
+- MinimalApi overlay: new `copilot-instructions.append.md` with web security
+- Blazor overlay: expanded `copilot-instructions.append.md` with web security
+- CLI overlay: README, copilot-instructions append, `cli-development` skill, `project-conventions` skill
+
+## Security Content Preservation — Web Templates
+
+All web security guidance removed from base is fully preserved in both overlay appends:
+
+| Guidance | MinimalApi | Blazor |
+|----------|-----------|--------|
+| OAuth/OIDC + PKCE + DPoP | ✅ | ✅ |
+| CORS (no AllowAnyOrigin) | ✅ | ✅ |
+| Security headers (HSTS, CSP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy) | ✅ | ✅ (+COEP/CORP/COOP) |
+| Input validation (model binding) | ✅ | ✅ |
+| Output encoding (HtmlEncode, Razor) | ✅ | ✅ |
+| CSRF protection (antiforgery) | ✅ | ✅ |
+| Rate limiting middleware | ✅ | ✅ |
+| EF Core EnableSensitiveDataLogging(false) | ✅ | ✅ |
+| OWASP API Security Top 10 (2023) | ✅ | ✅ |
+| ASP.NET Core OTel setup pattern | ✅ | ✅ |
+| Web security skills (dotnet-authn-authz, aspnetcore-api-security, browser-security-headers) | ✅ | ✅ |
+| rfc-compliance skill | ✅ | ✅ |
+| REST + Auth micro-checklists | ✅ | ✅ |
+| Web ask-first triggers (auth provider, middleware ordering, etc.) | ✅ | ✅ |
+
+**No security regression for existing downstream repos.**
+
+## Base Layer — Universal Security Retained
+
+Base correctly retains template-neutral security:
+- Input validation (generic boundary principle)
+- Output encoding (SQL, shell, markup — no web-specific framing)
+- Secrets management (dotnet user-secrets, Key Vault, .gitignore)
+- No PII logging
+- STRIDE threat modelling
+- Dependency security (`dotnet list package --vulnerable`)
+- Security review workflow (security-review-core, OWASP Top 10 2021)
+
+## CLI Overlay — Security Assessment
+
+### Positives
+
+1. **Argument validation** — correctly directs to System.CommandLine's built-in validation (custom parse delegates, `Required` property)
+2. **File path safety** — explicit path traversal guidance (`Path.GetFullPath()`, boundary checks)
+3. **Shell injection** — correctly recommends `ProcessStartInfo.ArgumentList` over string concatenation
+4. **Credential handling** — correctly warns that CLI args are visible in process listings; directs to env vars / credential stores
+5. **Markup escaping** — `Markup.Escape(userInput)` demonstrated in Spectre.Console examples, preventing terminal injection
+6. **Non-TTY safety** — `AnsiConsole.Profile.Capabilities.Interactive` check documented before any interactive prompts
+7. **Anti-patterns** — correctly calls out: no secrets on CLI, no interactive prompts in piped mode, no swallowed exceptions, no `Environment.Exit()` in library code
+
+### API Verification
+
+System.CommandLine APIs verified against Microsoft Learn (net-10.0-pp reference):
+- `SetAction()` — confirmed current API (replaces deprecated `SetHandler`)
+- `ParseResult.GetValue()` — confirmed
+- `Parse(args).Invoke()` / `InvokeAsync()` — confirmed
+- `Option<T>.Required`, `Recursive`, `CustomParser`, `AllowMultipleArgumentsPerToken` — confirmed
+- Package: `System.CommandLine v3.0.0-preview` on .NET 10 platform — expected for .NET 10 timeline
+
+### Dependency Claims
+
+- System.CommandLine: MIT, Microsoft-maintained ✅
+- Spectre.Console: MIT, .NET Foundation ✅
+- Cocona: correctly marked as archived (Dec 2025), not recommended ✅
+
+### No Issues Found
+
+- No insecure defaults introduced
+- No misleading security guidance
+- No hallucinated APIs or incorrect package claims
+- Exit code conventions are standard (0/1/2/130)
+- Error output correctly separates stdout (data) from stderr (diagnostics)
+
+## Non-Blocking Observations
+
+None. This is a clean implementation.
+
+## Decision
+
+APPROVED — no changes required. The base-layer refactor correctly generalises shared content while preserving all web security guidance in overlay appends. The CLI overlay introduces appropriate, accurate CLI-specific security guidance with no insecure patterns.
+# CLI Template Implementation — Lead Review
+
+**By:** Holden (Lead)
+**Date:** 2026-04-14
+**Verdict:** ✅ APPROVED
+
+## Scope
+
+Two commits on `dev`:
+- `0296327` (Amos) — `templates.json`, root `README.md`, overlay placeholder
+- `41f3efb` (Naomi) — base generalisation, CLI overlay content, web content redistribution
+
+## Review Checklist
+
+### 1. Is base template-neutral enough for CLI?
+
+**Yes.** `base/.github/copilot-instructions.md` reduced from 252→205 lines. All web content (HTTP RFCs, CORS, CSRF, security headers, ASP.NET Core OTel patterns, health check endpoints) removed. Remaining content is generic .NET: stack table, MCP tools, dependency policy, security principles, code quality, TUnit, OpenTelemetry (generic), Spec Kit workflow.
+
+### 2. Was shared web guidance moved to the right overlay shape?
+
+**Yes.** Both MinimalApi and Blazor received new `copilot-instructions.append.md` files with the web content extracted from base. Blazor's append preserves its pre-existing Blazor-specific sections (Blazor UI, hosting model, Playwright, Blazor security skills) while prepending the shared web content.
+
+### 3. Does the CLI overlay fit the composition model?
+
+**Yes.** Uses all three overlay semantics correctly:
+- **Replace:** `README.md`, `.copilot/skills/project-conventions/SKILL.md`
+- **Add:** `.copilot/skills/cli-development/SKILL.md`
+- **Append:** `.github/copilot-instructions.append.md`
+
+### 4. Content quality
+
+- **cli-development skill** — Comprehensive. System.CommandLine patterns (single/multi-command, async, custom validation), Spectre.Console output, exit codes, testing with TUnit, alternative packages with maintenance-aware recommendations (Cocona explicitly deprecated per Lee's directive).
+- **project-conventions** — Clean CLI-specific replacement. Exit codes (not Problem Details), command-handler pattern, command organisation, CLI naming, non-TTY safety.
+- **copilot-instructions append** — Focused CLI additions: CLI Stack table, CLI security (arg validation, file path safety, shell injection, credential handling), CLI observability, CLI ask-first triggers.
+- **README.md** — Standalone CLI getting started, architecture, key conventions, dependency list.
+
+## Known Trade-Offs (Accepted)
+
+1. **Base `project-conventions` skill is web-specific** — Replaced by CLI overlay. MinimalApi/Blazor consume it directly. Session 15 decision: "replace rather than split." Sound at 3 templates.
+2. **4 web security skills in base** (aspnetcore-api-security, browser-security-headers, rfc-compliance, dotnet-authn-authz) — Flow into CLI output unreferenced. Session 15 decision: "harmless reference material." Agree.
+3. **Web content duplication** (~88 lines) between MinimalApi and Blazor appends — Expected. Mixin layer deferred to 4+ templates per Session 15.
+
+## Minor Nit (Non-Blocking)
+
+- `overlays/cli/.gitkeep` — Now unnecessary since overlay has real content. Clean up in a future housekeeping pass.
+
+## Outcome
+
+Ship as-is. Both commits are clean, composition-correct, and aligned with the Session 15 architectural plan.
+# Decision: CLI Template Repo Wiring
+
+**By:** Amos (Platform Engineer)
+**Date:** 2026-04-14
+**Status:** Implemented on `dev`
+
+## Changes
+
+| File | Change |
+|------|--------|
+| `templates.json` | Added `cli` overlay → `TheSereyn/TheSereyn.Templates.CLI` entry |
+| `README.md` (workspace root) | Added CLI to downstream table, workspace structure tree, and local development examples |
+| `overlays/cli/` | Created empty directory (required for compose.sh overlay resolution) |
+
+## No Workflow or Script Changes Required
+
+The infrastructure is fully data-driven:
+- `compose.sh` reads `templates.json` dynamically — no TEMPLATES array to update
+- `compose-and-publish.yml` builds its strategy matrix from `templates.json` — no hardcoded matrix entries
+- `pr-validate.yml` iterates `templates.json` — CLI validation is automatic
+
+**Zero gaps found.** The existing data-driven design handles CLI onboarding without any pipeline modifications.
+
+## Validation
+
+- `jq` parsed `templates.json` successfully (valid JSON)
+- `compose.sh --dry-run` recognized all three templates
+- `compose.sh` full run composed CLI output (46 files from base, 0 overlay files pending Naomi's content)
+- `output/TheSereyn.Templates.CLI/README.md` present, file count ≥ 5 — passes PR validation threshold
+
+## Remaining Work (Not in This Change)
+
+- **Naomi:** CLI overlay content (skills, source files, append files) in `overlays/cli/`
+- **Downstream repo:** `TheSereyn/TheSereyn.Templates.CLI` must be created on GitHub as a template repo
+- **Secret:** `TEMPLATE_PUSH_TOKEN` must have push access to the new downstream repo
+# CLI Template Implementation — Base/Overlay Content Split
+
+**By:** Naomi (Template Engineer)
+**Date:** 2026-04-14
+**Status:** Implemented on dev
+
+## Decision
+
+Refactored `base/.github/copilot-instructions.md` to be template-neutral, moving web/API-specific guidance into overlay append files shared by MinimalApi and Blazor. Created the CLI template overlay with System.CommandLine + Spectre.Console as the default stack.
+
+## What Moved Out of Base
+
+| Content | Was in base | Now in overlays |
+|---------|-------------|-----------------|
+| Stack rows: API (Minimal APIs, REPR), Architecture (Clean Architecture) | copilot-instructions.md | minimalapi + blazor appends |
+| HTTP/REST RFCs (9205, 9110, 3986, 9457) + IETF HTTPAPI WG | copilot-instructions.md | minimalapi + blazor appends |
+| Web security (CORS, security headers, CSRF, rate limiting, auth with [Authorize]) | copilot-instructions.md | minimalapi + blazor appends |
+| ASP.NET Core OTel setup (AddAspNetCoreInstrumentation code example) | copilot-instructions.md | minimalapi + blazor appends |
+| REST micro-checklist | copilot-instructions.md | minimalapi + blazor appends |
+| API-specific ask-first triggers (OIDC, persistence, messaging, API versioning, middleware) | copilot-instructions.md | minimalapi + blazor appends |
+| Web-specific skills (rfc-compliance, dotnet-authn-authz, aspnetcore-api-security, browser-security-headers) | copilot-instructions.md | minimalapi + blazor appends |
+| OpenAPI/Swagger delivery format note | copilot-instructions.md | minimalapi + blazor appends |
+| Clean Architecture diagram + webapi manual setup | README.md | (removed — template-specific READMEs handle this) |
+
+## What Stays in Base
+
+- .NET 10 + C# runtime, TUnit, StyleCop, OpenTelemetry (stack table)
+- MCP Tools source-of-truth policy
+- Dependency policy (changed "ASP.NET Core" to "framework")
+- Universal security: input validation, output encoding, secrets, logging, threat modelling, dependency security
+- Code quality rules (nullable, file-scoped, async all the way, CancellationToken)
+- OTel key conventions (OTLP, service name, ActivitySource, Meter — no web-specific example)
+- TUnit testing section
+- Delivery format (with generic "Documentation updates" instead of "Docs/OpenAPI updates")
+- Spec Kit / Squad workflow
+- Universal security skills (security-review-core tree minus web-specific entries)
+- All compliance skills
+
+## CLI Overlay Created
+
+| File | Purpose |
+|------|---------|
+| `overlays/cli/README.md` | CLI template README — System.CommandLine + Spectre.Console architecture |
+| `overlays/cli/.github/copilot-instructions.append.md` | CLI stack, CLI security, CLI observability, CLI ask-first triggers, CLI micro-checklists |
+| `overlays/cli/.copilot/skills/cli-development/SKILL.md` | Full CLI development skill — System.CommandLine API patterns (verified against MS Learn), Spectre.Console output, exit codes, testing, alternative packages |
+| `overlays/cli/.copilot/skills/project-conventions/SKILL.md` | CLI-specific conventions (replaces base via overlay semantics) — command-handler pattern, exit codes, error output, CLI testing, CLI anti-patterns |
+
+## Shared Web Content Pattern
+
+Both MinimalApi and Blazor overlay appends contain identical shared web sections (Stack, RFCs, Web Security, Web Observability, Web Delivery, Web Ask-First, Web Micro-Checklists, Web Skills). This is intentional duplication per the base+overlay model — no mixin layer needed at 3 templates.
+
+## Validation
+
+- `./compose.sh` succeeds for all three templates (minimalapi, blazor, cli)
+- MinimalApi composed output contains web-specific content ✓
+- Blazor composed output contains web + Blazor content ✓
+- CLI composed output has zero web references, has CLI content ✓
+- CLI project-conventions skill correctly replaces base version via overlay semantics ✓
+- System.CommandLine API patterns verified against Microsoft Learn docs (SetAction, Parse, Invoke, Option<T>, Argument<T>, Recursive, etc.)
+
+## Rationale
+
+The latest directive overrides Session 14's audit — some MinimalApi-originated items (web security, RFCs, OTel with ASP.NET Core instrumentation) are legitimately shared with Blazor and belong in both web overlays rather than being left in base where they'd mislead CLI development. The `.tmp/` artifacts informed CLI stack choices (System.CommandLine + Spectre.Console) but not base/overlay boundaries.
+### 2026-04-14T17:56:50Z: User directive
+**By:** Lee Buxton (via Copilot)
+**What:** Treat the latest session directive as authoritative; `.tmp/` files are prior-session artifacts only. Implement the CLI template and explicitly move MinimalApi-first items out of `base/` where appropriate, while keeping content that is truly shared with Blazor in the right shared/overlay shape.
+**Why:** User request — captured for team memory

@@ -100,3 +100,7 @@
    - New artifacts clean (post-create-shared.sh, verify-setup.prompt, pr-validate.yml)
    - APPROVED for merge to main
    - All reviews passed; supply chain dependencies hardened project-wide
+
+## 2026-04-14: CLI Template Security Review
+
+Reviewed base/overlay refactor + CLI overlay content. Verdict: ✅ APPROVED. No security regression; all web guidance preserved in overlays; CLI overlay security verified against Microsoft Learn (System.CommandLine, Spectre.Console). No issues found.
