@@ -41,7 +41,10 @@ Ask the user for:
 1. **Project name** (e.g., `MyProject`, `Acme.OrderSystem`)
 2. **Namespace root** (e.g., `Acme.OrderSystem`, `MyCompany.ProjectName`)
 3. **Brief description** (one sentence describing what the project does)
-4. **GitHub repo URL** (optional — e.g., `https://github.com/org/repo`)
+4. **Problem / purpose** (1–2 sentences — what problem does this solve, or why does this project exist?)
+5. **Key capabilities** (3–5 bullet points — what will this project do?)
+6. **Target users** (who will use this — internal team, external developers, end users?)
+7. **GitHub repo URL** (optional — e.g., `https://github.com/org/repo`)
 
 ## Step 5 — Resolve Placeholders
 
@@ -55,7 +58,8 @@ Update the following files, replacing placeholders:
 
 Files to update:
 - `.github/copilot-instructions.md`
-- `README.md`
+
+> **Note:** Do not replace placeholders in `README.md` — it will be fully rewritten in Step 6.
 
 Also update `LICENSE` with:
 
@@ -64,7 +68,38 @@ Also update `LICENSE` with:
 | `{{YEAR}}` | Current year (e.g., `2026`) |
 | `{{AUTHOR}}` | Author or organisation name |
 
-## Step 6 — Select License
+## Step 6 — Rewrite README
+
+Using the project information from Step 4, rewrite `README.md` so it reads as **the project's own documentation** — not a template instruction manual.
+
+### Structure to produce
+
+1. **`# {Project name}`**
+2. **Overview** — expand the brief description with the problem/purpose statement. Explain what the project does, why it exists, and who it's for.
+3. **Key Capabilities** — bullet list from Step 4
+4. **Getting Started** — keep Dev Container prerequisites and the build/test/run commands. Write them as project onboarding steps, not template instructions.
+5. **Architecture** — if the current README has an Architecture section, preserve it as project documentation. Reframe any "This template is designed for..." language to "This project follows..."
+6. **Key Conventions** — if present, keep as project coding standards
+7. **Development** — build, test, and run commands. Include the Spec Kit / Squad workflow summary if it was in the original README — condense it to a short reference.
+8. **License** — `See [LICENSE](LICENSE).`
+
+### What to remove
+
+- Any "Template: TheSereyn.Templates.X" headings
+- "This is an AI-first template" notes or similar template-origin framing
+- The "Manual Setup (Without Copilot)" section (setup is complete)
+- The "What's Included" tooling table (tooling is already installed)
+- "First-Time Setup" prompt instructions (setup is complete)
+
+### Credit line
+
+Add one line at the very end of the file:
+
+`> Built with [TheSereyn.Templates](https://github.com/TheSereyn/TheSereyn.Templates)`
+
+Write in a clear, professional tone. The reader should see a real project README, not a template walkthrough.
+
+## Step 7 — Select License
 
 Ask the user which license they want for the project. Offer common options:
 
@@ -79,7 +114,7 @@ Based on their choice:
 
 If the user is unsure, suggest MIT as a sensible default for open-source projects, or Proprietary if it's a commercial/internal project.
 
-## Step 7 — Compliance Frameworks
+## Step 8 — Compliance Frameworks
 
 Ask the user:
 
@@ -101,13 +136,13 @@ Based on their response:
 - Recommend the corresponding compliance skills for reference during development
 - If they select any framework, create a `docs/planning/compliance-notes.md` stub with sections for each selected framework
 
-## Step 8 — Git Initialisation
+## Step 9 — Git Initialisation
 
 If this is a fresh clone from "Use this template":
 - Verify git is initialised (`git status`)
 - If the user provided a GitHub repo URL, verify or set the remote
 
-## Step 9 — Verify Squad
+## Step 10 — Verify Squad
 
 Squad is installed automatically during container creation. Verify the installation:
 - Report the installed version (`squad --version`)
@@ -118,7 +153,7 @@ Squad is installed automatically during container creation. Verify the installat
 > bash .devcontainer/post-create.sh
 > ```
 
-## Step 10 — Initialise Spec Kit
+## Step 11 — Initialise Spec Kit
 
 Spec Kit provides the spec-driven development workflow for this project. Initialise it in the current directory:
 
@@ -141,14 +176,14 @@ Verify initialisation by confirming the `.specify/` directory was created and th
 > export PATH="$HOME/.local/bin:$PATH"
 > ```
 
-## Step 11 — Security Setup
+## Step 12 — Security Setup
 
 - Review `.gitignore` and confirm `appsettings.*.json`, `*.pfx`, `*.key`, `*.pem`, and `.env` files are excluded
 - Run `dotnet user-secrets init` in your main project to set up local secret management
 - Enable GitHub Secret Scanning on the repository (Settings → Security → Secret scanning)
 - Configure branch protection on `main`: require PR reviews, require status checks to pass before merging
 
-## Step 12 — Summary and Next Steps
+## Step 13 — Summary and Next Steps
 
 Provide a summary of what was configured, then suggest:
 

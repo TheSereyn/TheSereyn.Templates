@@ -6,6 +6,8 @@
 
 Command-line application template for .NET projects with System.CommandLine and Spectre.Console.
 
+> **Note:** Running `@workspace /first-time-setup` in Copilot Chat will collect your project details and rewrite this README as your project's own documentation.
+
 ## Getting Started
 
 ### Prerequisites

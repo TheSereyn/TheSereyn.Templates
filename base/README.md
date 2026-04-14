@@ -2,7 +2,7 @@
 
 {{DESCRIPTION}}
 
-> **Note:** This is an AI-first template designed to work with GitHub Copilot. The project scaffold and architecture are generated through Copilot Chat prompts during first-time setup. A fallback manual setup section is provided below for environments where Copilot is unavailable.
+> **Note:** This README is a starting point provided by the project template. Running `@workspace /first-time-setup` in Copilot Chat will collect your project details and rewrite this file as your project's own README. A manual setup section is provided below for environments where Copilot is unavailable.
 
 ## Getting Started
 

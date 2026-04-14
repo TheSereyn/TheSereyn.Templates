@@ -6,6 +6,8 @@
 
 Full-stack template for .NET projects with Minimal APIs, Blazor UI, Worker Services, and shared contracts.
 
+> **Note:** Running `@workspace /first-time-setup` in Copilot Chat will collect your project details and rewrite this README as your project's own documentation.
+
 ## Getting Started
 
 ### Prerequisites
