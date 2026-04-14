@@ -164,3 +164,13 @@
 ## 2026-04-14: CLI Template Wiring
 
 Implemented CLI template onboarding: added to templates.json, updated workspace README, confirmed data-driven infrastructure. Commit: 0296327. Approval: ✅ Holden (Lead), ✅ Drummer (Security). Ready for downstream repo creation.
+
+- Session 17 (2026-04-14T18:27:28Z): CLI Downstream Repo Creation — Execution & Scribe Handoff
+      - **Repo created:** TheSereyn/TheSereyn.Templates.CLI on GitHub (public, template repo, MIT license, issues/wiki disabled, main default branch)
+      - **Alignment:** Settings matched to sibling repos (MinimalApi, Blazor) per user guidance
+      - **Orchestration log created:** 2026-04-14T18:27:28Z-amos.md documents repo creation execution
+      - **Session log written:** 2026-04-14T18:27:28Z-cli-repo-creation.md consolidates repo outcome
+      - **Decision inbox merged:** amos-create-cli-repo.md incorporated into decisions.md with full context
+      - **Inbox file deleted:** amos-create-cli-repo.md removed post-merge
+      - **Platform status:** Phase 3 (downstream repo wiring) complete; ready for Phase 1/2 base refactoring + CLI overlay implementation
+      - **Follow-up tokens:** TEMPLATE_PUSH_TOKEN secret (Lee to configure); first publish triggers on v* tag push to main

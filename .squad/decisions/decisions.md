@@ -1029,3 +1029,42 @@ The latest directive overrides Session 14's audit — some MinimalApi-originated
 **By:** Lee Buxton (via Copilot)
 **What:** Treat the latest session directive as authoritative; `.tmp/` files are prior-session artifacts only. Implement the CLI template and explicitly move MinimalApi-first items out of `base/` where appropriate, while keeping content that is truly shared with Blazor in the right shared/overlay shape.
 **Why:** User request — captured for team memory
+
+---
+
+## Decision: Create TheSereyn.Templates.CLI Downstream Repo
+
+**By:** Amos (Platform Engineer)  
+**Date:** 2026-04-14  
+**Status:** Completed
+
+### Context
+
+CLI template onboarding requires a downstream GitHub repo to receive composed output from `compose.sh`. The repo was created to match the settings of the two existing sibling repos (`TheSereyn.Templates.MinimalApi`, `TheSereyn.Templates.Blazor`).
+
+### Settings Applied
+
+| Setting | Value | Matches siblings |
+|---------|-------|-----------------|
+| Visibility | Public | ✅ |
+| Template repo | Yes | ✅ |
+| Description | `.NET CLI project template — composed from TheSereyn.Templates` | ✅ (pattern aligned) |
+| License | MIT | ✅ |
+| Issues | Disabled | ✅ |
+| Wiki | Disabled | ✅ |
+| Default branch | main | ✅ |
+
+### Repo Details
+
+- **Repository:** https://github.com/TheSereyn/TheSereyn.Templates.CLI
+- **Visibility:** Public template repository
+- **Alignment:** Matches sibling downstream repos per user guidance
+
+### Follow-Up Required
+
+1. **`TEMPLATE_PUSH_TOKEN`** — Lee to configure the secret with push access to this repo (required for `compose-and-publish.yml` to push composed output)
+2. **First publish** — Once the CLI overlay is merged and a `v*` tag is pushed on main, the workflow will compose and push content to this repo automatically
+
+### Notes
+
+- Coordinator clarified to refer to Blazor/MinimalApi repos for settings if needed; repo creation already followed that guidance
