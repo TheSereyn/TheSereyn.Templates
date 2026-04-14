@@ -197,3 +197,17 @@ Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) appro
 **Scribe actions:** Orchestration log, session log, and decision archive complete.
 
 **Status:** Ready for merge and publication.
+
+### Session 20 (2026-04-14): v0.5.0 Release Documentation Fix
+
+- **Task:** Holden REJECTED v0.5.0 tagging due to 3 documentation blockers. Per reviewer lockout, Naomi assigned to fix.
+- **Blockers resolved:**
+  1. **CHANGELOG v0.4.0 backfilled** — complete section covering Spec Kit integration, supply-chain pinning, post-create idempotency, CI hardening, MCP server corrections, verify-setup prompt, certificate gitignore patterns, Squad update, and deprecation of security-review skill
+  2. **CHANGELOG v0.5.0 expanded** — project-setup entry now mentions README auto-rewrite feature
+  3. **README.md stale references fixed** — removed "Docker-outside-of-docker", "First-time Setup Prompt", "Business Analyst Agent"; replaced What's Included with current-state list matching base/README.md (Spec Kit, Squad, Code Quality, Prompts)
+- **Adjacent fixes:**
+  - CONTRIBUTING.md: added CLI template to downstream repo list and compose validation commands
+- **Compose verified:** all three templates (MinimalApi, Blazor, CLI) compose cleanly
+- **Commit:** 370d204
+- **Key learning:** Workspace README (root) must stay aligned with base/README.md What's Included table — they describe the same content from different perspectives (workspace maintainer vs template consumer). When base changes, root README needs a matching update.
+- **Key learning:** CHANGELOG backfilling requires tracing commit messages for the tag range, not relying on memory or session history — commit messages carry the authoritative details (especially platform remediation and review finding commits which bundle many changes).
