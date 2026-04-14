@@ -32,13 +32,9 @@ If GitHub Copilot is unavailable, the Dev Container still provides a complete .N
    - `{{NAMESPACE}}` → your root namespace (e.g., `Acme.MyProject`)
    - `{{DESCRIPTION}}` → a one-line project description
    - In `LICENSE`: `{{YEAR}}` → current year, `{{AUTHOR}}` → author or organisation name
-2. Create your solution and project files following Clean Architecture:
+2. Create your solution and project files:
    ```bash
    dotnet new sln -n {{PROJECT_NAME}}
-   dotnet new classlib -n {{PROJECT_NAME}}.Domain
-   dotnet new classlib -n {{PROJECT_NAME}}.Application
-   dotnet new classlib -n {{PROJECT_NAME}}.Infrastructure
-   dotnet new webapi -n {{PROJECT_NAME}}.Api --use-minimal-apis
    ```
 3. Configure StyleCop by reviewing `stylecop.json` and `.editorconfig`
 4. Review `.copilot/skills/` for documented conventions and patterns
@@ -51,7 +47,7 @@ If GitHub Copilot is unavailable, the Dev Container still provides a complete .N
 | **MCP Servers** | Microsoft Learn, GitHub |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
 | **Squad** | AI development team — implementation orchestrator after planning |
-| **Skills** | TUnit testing, project conventions, spec-driven development, security (modular skill tree), RFC compliance, code analyzers |
+| **Skills** | TUnit testing, project conventions, spec-driven development, security (modular skill tree), code analyzers |
 | **Prompts** | First-time setup, pre-container setup, verify setup, requirements interview, hire security architect |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
@@ -72,21 +68,6 @@ dotnet build
 
 # Run tests
 dotnet test
-
-# Run the application
-dotnet run --project src/YourProject.Api/
-```
-
-## Architecture
-
-This project follows **Clean Architecture** principles:
-
-```
-src/
-├── Domain/           # Entities, value objects, domain events, interfaces
-├── Application/      # Use cases, commands, queries, handlers, DTOs
-├── Infrastructure/   # Database, external services, messaging
-└── Api/              # Minimal API endpoints, DI composition root
 ```
 
 ## License
