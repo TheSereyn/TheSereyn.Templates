@@ -172,3 +172,4 @@ Squad orchestration cycle completed. Prompt guidance review (commit 2f86516) app
     - Untracked enabled Squad workflow files (`.yml` without `.disabled`) flagged as local cleanup prerequisite — not a merge blocker
     - No security-sensitive content; no Drummer review needed; no re-publish needed
     - Decision written to: `.squad/decisions/inbox/holden-merge-gate.md`
+    - **Follow-up (Session 24):** Scribe merged inbox decisions into decisions.md, deleted inbox files, created orchestration logs, prepared session log. PR #31 merge confirmed aligned both branches. Directive captured: keep Squad workflows disabled via `.disabled` naming.
