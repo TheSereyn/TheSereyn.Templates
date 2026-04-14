@@ -193,3 +193,12 @@ Implemented CLI template onboarding: added to templates.json, updated workspace 
     - **Orchestration log created:** 2026-04-14T20:29:04Z-amos.md documents end-to-end execution.
     - **Note:** Post-release, minor stale wording identified in already-published CLI README; source docs corrected on dev by Naomi (follow-up doc cleanup pending dev push).
     - **Outcome:** v0.5.0 successfully released; all infrastructure and composition performed as designed.
+
+- Session 20 (2026-04-14): Post-v0.5.0 branch sync — dev → main cleanup.
+    - **Cleanup:** Removed 11 untracked enabled Squad workflow files (`.yml` copies left by Squad update). `.disabled` variants remain authoritative.
+    - **Branch sync:** Merged `origin/main` into `dev` to incorporate v0.5.0 merge commit, then pushed dev.
+    - **PR #31 opened and merged:** `dev → main`, docs-only sync (agent histories, decision records, release doc fixes, now.md update).
+    - **Fast-forward:** After merge, fast-forwarded dev to main's new HEAD — branches fully aligned with zero divergence.
+    - **Final workflow state:** 2 active (`compose-and-publish.yml`, `pr-validate.yml`), 11 disabled (`.yml.disabled`), zero untracked.
+    - **No tags touched:** v0.5.0 tag preserved on its original commit.
+    - **Key pattern:** When Squad updates drop enabled `.yml` copies alongside tracked `.disabled` files, always delete the untracked copies — the `.disabled` naming is the disablement mechanism.
