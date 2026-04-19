@@ -1623,3 +1623,23 @@ PR #31 merged. Both branches aligned. Working tree clean.
 Keep the Squad-related workflows disabled using the existing `.disabled` naming approach, and make sure any remaining `dev` changes are committed, synced, and merged into `main`.
 
 **Rationale:** User request — captured for team memory.
+
+---
+
+## Decision: Always fast-forward dev after merging to main
+
+**By:** Amos (Platform Engineer)  
+**Date:** 2026-04-14  
+**Status:** Approved — ongoing procedure
+
+### Context
+
+After PR #31 merged dev → main, a single docs commit remained on dev that wasn't on main. After that was merged via PR #32, the merge commit left main 1 ahead of dev.
+
+### Decision
+
+After every dev → main PR merge, immediately fast-forward dev to main's new HEAD. This prevents residual 0/1 drift that accumulates and confuses branch comparisons.
+
+### Rationale
+
+GitHub merge commits create a new commit on main not present on dev. Without the follow-up fast-forward, `rev-list` always shows main ahead by 1, making it impossible to verify true alignment. The fast-forward is always safe because dev is an ancestor of main's merge commit.

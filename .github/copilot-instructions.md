@@ -32,3 +32,4 @@ See the `template-management` skill for detailed conventions on overlays, compos
 |----------|------|-------------|
 | TheSereyn.Templates.MinimalApi | [GitHub](https://github.com/TheSereyn/TheSereyn.Templates.MinimalApi) | `base/` + `overlays/minimalapi/` |
 | TheSereyn.Templates.Blazor | [GitHub](https://github.com/TheSereyn/TheSereyn.Templates.Blazor) | `base/` + `overlays/blazor/` |
+| TheSereyn.Templates.CLI | [GitHub](https://github.com/TheSereyn/TheSereyn.Templates.CLI) | `base/` + `overlays/cli/` |

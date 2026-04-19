@@ -229,3 +229,10 @@ Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) appro
 - **Post-release discovery:** Minor stale wording identified in already-published CLI README (README mentions "First-time Setup Prompt" name, but downstream was generated before the prompt rename fix).
 - **Remediation:** Corrected source docs (base/README.md and overlays/cli/README.md) on dev branch to match published state. Awaiting dev push for cleanup.
 - **Orchestration log created:** 2026-04-14T20:29:04Z-naomi.md documents documentation fix execution and post-release correction.
+
+### Copilot Instructions — CLI Template Table Update
+
+- `.github/copilot-instructions.md` downstream templates table was stale — had only MinimalApi and Blazor, missing CLI.
+- Added TheSereyn.Templates.CLI row to the table, matching `templates.json` and `README.md`.
+- `base/.github/copilot-instructions.md` (the file shipped inside templates) has no downstream table — no change needed there.
+- Compose validated: all three templates compose cleanly after edit.
