@@ -236,3 +236,11 @@ Squad orchestration cycle completed. Prompt guidance work (commit 2f86516) appro
 - Added TheSereyn.Templates.CLI row to the table, matching `templates.json` and `README.md`.
 - `base/.github/copilot-instructions.md` (the file shipped inside templates) has no downstream table — no change needed there.
 - Compose validated: all three templates compose cleanly after edit.
+
+### Session 23 (2026-04-19T09:12:16Z): Scribe Documentation Post-Copilot-Instructions-Update
+
+- Investigation completed on stale downstream templates reference in copilot instructions.
+- Verified CLI template row successfully added to `.github/copilot-instructions.md`.
+- Confirmed base template file required no changes; compose validation passed cleanly.
+- Coordinator verified no other copilot-instructions surfaces require updates.
+- Orchestration log created: 2026-04-19T09:12:16Z-naomi.md documents this work.

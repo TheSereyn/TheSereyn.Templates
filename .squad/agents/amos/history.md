@@ -216,3 +216,9 @@ Implemented CLI template onboarding: added to templates.json, updated workspace 
     - **Session log created:** 2026-04-14T21:12:35Z-main-sync.md tracks post-release cleanup checkpoint.
     - **History updated:** Both Holden and Amos history.md updated with cross-agent team status.
     - **Next:** decisions.md size check (74.7 KB → archive if needed), history.md summarization, git commit.
+
+- Session 25 (2026-04-19): Landed copilot-instructions CLI row through proper dev → PR → main flow.
+    - **Problem:** Commit 47d56fc was on local main but not pushed; origin/main and origin/dev were aligned at b489815. Needed to move the commit through the proper branching workflow.
+    - **Steps:** Reset local main to origin/main, cherry-picked 47d56fc onto dev, also committed a pending decisions.md change (fast-forward procedure decision record), pushed dev, opened PR #34, merged with --admin, fast-forwarded dev to main's merge commit.
+    - **Result:** Both branches aligned at af4303e (PR #34 merge commit). Zero divergence. CLI template row present in copilot-instructions.md on both branches.
+    - **Pattern reconfirmed:** After dev → main PR merge, always fast-forward dev to main's new HEAD to prevent residual drift.

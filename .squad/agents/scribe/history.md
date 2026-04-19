@@ -58,3 +58,13 @@ Cross-agent coordination established. Reviewer lockout workflow: Naomi (rejected
       - **Decision archive status:** decisions.md ~51.6KB; exceeds 20KB threshold — archive check deferred pending timeline (decisions still actionable; no old entries >30 days yet)
       - **Git staging prepared:** .squad/ artifacts ready for commit (.squad/orchestration-log/, .squad/log/, .squad/decisions/)
       - **Next phase:** User approval on Phase 1 (base refactoring), then Phase 2 (CLI overlay implementation)
+
+- Session 23 (2026-04-19T09:12:16Z): Copilot-Instructions Update — Documentation & Archives
+      - **Orchestration log created:** 2026-04-19T09:12:16Z-naomi.md documents Naomi's copilot-instructions stale reference fix
+      - **Session log written:** 2026-04-19T09:12:16Z-copilot-instructions-update.md consolidates session outcome
+      - **Decision inbox merged:** amos-align-dev-main.md merged into decisions.md (no deduplication conflicts)
+      - **Inbox file deleted:** amos-align-dev-main.md removed post-merge
+      - **Decision archive executed:** decisions.md exceeded 20KB (78.1KB); created decisions-archive.md with early April entries (Full Setup Shape, Compliance Scope); trimmed decisions.md to recent entries only (post-release sync, fast-forward procedure, Squad workflows disabled)
+      - **Agent histories updated:** Naomi tracked for copilot-instructions investigation and CLI template row addition
+      - **Git staging prepared:** .squad/ artifacts ready for commit (.squad/orchestration-log/, .squad/log/, .squad/decisions/)
+      - **Next phase:** User direction on team work
