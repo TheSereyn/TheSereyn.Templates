@@ -29,7 +29,7 @@ If both `task` and `runSubagent` are available, prefer `task` (richer parameter 
 When in VS Code mode, the coordinator changes behavior in these ways:
 
 - **Spawning tool:** Use `runSubagent` instead of `task`. The prompt is the only required parameter — pass the full agent prompt (charter, identity, task, hygiene, response order) exactly as you would on CLI.
-- **Parallelism:** Spawn ALL concurrent agents in a SINGLE turn. They run in parallel automatically. This replaces `mode: "background"` + `read_agent` polling.
+- **Parallelism:** Spawn ALL concurrent agents in a SINGLE turn. They run in parallel automatically. This replaces `agent: "background"` + `read_agent` polling.
 - **Model selection:** Accept the session model. Do NOT attempt per-spawn model selection or fallback chains — they only work on CLI. In Phase 1, all subagents use whatever model the user selected in VS Code's model picker.
 - **Scribe:** Cannot fire-and-forget. Batch Scribe as the LAST subagent in any parallel group. Scribe is light work (file ops only), so the blocking is tolerable.
 - **Launch table:** Skip it. Results arrive with the response, not separately. By the time the coordinator speaks, the work is already done.
@@ -42,7 +42,7 @@ When in VS Code mode, the coordinator changes behavior in these ways:
 
 | Feature | CLI | VS Code | Degradation |
 |---------|-----|---------|-------------|
-| Parallel fan-out | `mode: "background"` + `read_agent` | Multiple subagents in one turn | None — equivalent concurrency |
+| Parallel fan-out | `agent: "background"` + `read_agent` | Multiple subagents in one turn | None — equivalent concurrency |
 | Model selection | Per-spawn `model` param (4-layer hierarchy) | Session model only (Phase 1) | Accept session model, log intent |
 | Scribe fire-and-forget | Background, never read | Sync, must wait | Batch with last parallel group |
 | Launch table UX | Show table → results later | Skip table → results with response | UX only — results are correct |
@@ -58,8 +58,8 @@ The `sql` tool is **CLI-only**. It does not exist on VS Code, JetBrains, or GitH
 **Example 1: CLI parallel spawn**
 ```typescript
 // Coordinator detects task tool available → CLI mode
-task({ agent_type: "general-purpose", mode: "background", model: "claude-sonnet-4.5", ... })
-task({ agent_type: "general-purpose", mode: "background", model: "claude-haiku-4.5", ... })
+task({ agent_type: "general-purpose", agent: "background", model: "claude-sonnet-4.5", ... })
+task({ agent_type: "general-purpose", agent: "background", model: "claude-haiku-4.5", ... })
 // Later: read_agent for both
 ```
 

@@ -46,19 +46,19 @@ If GitHub Copilot is unavailable, the Dev Container still provides a complete .N
 | **Dev Container** | .NET 10, Node 22, GitHub CLI, Azure CLI |
 | **MCP Servers** | Microsoft Learn, GitHub |
 | **Spec Kit** | Spec-Driven Development — specifications, plans, and task decomposition |
-| **Squad** | AI development team — implementation orchestrator after planning |
+| **Container Runtime Setup** | Optional Docker/Podman detection and container-in-container guidance |
 | **Skills** | TUnit testing, project conventions, spec-driven development, security (modular skill tree), code analyzers |
-| **Prompts** | Environment check, project setup, compliance setup, pre-container setup, requirements interview, hire security architect |
+| **Prompts** | Environment check, project setup, compliance setup, pre-container setup, requirements interview, security and compliance review |
 | **Code Quality** | StyleCop Analyzers, Roslyn Analyzers, .editorconfig, nullable reference types |
 
 ### Development Workflow
 
-This project uses **Spec-Driven Development** with Spec Kit and Squad:
+This project uses **Spec-Driven Development** with Spec Kit:
 
 1. `/speckit.constitution` — Define project governance and principles
 2. `/speckit.specify` — Capture what to build and why
 3. `/speckit.plan` → `/speckit.tasks` — Technical plan and task breakdown
-4. `@squad` — Implementation orchestration with specialist agents
+4. Implement the plan with your preferred agent or workflow
 
 For early-stage discovery, run `/requirements-interview` before specifying (optional).
 
