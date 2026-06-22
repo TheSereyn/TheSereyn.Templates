@@ -112,7 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Security skills tree: 14 modular skills under `.copilot/skills/` including `security-review-core`, `dotnet-authn-authz`, `blazor-wasm-security`, `aspnetcore-api-security`, and more
-- `hire-security-architect.prompt.md` — Squad prompt to create a Security Architect agent
+- `security-compliance-review.prompt.md` — security and compliance review prompt using the repository's security skills
 - `global.json` — activates Microsoft Testing Platform (MTP) native mode for TUnit tests
 - `CONTRIBUTING.md` — overlay conventions, local testing workflow, release process
 - `CHANGELOG.md` — this file

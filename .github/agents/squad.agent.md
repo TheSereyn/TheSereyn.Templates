@@ -126,7 +126,7 @@ Before assembling the session cast, check for personal agents:
 - Charter from personal dir (not project)
 - Ghost Protocol rules appended to system prompt
 - `origin: 'personal'` tag in all log entries
-- Consult mode: personal agents advise, project agents execute
+   - Consult mode: personal agents advise, project agents execute
 
 ### Issue Awareness
 
@@ -313,7 +313,7 @@ After routing determines WHO handles work, select the response MODE based on tas
 ```
 agent_type: "general-purpose"
 model: "{resolved_model}"
-mode: "background"
+agent: "background"
 description: "{emoji} {Name}: {brief task summary}"
 prompt: |
   You are {Name}, the {Role} on this project.
@@ -407,7 +407,7 @@ Pass the resolved model as the `model` parameter on every `task` tool call:
 ```
 agent_type: "general-purpose"
 model: "{resolved_model}"
-mode: "background"
+agent: "background"
 description: "{emoji} {Name}: {brief task summary}"
 prompt: |
   ...
@@ -458,7 +458,7 @@ If both `task` and `runSubagent` are available, prefer `task` (richer parameter 
 When in VS Code mode, the coordinator changes behavior in these ways:
 
 - **Spawning tool:** Use `runSubagent` instead of `task`. The prompt is the only required parameter — pass the full agent prompt (charter, identity, task, hygiene, response order) exactly as you would on CLI.
-- **Parallelism:** Spawn ALL concurrent agents in a SINGLE turn. They run in parallel automatically. This replaces `mode: "background"` + `read_agent` polling.
+- **Parallelism:** Spawn ALL concurrent agents in a SINGLE turn. They run in parallel automatically. This replaces `agent: "background"` + `read_agent` polling.
 - **Model selection:** Accept the session model. Do NOT attempt per-spawn model selection or fallback chains — they only work on CLI. In Phase 1, all subagents use whatever model the user selected in VS Code's model picker.
 - **Scribe:** Cannot fire-and-forget. Batch Scribe as the LAST subagent in any parallel group. Scribe is light work (file ops only), so the blocking is tolerable.
 - **Launch table:** Skip it. Results arrive with the response, not separately. By the time the coordinator speaks, the work is already done.
@@ -471,7 +471,7 @@ When in VS Code mode, the coordinator changes behavior in these ways:
 
 | Feature | CLI | VS Code | Degradation |
 |---------|-----|---------|-------------|
-| Parallel fan-out | `mode: "background"` + `read_agent` | Multiple subagents in one turn | None — equivalent concurrency |
+| Parallel fan-out | `agent: "background"` + `read_agent` | Multiple subagents in one turn | None — equivalent concurrency |
 | Model selection | Per-spawn `model` param (4-layer hierarchy) | Session model only (Phase 1) | Accept session model, log intent |
 | Scribe fire-and-forget | Background, never read | Sync, must wait | Batch with last parallel group |
 | Launch table UX | Show table → results later | Skip table → results with response | UX only — results are correct |
@@ -532,7 +532,7 @@ The Coordinator's default mindset is **launch aggressively, collect results late
 
 Before spawning, assess: **is there a reason this MUST be sync?** If not, use background.
 
-**Use `mode: "sync"` ONLY when:**
+**Use `agent: "sync"` ONLY when:**
 
 | Condition | Why sync is required |
 |-----------|---------------------|
@@ -541,7 +541,7 @@ Before spawning, assess: **is there a reason this MUST be sync?** If not, use ba
 | The user explicitly asked a question and is waiting for a direct answer | Direct interaction |
 | The task requires back-and-forth clarification with the user | Interactive |
 
-**Everything else is `mode: "background"`:**
+**Everything else is `agent: "background"`:**
 
 | Condition | Why background works |
 |-----------|---------------------|
@@ -559,7 +559,7 @@ When the user gives any task, the Coordinator MUST:
 
 1. **Decompose broadly.** Identify ALL agents who could usefully start work, including anticipatory work (tests, docs, scaffolding) that will obviously be needed.
 2. **Check for hard data dependencies only.** Shared memory files (decisions, logs) use the drop-box pattern and are NEVER a reason to serialize. The only real conflict is: "Agent B needs to read a file that Agent A hasn't created yet."
-3. **Spawn all independent agents as `mode: "background"` in a single tool-calling turn.** Multiple `task` calls in one response is what enables true parallelism.
+3. **Spawn all independent agents as `agent: "background"` in a single tool-calling turn.** Multiple `task` calls in one response is what enables true parallelism.
 4. **Show the user the full launch immediately:**
    ```
    🏗️ {Lead} analyzing project structure...
@@ -729,15 +729,15 @@ e. **Include worktree context in spawn:**
 **You MUST call the `task` tool** with these parameters for every agent spawn:
 
 - **`agent_type`**: `"general-purpose"` (always — this gives agents full tool access)
-- **`mode`**: `"background"` (default) or omit for sync — see Mode Selection table above
+- **`agent`**: `"background"` (default) or omit for sync — see Mode Selection table above
 - **`description`**: `"{Name}: {brief task summary}"` (e.g., `"Ripley: Design REST API endpoints"`, `"Dallas: Build login form"`) — this is what appears in the UI, so it MUST carry the agent's name and what they're doing
 - **`prompt`**: The full agent prompt (see below)
 
 **⚡ Inline the charter.** Before spawning, read the agent's `charter.md` (resolve from team root: `{team_root}/.squad/agents/{name}/charter.md`) and paste its contents directly into the spawn prompt. This eliminates a tool call from the agent's critical path. The agent still reads its own `history.md` and `decisions.md`.
 
-**Background spawn (the default):** Use the template below with `mode: "background"`.
+**Background spawn (the default):** Use the template below with `agent: "background"`.
 
-**Sync spawn (when required):** Use the template below and omit the `mode` parameter (sync is default).
+**Sync spawn (when required):** Use the template below and omit the `agent` parameter (sync is default).
 
 > **VS Code equivalent:** Use `runSubagent` with the prompt content below. Drop `agent_type`, `mode`, `model`, and `description` parameters. Multiple subagents in one turn run concurrently. Sync is the default on VS Code.
 
@@ -746,7 +746,7 @@ e. **Include worktree context in spawn:**
 ```
 agent_type: "general-purpose"
 model: "{resolved_model}"
-mode: "background"
+agent: "background"
 description: "{emoji} {Name}: {brief task summary}"
 prompt: |
   You are {Name}, the {Role} on this project.
@@ -849,7 +849,7 @@ After each batch of agent work:
 ```
 agent_type: "general-purpose"
 model: "claude-haiku-4.5"
-mode: "background"
+agent: "background"
 description: "📋 Scribe: Log session & merge decisions"
 prompt: |
   You are the Scribe. Read .squad/agents/scribe/charter.md.
