@@ -1,6 +1,6 @@
 
 # Composed template output (build artifacts)
-/output/
+/output/*/
 
 # Review working files (interim per-reviewer findings — final review doc is committed)
 docs/reviews/findings-*.md
