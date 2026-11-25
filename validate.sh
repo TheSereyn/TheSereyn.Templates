@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Match the implicit Bash shell used by the GitHub Actions workflow.
+set -e
+
+bash compose.sh
+
+# Validate template outputs.
+mapfile -t ENTRIES < <(jq -r '.[] | "\(.overlay):\(.repo | split("/") | last)"' templates.json)
+FAILED=0
+for entry in "${ENTRIES[@]}"; do
+  IFS=':' read -r overlay repo_name <<< "$entry"
+  DIR="output/$repo_name"
+  echo "--- Validating $repo_name (overlay: $overlay) ---"
+  test -d "$DIR" || { echo "::error::$DIR directory not found"; FAILED=1; continue; }
+  test -f "$DIR/README.md" || { echo "::error::$DIR/README.md not found"; FAILED=1; continue; }
+  FILE_COUNT=$(find "$DIR" -type f | wc -l)
+  [ "$FILE_COUNT" -ge 5 ] || { echo "::error::Only $FILE_COUNT files found in $DIR (expected >= 5)"; FAILED=1; continue; }
+  for json in $(find "$DIR" -name "*.json" 2>/dev/null); do
+    python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$json" \
+      || { echo "::error::Invalid JSON: $json"; FAILED=1; }
+  done
+  echo "$repo_name: OK ($FILE_COUNT files)"
+done
+[ "$FAILED" -eq 0 ] || exit 1
+
+# Check devcontainer.json drift between base and overlays.
+BASE="base/.devcontainer/devcontainer.json"
+DRIFTED=0
+for overlay_dir in overlays/*/; do
+  OVERLAY="${overlay_dir}.devcontainer/devcontainer.json"
+  [ -f "$OVERLAY" ] || continue
+  OVERLAY_NAME="$(basename "$overlay_dir")"
+  # Compare structural keys that MUST stay in sync
+  for key in '.image' '.features' '.remoteUser' '.containerUser' '.containerEnv' '.runArgs' '.postCreateCommand'; do
+    BASE_VAL=$(jq -r "$key // empty" "$BASE")
+    OVERLAY_VAL=$(jq -r "$key // empty" "$OVERLAY")
+    if [ "$BASE_VAL" != "$OVERLAY_VAL" ]; then
+      echo "::warning::devcontainer.json drift: $key differs between base and $OVERLAY_NAME overlay"
+      echo "  base:    $BASE_VAL"
+      echo "  overlay: $OVERLAY_VAL"
+      DRIFTED=1
+    fi
+  done
+  # Check that overlay has all base features
+  BASE_FEATURES=$(jq -r '.features | keys[]' "$BASE" | sort)
+  OVERLAY_FEATURES=$(jq -r '.features | keys[]' "$OVERLAY" | sort)
+  MISSING=$(comm -23 <(echo "$BASE_FEATURES") <(echo "$OVERLAY_FEATURES"))
+  if [ -n "$MISSING" ]; then
+    echo "::warning::devcontainer.json drift: $OVERLAY_NAME overlay is missing base features: $MISSING"
+    DRIFTED=1
+  fi
+done
+if [ "$DRIFTED" -eq 1 ]; then
+  echo "::warning::Devcontainer drift detected — review and reconcile overlay files"
+else
+  echo "Devcontainer drift check: OK (all overlays in sync with base)"
+fi
