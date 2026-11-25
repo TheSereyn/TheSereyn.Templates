@@ -35,8 +35,16 @@ If you need to hotfix a downstream repo, make the change here and republish.
 
 ### Prerequisites
 
-- Docker Desktop or Podman
-- VS Code with Dev Containers extension (recommended)
+Run local validation in a modern Linux shell with the following tools:
+
+- Bash with `mapfile`
+- `jq`
+- Python 3
+- Standard Linux utilities, including `find`, `cp`, `sort`, `comm`, `sed`, and `wc`
+
+A container runtime such as Docker or Podman and the .NET SDK are optional for
+broader template development. VS Code with the Dev Containers extension is useful
+if you work in a dev container.
 
 ### Testing Composition Locally
 
@@ -53,20 +61,17 @@ bash compose.sh --only minimalapi
 
 ### Validating Changes
 
-Before pushing, verify your compose output is valid:
+Before pushing, run the same validation as the PR workflow from the repository root.
+
 ```bash
-# Compose and check output
-bash compose.sh
-test -f output/TheSereyn.Templates.MinimalApi/README.md && echo "MinimalApi OK"
-test -f output/TheSereyn.Templates.Blazor/README.md && echo "Blazor OK"
-test -f output/TheSereyn.Templates.CLI/README.md && echo "CLI OK"
+bash validate.sh
 ```
 
 ## Making Changes
 
 1. Branch from `dev`: `git checkout -b feature/your-feature dev`
 2. Make changes in `base/` or `overlays/`
-3. Test with `bash compose.sh`
+3. Run `bash validate.sh` from the repository root
 4. Commit and push
 5. Open a PR to `dev`
 6. Once merged to `dev`, open a PR from `dev` to `main`
